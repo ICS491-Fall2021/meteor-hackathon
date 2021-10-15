@@ -4,10 +4,8 @@ For details, please see http://ics-software-engineering.github.io/meteor-applica
 
 # Meteor Hackathon
 
-## Team name
-We're team DAAJ
- 
-## Team members 
+## Team
+We're team DAAJ, composed of:
 * [Mujtaba Quadri](https://github.com/mujtaba-a-quadri)
 * [Alyssia Chen](https://github.com/alyssia-chen)
 * [Jolie Ching](https://github.com/jolieching)
