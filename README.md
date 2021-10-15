@@ -4,7 +4,7 @@ For details, please see http://ics-software-engineering.github.io/meteor-applica
 
 ### Meteor Hackathon
 
- ## Team name (required)
+ ## Team name
  We're team DAAJ
  
  ## Team members 
@@ -13,5 +13,5 @@ For details, please see http://ics-software-engineering.github.io/meteor-applica
 * [Jolie Ching](https://github.com/jolieching)
 * [Dylan Decker](https://github.com/dylandecker)
 
- ## Description (required) of the idea.
+ ## Description of the idea.
  This application will allow people to easily schedule hangouts while abiding by current COVID restrictions. 
