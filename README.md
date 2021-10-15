@@ -11,5 +11,5 @@ We're team DAAJ, composed of:
 * [Jolie Ching](https://github.com/jolieching)
 * [Dylan Decker](https://github.com/dylandecker)
 
-## Description of the idea.
+## Description of the idea
 This application will allow people to easily schedule hangouts while abiding by current COVID restrictions. 
