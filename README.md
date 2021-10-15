@@ -2,16 +2,16 @@
 
 For details, please see http://ics-software-engineering.github.io/meteor-application-template-react/
 
-### Meteor Hackathon
+# Meteor Hackathon
 
- ## Team name
- We're team DAAJ
+## Team name
+We're team DAAJ
  
- ## Team members 
+## Team members 
 * [Mujtaba Quadri](https://github.com/mujtaba-a-quadri)
 * [Alyssia Chen](https://github.com/alyssia-chen)
 * [Jolie Ching](https://github.com/jolieching)
 * [Dylan Decker](https://github.com/dylandecker)
 
- ## Description of the idea.
- This application will allow people to easily schedule hangouts while abiding by current COVID restrictions. 
+## Description of the idea.
+This application will allow people to easily schedule hangouts while abiding by current COVID restrictions. 
