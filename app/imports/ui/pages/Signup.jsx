@@ -60,7 +60,7 @@ class Signup extends React.Component {
                 <Form.Input
                   label="Username"
                   id="signup-form-username"
-                  icon="pen square"
+                  icon="address card"
                   iconPosition="left"
                   name="username"
                   type="username"
