@@ -89,12 +89,7 @@ Profile.propTypes = {
   ready: PropTypes.bool.isRequired,
 };
 
-const ProfileContainer = withTracker(() => ({
-  currentUser: Meteor.user() ? Meteor.user().username : '',
-  
-}))(Profile);
-
- const ProfileContainer2 = withTracker(() => {
+ const ProfileContainer = withTracker(() => {
   // Get access to Stuff documents.
   const subscription = Meteor.subscribe(Availabilities.userPublicationName);
   // Determine if the subscription is ready
@@ -108,4 +103,4 @@ const ProfileContainer = withTracker(() => ({
   };
 })(Profile);
 
-export default withRouter(ProfileContainer2);
+export default withRouter(ProfileContainer);
