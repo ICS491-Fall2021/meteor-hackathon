@@ -30,6 +30,7 @@ class Profile extends React.Component {
     console.log("Meteor.user()._id is type of: " + typeof(Meteor.user()._id));
     let user = Meteor.user()._id;
     Meteor.call('availabilities.insert', user, newAvails);
+    console.log("inserted: " + newAvails)
   }
   render() {
     return (
@@ -52,6 +53,7 @@ class Profile extends React.Component {
                 </Grid.Column>
                 <Grid.Column className="box-color" width={3}>
                     <Header as='h2'>Groups</Header>
+                      {this.props.availabilites}
                     <Header as='h2'>Contacted</Header>
                 </Grid.Column>
             </Grid.Row>
@@ -83,6 +85,8 @@ class Profile extends React.Component {
 
 Profile.propTypes = {
   currentUser: PropTypes.string,
+  availabilites: PropTypes.array.isRequired,
+  ready: PropTypes.bool.isRequired,
 };
 
 const ProfileContainer = withTracker(() => ({
@@ -100,7 +104,8 @@ const ProfileContainer = withTracker(() => ({
   return {
     availabilities,
     ready,
+    currentUser: Meteor.user() ? Meteor.user().username : '',
   };
 })(Profile);
 
-export default withRouter(ProfileContainer, ProfileContainer2);
+export default withRouter(ProfileContainer2);
