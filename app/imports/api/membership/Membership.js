@@ -3,19 +3,18 @@ import SimpleSchema from 'simpl-schema';
 import { Tracker } from 'meteor/tracker';
 
 /**
- * The GroupCollection. It encapsulates state and variable values for Groups.
+ * The MembershipCollection. It encapsulates state and variable values for Memberships.
  */
-class GroupCollection {
+class MembershipCollection {
   constructor() {
     // The name of this collection.
-    this.name = 'GroupCollection';
+    this.name = 'MembershipCollection';
     // Define the Mongo collection.
     this.collection = new Mongo.Collection(this.name);
     // Define the structure of each document in the collection.
     this.schema = new SimpleSchema({
-      name: String,
+      userID: Number,
       groupID: Number,
-      description: String,
     }, { tracker: Tracker });
     // Attach the schema to the collection, so all attempts to insert a document are checked against schema.
     this.collection.attachSchema(this.schema);
@@ -25,7 +24,7 @@ class GroupCollection {
 }
 
 /**
- * The singleton instance of the GroupCollection.
- * @type {GroupCollection}
+ * The singleton instance of the MembershipCollection.
+ * @type {MembershipCollection}
  */
-export const Groups = new GroupCollection();
+export const Memberships = new MembershipCollection();
