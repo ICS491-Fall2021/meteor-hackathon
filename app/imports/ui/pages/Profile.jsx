@@ -3,7 +3,6 @@ import React from 'react';
 import { Grid, Segment, Button, Form, Header } from 'semantic-ui-react';
 import ScheduleSelector from 'react-schedule-selector'
 import PropTypes from 'prop-types';
-import { Meteor } from 'meteor/meteor';
 import { withRouter} from 'react-router-dom';
 import { Roles } from 'meteor/alanning:roles';
 import { Memberships } from '../../api/membership/Membership';
@@ -86,8 +85,12 @@ Profile.propTypes = {
   currentUser: PropTypes.string,
 };
 
-export default withTracker(() => {
-  currentUser: Meteor.user() ? Meteor.user().username : '';
+const ProfileContainer = withTracker(() => ({
+  currentUser: Meteor.user() ? Meteor.user().username : '',
+  
+}))(Profile);
+
+ const ProfileContainer2 = withTracker(() => {
   // Get access to Stuff documents.
   const subscription = Meteor.subscribe(Availabilities.userPublicationName);
   // Determine if the subscription is ready
@@ -100,3 +103,4 @@ export default withTracker(() => {
   };
 })(Profile);
 
+export default withRouter(ProfileContainer, ProfileContainer2);
