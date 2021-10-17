@@ -1,16 +1,18 @@
 import { Meteor } from 'meteor/meteor';
-import React from 'react';
+import React, { useState } from 'react';
 import { Grid, Loader, Segment, Button, Form, Header } from 'semantic-ui-react';
-import ScheduleSelector from 'react-schedule-selector'
+import Calendar from 'react-calendar';
 import PropTypes from 'prop-types';
+import myCalendar from '../components/Calendar.jsx';
 import { withRouter} from 'react-router-dom';
 import { Roles } from 'meteor/alanning:roles';
 import { Memberships } from '../../api/membership/Membership';
 import { Groups } from '../../api/group/Group';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Availabilities } from '../../api/availability/Availability';
+import 'react-calendar/dist/Calendar.css';
 
-class Profile extends React.Component {
+class Group extends React.Component {
   constructor(props) {
       super(props);
       this.state =  {
@@ -52,34 +54,24 @@ class Profile extends React.Component {
     return (this.props.ready) ? this.renderPage() : <Loader active>Getting data</Loader>;
   }
 
-  renderPage() {
+ renderPage() {
     return (
       <div className='wrapping'>
          <Header as='h1' className="title">{this.props.currentUser}</Header>
         <Grid columns={2} relaxed padded className="content">
             <Grid.Row stretched>
                 <Grid.Column className="box" width={12}>
-                  <ScheduleSelector
-                      selection={this.state.schedule}
-                      numDays={7}
-                      minTime={8}
-                      dateFormat='ddd'
-                      timeFormat='h:mm a'
-                      maxTime={22}
-                      hourlyChunks={2}
-                      onChange={this.handleChange}
-                      selection={this.state.schedule}
-                  />
+                <Header as='h2'>Availabilities</Header>
+                    <myCalendar/>
                 </Grid.Column>
                 <Grid.Column className="box-color" width={3}>
-                    <Header as='h2'>Groups</Header>
-                    {this.objectReformat(this.props.availabilities)}
-                    <Header as='h2'>Contacted</Header>
+                    <Header as='h2'>Members</Header>
+                    <Header as='h2'>Rules</Header>
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row stretched>
                 <Grid.Column className="box-color" width={12}>
-                  <Header as='h2'>Interests</Header>
+                  <Header as='h2'>Hangouts</Header>
                     <Form>
                       <Form.Group grouped>
                         <label>Add your Interests</label>
@@ -103,13 +95,13 @@ class Profile extends React.Component {
   }
 }
 
-Profile.propTypes = {
+Group.propTypes = {
   currentUser: PropTypes.string,
   availabilities: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
 };
 
- const ProfileContainer = withTracker(() => {
+ const GroupContainer = withTracker(() => {
   // Get access to Stuff documents.
   const subscription = Meteor.subscribe(Availabilities.userPublicationName);
   // Determine if the subscription is ready
@@ -121,6 +113,6 @@ Profile.propTypes = {
     ready,
     currentUser: Meteor.user() ? Meteor.user().username : '',
   };
-})(Profile);
+})(Group);
 
-export default withRouter(ProfileContainer);
+export default withRouter(GroupContainer);
