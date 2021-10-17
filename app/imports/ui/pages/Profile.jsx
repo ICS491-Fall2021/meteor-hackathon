@@ -1,7 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Grid, Segment, Button, Form, Header } from 'semantic-ui-react';
-import ScheduleSelector from 'react-schedule-selector'
+import ScheduleSelector from 'react-schedule-selector';
+import { withTracker } from 'meteor/react-meteor-data';
+import { Availabilities } from '../../api/availability/Availability';
 
 class Profile extends React.Component {
   constructor(props) {
@@ -74,4 +76,17 @@ class Profile extends React.Component {
   }
 }
 
-export default Profile;
+// export default Profile;
+
+export default withTracker(() => {
+  // Get access to Stuff documents.
+  const subscription = Meteor.subscribe(Availabilities.userPublicationName);
+  // Determine if the subscription is ready
+  const ready = subscription.ready();
+  // Get the Availability documents
+  const availabilities = Availabilities.collection.find({}).fetch();
+  return {
+    availabilities,
+    ready,
+  };
+})(Profile);
