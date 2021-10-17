@@ -1,8 +1,7 @@
+import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Grid, Segment, Button, Form, Header } from 'semantic-ui-react';
 import ScheduleSelector from 'react-schedule-selector'
-import { Availabilities } from '../../api/availability/Availability';
-
 
 class Profile extends React.Component {
   constructor(props) {
@@ -18,17 +17,12 @@ class Profile extends React.Component {
         console.log(this.state.schedule);
     });
     console.log("hi there was a change");
-    // console.log(typeof(this.state.schedule));
-    // Add to availabilities db(this.props.currentUser, this.state.schedule);
-    // theArray = this.state.schedule.theArray;
-    // console.log(".theArray is type of: " + typeof(this.state.schedule.toString()));
     let newAvails = this.state.schedule.toString().split(",");
-    // console.log("the array is: " + this.state.schedule.theArray);
-    //console.log(theArray);
     console.log("newAvails is type of: " + typeof(newAvails));
     console.log("Meteor.user()._id is: " + Meteor.user()._id);
     console.log("Meteor.user()._id is type of: " + typeof(Meteor.user()._id));
-    Availabilities.collection.insert(newAvails, Meteor.user()._id);
+    let user = Meteor.user()._id;
+    Meteor.call('availabilities.insert', user, newAvails);
   }
   render() {
 
