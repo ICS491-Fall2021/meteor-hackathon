@@ -1,7 +1,13 @@
 import React from 'react';
 import { Grid, Segment, Button, Form, Header } from 'semantic-ui-react';
 import ScheduleSelector from 'react-schedule-selector'
-
+import { withTracker } from 'meteor/react-meteor-data';
+import PropTypes from 'prop-types';
+import { Meteor } from 'meteor/meteor';
+import { withRouter, NavLink } from 'react-router-dom';
+import { Roles } from 'meteor/alanning:roles';
+import { Memberships } from '../../api/membership/Membership';
+import { Groups } from '../../api/group/Group';
 
 class Profile extends React.Component {
   constructor(props) {
@@ -18,53 +24,62 @@ class Profile extends React.Component {
     });
   }
   render() {
-
     return (
-      <Grid columns={2} relaxed padded className="wrapping">
-          <Grid.Row stretched>
-              <Grid.Column className="box" width={12}>
-                <ScheduleSelector
-                    selection={this.state.schedule}
-                    numDays={7}
-                    minTime={8}
-                    dateFormat='ddd'
-                    timeFormat='h:mm a'
-                    maxTime={22}
-                    hourlyChunks={2}
-                    onChange={this.handleChange}
-                    selection={this.state.schedule}
-                />
-              </Grid.Column>
-              <Grid.Column className="box-color" width={3}>
-                  <Header as='h2'>Groups</Header>
-                  <Header as='h2'>Contacted</Header>
-              </Grid.Column>
-          </Grid.Row>
-          <Grid.Row stretched>
-              <Grid.Column className="box-color" width={12}>
-                 <Header as='h2'>Interests</Header>
-                  <Form>
-                    <Form.Group grouped>
-                      <label>Add your Interests</label>
-                      <Form.Field label='This one' control='input' type='checkbox' />
-                      <Form.Field label='That one' control='input' type='checkbox' />
-                    </Form.Group>
-                    <Form.Group widths='equal'>
-                      <Form.Field label='Input your interest' control='input' />
-                    </Form.Group>
-                    <Form.Field control='button'>
-                      Submit
-                    </Form.Field>
-                </Form>
-
-              </Grid.Column>
-              <Grid.Column className="box-color" width={12}>
-              </Grid.Column>
-          </Grid.Row>
-      </Grid>
-
+      <div className='wrapping'>
+         <Header as='h1' className="title">{this.props.currentUser}</Header>
+        <Grid columns={2} relaxed padded className="content">
+            <Grid.Row stretched>
+                <Grid.Column className="box" width={12}>
+                  <ScheduleSelector
+                      selection={this.state.schedule}
+                      numDays={7}
+                      minTime={8}
+                      dateFormat='ddd'
+                      timeFormat='h:mm a'
+                      maxTime={22}
+                      hourlyChunks={2}
+                      onChange={this.handleChange}
+                      selection={this.state.schedule}
+                  />
+                </Grid.Column>
+                <Grid.Column className="box-color" width={3}>
+                    <Header as='h2'>Groups</Header>
+                    <Header as='h2'>Contacted</Header>
+                </Grid.Column>
+            </Grid.Row>
+            <Grid.Row stretched>
+                <Grid.Column className="box-color" width={12}>
+                  <Header as='h2'>Interests</Header>
+                    <Form>
+                      <Form.Group grouped>
+                        <label>Add your Interests</label>
+                        <Form.Field label='This one' control='input' type='checkbox' />
+                        <Form.Field label='That one' control='input' type='checkbox' />
+                      </Form.Group>
+                      <Form.Group widths='equal'>
+                        <Form.Field label='Input your interest' control='input' />
+                      </Form.Group>
+                      <Form.Field control='button'>
+                        Submit
+                      </Form.Field>
+                  </Form>
+                </Grid.Column>
+                <Grid.Column className="box-color" width={12}>
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>
+      </div>
     )
   }
 }
 
-export default Profile;
+Profile.propTypes = {
+  currentUser: PropTypes.string,
+};
+
+const ProfileContainer = withTracker(() => ({
+  currentUser: Meteor.user() ? Meteor.user().username : '',
+}))(Profile);
+
+
+export default withRouter(ProfileContainer);
