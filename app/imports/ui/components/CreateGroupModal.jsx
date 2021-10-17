@@ -17,6 +17,17 @@ const bridge = new SimpleSchema2Bridge(formSchema);
 
 /** Renders a modal for creating a group in the Profile page. See pages/Profile.jsx. */
 class CreateGroupModal extends React.Component {
+  /* Initialize state fields. */
+  constructor(props) {
+    super(props);
+    this.state = { name: '', description: '', redirectToReferer: false };
+  }
+
+  /* Update the form controls each time the user interacts with them. */
+  handleChange = (e, { name, value }) => {
+    this.setState({ [name]: value });
+  }
+
   render() {
     let fRef = null;
     return (
@@ -28,10 +39,20 @@ class CreateGroupModal extends React.Component {
           <Modal.Content>
             <Modal.Description>
               <div className='name-input'>
-                  <Input label='Name: ' placeholder='Enter group name'></Input>
+                  <Input 
+                    label='Name: ' 
+                    placeholder='Enter group name'
+                    onChange={this.handleChange}
+                    name='name'
+                    value={this.state.name}/>
               </div>
               <div>
-                  <Input label='Description: ' placeholder='Enter group description'></Input>
+                  <Input 
+                    label='Description: ' 
+                    placeholder='Enter group description'
+                    onChange={this.handleChange}
+                    name='description'
+                    value={this.state.description}/>
               </div>
             </Modal.Description>
           </Modal.Content>
