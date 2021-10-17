@@ -1,20 +1,22 @@
+import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Grid, Segment, Button, Form, Header } from 'semantic-ui-react';
 import ScheduleSelector from 'react-schedule-selector'
-import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
-import { withRouter, NavLink } from 'react-router-dom';
+import { withRouter} from 'react-router-dom';
 import { Roles } from 'meteor/alanning:roles';
 import { Memberships } from '../../api/membership/Membership';
 import { Groups } from '../../api/group/Group';
+import { withTracker } from 'meteor/react-meteor-data';
+import { Availabilities } from '../../api/availability/Availability';
 
 class Profile extends React.Component {
   constructor(props) {
       super(props);
       this.state =  {
         user: this.props.currentUser,
-        schedule: [new Date('October 17, 2021 12:30:00'), new Date('October 18, 2021 12:30:00')],
+        schedule: [new Date('Sun Oct 17 2021 13:30:00 GMT-1000 (Hawaii-Aleutian Standard Time)'), new Date('October 18, 2021 12:30:00')],
       };
     }
 
@@ -22,6 +24,13 @@ class Profile extends React.Component {
     this.setState({ schedule: newSchedule }, function () {
         console.log(this.state.schedule);
     });
+    console.log("hi there was a change");
+    let newAvails = this.state.schedule.toString().split(",");
+    console.log("newAvails is type of: " + typeof(newAvails));
+    console.log("Meteor.user()._id is: " + Meteor.user()._id);
+    console.log("Meteor.user()._id is type of: " + typeof(Meteor.user()._id));
+    let user = Meteor.user()._id;
+    Meteor.call('availabilities.insert', user, newAvails);
   }
   render() {
     return (
@@ -77,9 +86,17 @@ Profile.propTypes = {
   currentUser: PropTypes.string,
 };
 
-const ProfileContainer = withTracker(() => ({
-  currentUser: Meteor.user() ? Meteor.user().username : '',
-}))(Profile);
+export default withTracker(() => {
+  currentUser: Meteor.user() ? Meteor.user().username : '';
+  // Get access to Stuff documents.
+  const subscription = Meteor.subscribe(Availabilities.userPublicationName);
+  // Determine if the subscription is ready
+  const ready = subscription.ready();
+  // Get the Availability documents
+  const availabilities = Availabilities.collection.find({}).fetch();
+  return {
+    availabilities,
+    ready,
+  };
+})(Profile);
 
-
-export default withRouter(ProfileContainer);
