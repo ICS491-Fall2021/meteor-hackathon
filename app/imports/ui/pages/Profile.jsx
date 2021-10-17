@@ -1,6 +1,7 @@
 import React from 'react';
 import { Grid, Segment, Button, Header } from 'semantic-ui-react';
 import ScheduleSelector from 'react-schedule-selector'
+import CreateGroupModal from '../components/CreateGroupModal';
 
 class Profile extends React.Component {
   constructor(props) {
@@ -39,6 +40,7 @@ class Profile extends React.Component {
               </Grid.Column>
               <Grid.Column className="box-color" width={3}>
                   <Header as='h2'>Groups</Header>
+                  <CreateGroupModal></CreateGroupModal>
               </Grid.Column>
           </Grid.Row>
           <Grid.Row stretched>
