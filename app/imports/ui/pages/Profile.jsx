@@ -15,10 +15,10 @@ class Profile extends React.Component {
       super(props);
       this.state =  {
         user: this.props.currentUser,
-        schedule: [new Date('Sun Oct 17 2021 13:30:00 GMT-1000 (Hawaii-Aleutian Standard Time)'), new Date('October 18, 2021 12:30:00')],
+        schedule: this.props.availabilites || [new Date('Sun Oct 17 2021 13:30:00 GMT-1000 (Hawaii-Aleutian Standard Time)'), new Date('October 18, 2021 12:30:00')],
       };
     }
-
+  
   handleChange = newSchedule => {
     this.setState({ schedule: newSchedule }, function () {
         console.log(this.state.schedule);
@@ -30,7 +30,7 @@ class Profile extends React.Component {
     console.log("Meteor.user()._id is type of: " + typeof(Meteor.user()._id));
     let user = Meteor.user()._id;
     Meteor.call('availabilities.insert', user, newAvails);
-    console.log("inserted: " + newAvails)
+    console.log("insertsed: " + Availabilities.collection.find({}).fetch());
   }
   render() {
     return (
@@ -53,7 +53,7 @@ class Profile extends React.Component {
                 </Grid.Column>
                 <Grid.Column className="box-color" width={3}>
                     <Header as='h2'>Groups</Header>
-                      {this.props.availabilites}
+                    {JSON.stringify(this.props.availabilities)}
                     <Header as='h2'>Contacted</Header>
                 </Grid.Column>
             </Grid.Row>
