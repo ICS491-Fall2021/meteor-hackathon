@@ -6,12 +6,14 @@
     -moz-transform: scale(0.9, 0.9); /* Firefox */
 }
 
-
 .title {
     padding-top: 50px;
     text-align: center;
 }
 
+.highlight {
+    background-color: red !important;
+}
 .box {
     padding: 25px !important;
 }
