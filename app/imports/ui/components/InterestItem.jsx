@@ -9,8 +9,6 @@ class InterestItem extends React.Component {
     return (
       <Table.Row>
         <Table.Cell>{this.props.interest.interests}</Table.Cell>
-        <Table.Cell>
-        </Table.Cell>
       </Table.Row>
     );
   }

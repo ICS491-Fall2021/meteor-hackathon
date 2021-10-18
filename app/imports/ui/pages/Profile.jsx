@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { Grid, Loader, Segment, Button, Form, Header, Menu } from 'semantic-ui-react';
+import { Grid, Loader, Segment, Button, Form, Header, Menu, Image, List } from 'semantic-ui-react';
 import ScheduleSelector from 'react-schedule-selector'
 import PropTypes from 'prop-types';
 import { withRouter, NavLink} from 'react-router-dom';
@@ -14,6 +14,9 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { Availabilities } from '../../api/availability/Availability';
 import { Interests } from '../../api/interests/Interests';
 import InterestItem from '../components/InterestItem';
+import MembershipsItem from '../components/MembershipsItem';
+import JoinGroup from '../components/JoinGroup';
+import CreateGroup from '../components/CreateGroup';
 
 // Create a schema to specify the structure of the data to appear in the form.
 const formSchema = new SimpleSchema({
@@ -30,6 +33,8 @@ class Profile extends React.Component {
       super(props);
       this.state =  {
         user: this.props.currentUser,
+        openCreate: false,
+        openJoin: false,
       };
     }
 
@@ -81,7 +86,7 @@ class Profile extends React.Component {
    // If the subscription(s) have been received, render the page, otherwise show a loading icon.
    render() {
     console.log("--In render?--");
-    return (this.props.ready && this.props) ? this.renderPage() : <Loader active>Getting data</Loader>;
+    return (this.props.ready && this.props.interestsReady && this.props.membershipsReady) ? this.renderPage() : <Loader active>Getting data</Loader>;
   }
 
   renderPage() {
@@ -90,9 +95,19 @@ class Profile extends React.Component {
     if (this.props.availabilities.length > 0) {
       this.state.schedule = this.objectReformat(this.props.availabilities);
     }
+ 
     return (
       <div className='wrapping'>
-         <Header as='h1' className="title">{this.props.currentUser}</Header>
+        <Grid columns={2} relaxed className="content">
+          <Grid.Row>
+            <Grid.Column className="box">
+              <Image size='tiny' circular src="/images/Logo2transparent.png" centered style={{ float: 'right' }} />
+            </Grid.Column>
+            <Grid.Column className="box">
+              <Header as='h1'  className="title" centered style={{ float: 'left'}}>{this.props.currentUser}</Header>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
         <Grid columns={2} relaxed padded className="content">
             <Grid.Row stretched>
                 <Grid.Column className="box" width={12}>
@@ -113,7 +128,18 @@ class Profile extends React.Component {
                 </Grid.Column>
                 <Grid.Column className="box-color" width={3}>
                     <Header as='h2'>Groups</Header>
-                    
+                    <Button onClick={() => this.setState({openCreate: true})}>
+                      Create Group
+                    </Button>
+                    <CreateGroup open={this.state.openCreate}/>
+                    <JoinGroup open={this.state.openJoin}/>
+                    <Button onClick={() => this.setState({openJoin: true})}>
+                      Join Group
+                    </Button>
+                    <Header as='h2'>Groups Joined</Header>
+                    <List>
+                      {this.props.memberships.map((membership) => <MembershipsItem key={membership._id} membership={membership} />)}
+                    </List>
                     <Header as='h2'>Contacted</Header>
                 </Grid.Column>
             </Grid.Row>
@@ -139,11 +165,19 @@ class Profile extends React.Component {
   }
 }
 
+Meteor.subscribe(Memberships.userPublicationName);
+Meteor.subscribe(Groups.userPublicationName);
+
+
 Profile.propTypes = {
   currentUser: PropTypes.string,
   availabilities: PropTypes.array.isRequired,
   interests: PropTypes.array.isRequired,
+  memberships: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
+  interestsReady: PropTypes.bool.isRequired,
+  membershipsReady: PropTypes.bool.isRequired,
+
 };
 
  const ProfileContainer = withTracker(() => {
@@ -161,11 +195,18 @@ Profile.propTypes = {
 
   const interests = Interests.collection.find({}).fetch();
 
+  const membershipSubscription = Meteor.subscribe(Memberships.userPublicationName);
+
+  const membershipsReady = membershipSubscription.ready();
+
+  const memberships = Memberships.collection.find({}).fetch();
   console.log("availabilities has: " + availabilities.length);
   return {
     availabilities,
     interestsReady,
     interests,
+    memberships,
+    membershipsReady,
     ready,
     currentUser: Meteor.user() ? Meteor.user().username : '',
   };

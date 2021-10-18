@@ -1,3 +1,19 @@
+#root h1 {
+    font-family: Abel, Arial, Helvetica, sans-serif;
+}
+
+#root h2 {
+    font-family: Abel, Arial, Helvetica, sans-serif;
+}
+
+#root p {
+    font-family: Abel, Arial, Helvetica, sans-serif;
+}
+
+#root button {
+    font-family: Abel, Arial, Helvetica, sans-serif;
+}
+
 .wrapping {
     transform: scale(0.9, 0.9);
     -ms-transform: scale(0.9, 0.9); /* IE 9 */
@@ -20,4 +36,8 @@
 
 .box-color {
     padding: 25px !important;
+}
+
+.create-group-inputs {
+    margin: 10px 10px !important;
 }

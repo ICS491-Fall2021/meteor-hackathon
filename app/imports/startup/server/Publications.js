@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import { Stuffs } from '../../api/stuff/Stuff';
+import { Groups } from '../../api/group/Group';
+import { Memberships } from '../../api/membership/Membership';
 import { Availabilities } from '../../api/availability/Availability';
 import { Interests } from '../../api/interests/Interests';
 
@@ -30,11 +32,48 @@ Meteor.publish(Interests.userPublicationName, function () {
   return this.ready();
 });
 
+Meteor.publish(Memberships.userPublicationName, function () {
+  if (this.userId) {
+    // const username = Meteor.users.findOne(this.userId).username;
+    return Memberships.collection.find({ userID: this.userId });
+  }
+  return this.ready();
+});
+
+Meteor.publish(Groups.userPublicationName, function () {
+  if (this.userId) {
+    return Groups.collection.find();
+    // return Groups.collection.find({
+    //    "_id": { "$in": [Memberships.collection.find({ owner: this.userId })[1]]} 
+    //   });
+  }
+  return this.ready();
+});
+
+
 // Admin-level publication.
 // If logged in and with admin role, then publish all documents from all users. Otherwise publish nothing.
 Meteor.publish(Stuffs.adminPublicationName, function () {
   if (this.userId && Roles.userIsInRole(this.userId, 'admin')) {
     return Stuffs.collection.find();
+  }
+  return this.ready();
+});
+
+// Admin-level publication.
+// If logged in and with admin role, then publish all documents from all users. Otherwise publish nothing.
+Meteor.publish(Groups.adminPublicationName, function () {
+  if (this.userId && Roles.userIsInRole(this.userId, 'admin')) {
+    return Groups.collection.find();
+  }
+  return this.ready();
+});
+
+// Admin-level publication.
+// If logged in and with admin role, then publish all documents from all users. Otherwise publish nothing.
+Meteor.publish(Memberships.adminPublicationName, function () {
+  if (this.userId && Roles.userIsInRole(this.userId, 'admin')) {
+    return Memberships.collection.find();
   }
   return this.ready();
 });
