@@ -11,14 +11,25 @@ const bridge = new SimpleSchema2Bridge(Groups.schema);
 
 /** Renders a modal for creating a group in the Profile page. See pages/Profile.jsx. */
 class CreateGroup extends React.Component {
+  constructor(props) {
+      super(props);
+      this.state =  {
+        groupId: '',
+      };
+  }
+  
   render() {
     let fRef = null;
+    const userId = Meteor.user()._id;
     return (
         <Modal
             open={this.props.open}
             size={'tiny'}>
           <Modal.Header>Create a Group</Modal.Header>
-          <AutoForm ref={ref => { fRef = ref; }} schema={bridge} onSubmit={data => this.submit(data, fRef)} model={this.props.doc}>
+          <AutoForm ref={ref => { fRef = ref; }} 
+                    schema={bridge} 
+                    onSubmit={data => { this.submit(data, fRef);}} 
+                    model={this.props.doc}>
             <Modal.Content>
               <Modal.Description>
                 <div className='create-group-inputs'>
@@ -40,6 +51,7 @@ class CreateGroup extends React.Component {
   submit(data, formRef) {
     const { name, description, _id } = data;
     const owner = Meteor.user().username;
+    const userId = Meteor.user()._id;
     let groupId = Groups.collection.insert({ name, _id, description, owner },
       (error, _id) => {
         if (error) {
@@ -49,18 +61,7 @@ class CreateGroup extends React.Component {
           formRef.reset();
         }
       });
-    console.log(groupId);
-    let userId = Meteor.user()._id;
-    // Meteor.call('availabilities.insert', user, newAvails);
-    Memberships.collection.insert({ userId, groupId, owner },
-      (error) => {
-        if (error) {
-          swal('Error', error.message, 'error');
-        } else {
-          swal('Success', 'Group created successfully', 'success');
-          formRef.reset();
-        }
-      });
+    Meteor.call('memberships.insert', userId, groupId);
   }
 }
 
