@@ -1,10 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { Grid, Loader, Segment, Button, Form, Header } from 'semantic-ui-react';
+import { Grid, Loader, Segment, Button, Form, Header, Menu } from 'semantic-ui-react';
 import ScheduleSelector from 'react-schedule-selector'
 import PropTypes from 'prop-types';
-import { withRouter} from 'react-router-dom';
+import { withRouter, NavLink} from 'react-router-dom';
 import { AutoForm, ErrorsField, TextField, SubmitField } from 'uniforms-semantic';
+import { Roles } from 'meteor/alanning:roles';
 import { Memberships } from '../../api/membership/Membership';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
@@ -25,14 +26,15 @@ const bridge = new SimpleSchema2Bridge(formSchema);
 
 class Profile extends React.Component {
   constructor(props) {
+    console.log("--In constructor--");
       super(props);
       this.state =  {
         user: this.props.currentUser,
-        schedule: [new Date('2021-10-21T00:00:00.000Z'), new Date('Sun Oct 17 2021 17:00:00 GMT-1000 (Hawaii-Aleutian Standard Time)'), new Date('October 18, 2021 12:30:00')],
       };
     }
 
    objectReformat(inputArray) {
+      console.log("--In objectReformat--");
       // declare resulting array
       let result = [];
       
@@ -45,7 +47,7 @@ class Profile extends React.Component {
         // push each entry to resulting array
         result.push(timeSlotArray[i]); 
       }
-      return JSON.stringify(result);
+      return result;
     }   
   
     submit(data, formRef) {
@@ -75,19 +77,19 @@ class Profile extends React.Component {
     let user = Meteor.user()._id;
     Meteor.call('availabilities.insert', user, newAvails);
   }
+
    // If the subscription(s) have been received, render the page, otherwise show a loading icon.
    render() {
+    console.log("--In render?--");
     return (this.props.ready && this.props) ? this.renderPage() : <Loader active>Getting data</Loader>;
   }
 
   renderPage() {
     let fRef = null;
-    const interestsList = this.props.interests.map(interest => (
-      <div style={{ border: "1px solid black" }} key={interest._id}>
-        <h3>Interest: {interest.interests}</h3>
-      </div>
-    ));    
-    console.log(interestsList);
+    console.log("--In renderPage--");
+    if (this.props.availabilities.length > 0) {
+      this.state.schedule = this.objectReformat(this.props.availabilities);
+    }
     return (
       <div className='wrapping'>
          <Header as='h1' className="title">{this.props.currentUser}</Header>
@@ -105,10 +107,13 @@ class Profile extends React.Component {
                       onChange={this.handleChange}
                       selection={this.state.schedule}
                   />
+                  <Menu.Item as={NavLink} activeClassName="active" exact to="/availability" key='availability'>
+                            <Button>Add a new availability!</Button>
+                        </Menu.Item>
                 </Grid.Column>
                 <Grid.Column className="box-color" width={3}>
                     <Header as='h2'>Groups</Header>
-                    {this.objectReformat(this.props.availabilities)}
+                    
                     <Header as='h2'>Contacted</Header>
                 </Grid.Column>
             </Grid.Row>
@@ -142,6 +147,7 @@ Profile.propTypes = {
 };
 
  const ProfileContainer = withTracker(() => {
+   console.log("--In withtracker--");
   // Get access to Stuff documents.
   const subscription = Meteor.subscribe(Availabilities.userPublicationName);
   // Determine if the subscription is ready
@@ -155,6 +161,7 @@ Profile.propTypes = {
 
   const interests = Interests.collection.find({}).fetch();
 
+  console.log("availabilities has: " + availabilities.length);
   return {
     availabilities,
     interestsReady,
