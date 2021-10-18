@@ -53,7 +53,7 @@ export default class Signin extends React.Component {
                 <Form.Input
                   label="Email"
                   id="signin-form-email"
-                  icon="user"
+                  icon="at"
                   iconPosition="left"
                   name="email"
                   type="email"
