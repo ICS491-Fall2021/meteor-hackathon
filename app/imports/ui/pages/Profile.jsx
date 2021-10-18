@@ -95,12 +95,7 @@ class Profile extends React.Component {
     if (this.props.availabilities.length > 0) {
       this.state.schedule = this.objectReformat(this.props.availabilities);
     }
-    console.log("FWF" + JSON.stringify(this.props.memberships));
-    const membershipsList = this.props.memberships.map(membership => (
-      <div style={{ border: "1px solid black" }} key={membership._id}>
-        <p>{membership.groupID}</p>
-      </div>
-    ));
+ 
     return (
       <div className='wrapping'>
          <Header as='h1' className="title">{this.props.currentUser}</Header>
@@ -134,7 +129,6 @@ class Profile extends React.Component {
                     </Button>
                     <Header as='h2'>Groups Joined</Header>
                     {this.props.memberships.map((membership) => <MembershipsItem key={membership._id} membership={membership} />)}
-                    {membershipsList}
                     <Header as='h2'>Contacted</Header>
                 </Grid.Column>
             </Grid.Row>
@@ -159,6 +153,10 @@ class Profile extends React.Component {
     )
   }
 }
+
+Meteor.subscribe(Memberships.userPublicationName);
+Meteor.subscribe(Groups.userPublicationName);
+
 
 Profile.propTypes = {
   currentUser: PropTypes.string,
