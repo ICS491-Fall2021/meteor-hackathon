@@ -78,12 +78,11 @@ class Profile extends React.Component {
                     <Button onClick={() => this.setState({openCreate: true})}>
                       Create Group
                     </Button>
-                    <CreateGroup open={this.state.openCreate}/>
-                    <JoinGroup open={this.state.openJoin}/>
+                    <CreateGroup open={this.state.openCreate} close={() => this.setState({openCreate: false})}/>
                     <Button onClick={() => this.setState({openJoin: true})}>
                       Join Group
                     </Button>
-                    
+                    <JoinGroup open={this.state.openJoin} close={() => this.setState({openJoin: false})}/>
                     <Header as='h2'>Contacted</Header>
                 </Grid.Column>
             </Grid.Row>
