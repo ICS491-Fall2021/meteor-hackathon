@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import { Stuffs } from '../../api/stuff/Stuff';
+import { Groups } from '../../api/group/Group';
+import { Memberships } from '../../api/membership/Membership';
 import { Availabilities } from '../../api/availability/Availability';
 import { Interests } from '../../api/interests/Interests';
 
@@ -35,6 +37,24 @@ Meteor.publish(Interests.userPublicationName, function () {
 Meteor.publish(Stuffs.adminPublicationName, function () {
   if (this.userId && Roles.userIsInRole(this.userId, 'admin')) {
     return Stuffs.collection.find();
+  }
+  return this.ready();
+});
+
+// Admin-level publication.
+// If logged in and with admin role, then publish all documents from all users. Otherwise publish nothing.
+Meteor.publish(Groups.userPublicationName, function () {
+  if (this.userId && Roles.userIsInRole(this.userId, 'admin')) {
+    return Groups.collection.find();
+  }
+  return this.ready();
+});
+
+// Admin-level publication.
+// If logged in and with admin role, then publish all documents from all users. Otherwise publish nothing.
+Meteor.publish(Memberships.userPublicationName, function () {
+  if (this.userId && Roles.userIsInRole(this.userId, 'admin')) {
+    return Memberships.collection.find();
   }
   return this.ready();
 });
