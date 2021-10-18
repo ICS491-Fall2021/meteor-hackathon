@@ -4,11 +4,24 @@ import { Grid, Loader, Segment, Button, Form, Header } from 'semantic-ui-react';
 import ScheduleSelector from 'react-schedule-selector'
 import PropTypes from 'prop-types';
 import { withRouter} from 'react-router-dom';
-import { Roles } from 'meteor/alanning:roles';
+import { AutoForm, ErrorsField, TextField, SubmitField } from 'uniforms-semantic';
 import { Memberships } from '../../api/membership/Membership';
+import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
+import SimpleSchema from 'simpl-schema';
 import { Groups } from '../../api/group/Group';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Availabilities } from '../../api/availability/Availability';
+import { Interests } from '../../api/interests/Interests';
+import InterestItem from '../components/InterestItem';
+
+// Create a schema to specify the structure of the data to appear in the form.
+const formSchema = new SimpleSchema({
+  interests: {
+    type: String,
+  },
+});
+
+const bridge = new SimpleSchema2Bridge(formSchema);
 
 class Profile extends React.Component {
   constructor(props) {
@@ -35,6 +48,21 @@ class Profile extends React.Component {
       return JSON.stringify(result);
     }   
   
+    submit(data, formRef) {
+      const { interests } = data;
+      const owner = Meteor.user().username;
+      Interests.collection.insert({ interests, owner },
+        console.log(interests),
+        (error) => {
+          if (error) {
+            swal('Error', error.message, 'error');
+          } else {
+            swal('Success', 'Item added successfully', 'success');
+            formRef.reset();
+          }
+        });
+    }
+
   handleChange = newSchedule => {
     this.setState({ schedule: newSchedule }, function () {
         console.log(this.state.schedule);
@@ -49,10 +77,17 @@ class Profile extends React.Component {
   }
    // If the subscription(s) have been received, render the page, otherwise show a loading icon.
    render() {
-    return (this.props.ready) ? this.renderPage() : <Loader active>Getting data</Loader>;
+    return (this.props.ready && this.props) ? this.renderPage() : <Loader active>Getting data</Loader>;
   }
 
   renderPage() {
+    let fRef = null;
+    const interestsList = this.props.interests.map(interest => (
+      <div style={{ border: "1px solid black" }} key={interest._id}>
+        <h3>Interest: {interest.interests}</h3>
+      </div>
+    ));    
+    console.log(interestsList);
     return (
       <div className='wrapping'>
          <Header as='h1' className="title">{this.props.currentUser}</Header>
@@ -80,21 +115,16 @@ class Profile extends React.Component {
             <Grid.Row stretched>
                 <Grid.Column className="box-color" width={12}>
                   <Header as='h2'>Interests</Header>
-                    <Form>
-                      <Form.Group grouped>
-                        <label>Add your Interests</label>
-                        <Form.Field label='This one' control='input' type='checkbox' />
-                        <Form.Field label='That one' control='input' type='checkbox' />
-                      </Form.Group>
-                      <Form.Group widths='equal'>
-                        <Form.Field label='Input your interest' control='input' />
-                      </Form.Group>
-                      <Form.Field control='button'>
-                        Submit
-                      </Form.Field>
-                  </Form>
+                    <AutoForm ref={ref => { fRef = ref; }} schema={bridge} onSubmit={data => this.submit(data, fRef)} >
+                <Segment>
+                  <TextField name='interests' />
+                  <SubmitField value='Submit' />
+                  <ErrorsField />
+                </Segment>
+              </AutoForm>
                 </Grid.Column>
                 <Grid.Column className="box-color" width={12}>
+                {interestsList}
                 </Grid.Column>
             </Grid.Row>
         </Grid>
@@ -106,6 +136,7 @@ class Profile extends React.Component {
 Profile.propTypes = {
   currentUser: PropTypes.string,
   availabilities: PropTypes.array.isRequired,
+  interests: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
 };
 
@@ -116,8 +147,17 @@ Profile.propTypes = {
   const ready = subscription.ready();
   // Get the Availability documents
   const availabilities = Availabilities.collection.find({}).fetch();
+  
+  const interestsSubscription = Meteor.subscribe(Interests.userPublicationName);
+
+  const interestsReady = interestsSubscription.ready();
+
+  const interests = Groups.collection.find({}).fetch();
+
   return {
     availabilities,
+    interestsReady,
+    interests,
     ready,
     currentUser: Meteor.user() ? Meteor.user().username : '',
   };

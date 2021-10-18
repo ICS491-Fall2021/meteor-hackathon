@@ -1,11 +1,9 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useState } from 'react';
+import React from 'react';
 import { Grid, Loader, Segment, Button, Form, Header } from 'semantic-ui-react';
 import Calendar from 'react-calendar';
 import PropTypes from 'prop-types';
-import myCalendar from '../components/Calendar.jsx';
 import { withRouter} from 'react-router-dom';
-import { Roles } from 'meteor/alanning:roles';
 import { Memberships } from '../../api/membership/Membership';
 import { Groups } from '../../api/group/Group';
 import { withTracker } from 'meteor/react-meteor-data';
@@ -63,7 +61,7 @@ class Group extends React.Component {
     ]
     return (
       <div className='wrapping'>
-         <Header as='h1' className="title">{this.props.currentUser}</Header>
+         <Header as='h1' className="title"> </Header>
         <Grid columns={2} relaxed padded className="content">
             <Grid.Row stretched>
                 <Grid.Column className="box" width={12}>
@@ -73,7 +71,7 @@ class Group extends React.Component {
                     defaultValue={new Date(2021, 9, 18)}
                     tileClassName={({ date, view }) => {
                         if(mark.find(x=>x===moment(date).format("DD-MM-YYYY"))){
-                         return  'highlight'
+                         return 'highlight'
                         }
                       }}
                   
@@ -110,9 +108,18 @@ Group.propTypes = {
   const ready = subscription.ready();
   // Get the Availability documents
   const availabilities = Availabilities.collection.find({}).fetch();
+  
+  const groupsSubscription = Meteor.subscribe(Groups.userPublicationName);
+
+  const groupsReady = groupsSubscription.ready();
+
+  const groups = Groups.collection.find({}).fetch();
+
   return {
     availabilities,
     ready,
+    groupsReady,
+    groups,
     currentUser: Meteor.user() ? Meteor.user().username : '',
   };
 })(Group);
