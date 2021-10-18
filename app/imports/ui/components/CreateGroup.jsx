@@ -5,6 +5,7 @@ import { AutoForm, TextField, SubmitField, ErrorsField } from 'uniforms-semantic
 import swal from 'sweetalert';
 import { Meteor } from 'meteor/meteor';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
+import { Memberships } from '../../api/membership/Membership';
 
 const bridge = new SimpleSchema2Bridge(Groups.schema);
 
@@ -38,9 +39,20 @@ class CreateGroup extends React.Component {
   // On submit, insert the data.
   submit(data, formRef) {
     const { name, description, _id } = data;
-    console.log(data);
     const owner = Meteor.user().username;
-    Groups.collection.insert({ name, _id, description, owner },
+    let groupId = Groups.collection.insert({ name, _id, description, owner },
+      (error, _id) => {
+        if (error) {
+          swal('Error', error.message, 'error');
+        } else {
+          swal('Success', 'Group created successfully', 'success');
+          formRef.reset();
+        }
+      });
+    console.log(groupId);
+    let userId = Meteor.user()._id;
+    // Meteor.call('availabilities.insert', user, newAvails);
+    Memberships.collection.insert({ userId, groupId, owner },
       (error) => {
         if (error) {
           swal('Error', error.message, 'error');
