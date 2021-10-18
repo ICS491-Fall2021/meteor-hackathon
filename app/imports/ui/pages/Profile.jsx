@@ -1,9 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { Grid, Loader, Segment, Button, Form, Header } from 'semantic-ui-react';
+import { Grid, Loader, Segment, Button, Form, Header, Menu } from 'semantic-ui-react';
 import ScheduleSelector from 'react-schedule-selector'
 import PropTypes from 'prop-types';
-import { withRouter} from 'react-router-dom';
+import { withRouter, NavLink } from 'react-router-dom';
 import { Roles } from 'meteor/alanning:roles';
 import { Memberships } from '../../api/membership/Membership';
 import { Groups } from '../../api/group/Group';
@@ -81,6 +81,9 @@ class Profile extends React.Component {
                       onChange={this.handleChange}
                       selection={this.state.schedule}
                   />
+                  <Menu.Item as={NavLink} activeClassName="active" exact to="/availability" key='availability'>
+                            <Button>Add a new availability!</Button>
+                        </Menu.Item>
                 </Grid.Column>
                 <Grid.Column className="box-color" width={3}>
                     <Header as='h2'>Groups</Header>
