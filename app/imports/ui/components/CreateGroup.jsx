@@ -14,7 +14,7 @@ class CreateGroup extends React.Component {
     let fRef = null;
     return (
         <Modal
-            open={true}
+            open={this.props.open}
             size={'tiny'}>
           <Modal.Header>Create a Group</Modal.Header>
           <AutoForm ref={ref => { fRef = ref; }} schema={bridge} onSubmit={data => this.submit(data, fRef)} model={this.props.doc}>

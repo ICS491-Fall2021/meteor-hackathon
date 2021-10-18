@@ -21,7 +21,7 @@ class JoinGroup extends React.Component {
     return (
       <AutoForm ref={ref => { fRef = ref; }} schema={bridge} onSubmit={data => this.submit(data, fRef)} >
         <Modal
-            open={true}
+            open={this.props.open}
             size={'tiny'}>
           <Modal.Header>Join a Group</Modal.Header>
           <Modal.Content>

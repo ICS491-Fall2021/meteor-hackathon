@@ -9,6 +9,8 @@ import { Memberships } from '../../api/membership/Membership';
 import { Groups } from '../../api/group/Group';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Availabilities } from '../../api/availability/Availability';
+import JoinGroup from '../components/JoinGroup';
+import CreateGroup from '../components/CreateGroup';
 
 class Profile extends React.Component {
   constructor(props) {
@@ -16,6 +18,8 @@ class Profile extends React.Component {
       super(props);
       this.state =  {
         user: this.props.currentUser,
+        openCreate: false,
+        openJoin: false,
       };
     }
 
@@ -70,6 +74,14 @@ class Profile extends React.Component {
                 </Grid.Column>
                 <Grid.Column className="box-color" width={3}>
                     <Header as='h2'>Groups</Header>
+                    <Button onClick={() => this.setState({openCreate: true})}>
+                      Create Group
+                    </Button>
+                    <CreateGroup open={this.state.openCreate}/>
+                    <JoinGroup open={this.state.openJoin}/>
+                    <Button onClick={() => this.setState({openJoin: true})}>
+                      Join Group
+                    </Button>
                     
                     <Header as='h2'>Contacted</Header>
                 </Grid.Column>
