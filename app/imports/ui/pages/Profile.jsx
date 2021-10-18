@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { Grid, Loader, Segment, Button, Form, Header, Menu, Image } from 'semantic-ui-react';
+import { Grid, Loader, Segment, Button, Form, Header, Menu, Image, List } from 'semantic-ui-react';
 import ScheduleSelector from 'react-schedule-selector'
 import PropTypes from 'prop-types';
 import { withRouter, NavLink} from 'react-router-dom';
@@ -137,7 +137,9 @@ class Profile extends React.Component {
                       Join Group
                     </Button>
                     <Header as='h2'>Groups Joined</Header>
-                    {this.props.memberships.map((membership) => <MembershipsItem key={membership._id} membership={membership} />)}
+                    <List>
+                      {this.props.memberships.map((membership) => <MembershipsItem key={membership._id} membership={membership} />)}
+                    </List>
                     <Header as='h2'>Contacted</Header>
                 </Grid.Column>
             </Grid.Row>
