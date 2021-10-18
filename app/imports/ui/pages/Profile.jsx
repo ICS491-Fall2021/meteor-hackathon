@@ -12,14 +12,15 @@ import { Availabilities } from '../../api/availability/Availability';
 
 class Profile extends React.Component {
   constructor(props) {
+    console.log("--In constructor--");
       super(props);
       this.state =  {
         user: this.props.currentUser,
-        schedule: [new Date('2021-10-21T00:00:00.000Z'), new Date('Sun Oct 17 2021 17:00:00 GMT-1000 (Hawaii-Aleutian Standard Time)'), new Date('October 18, 2021 12:30:00')],
       };
     }
 
    objectReformat(inputArray) {
+      console.log("--In objectReformat--");
       // declare resulting array
       let result = [];
       
@@ -32,7 +33,7 @@ class Profile extends React.Component {
         // push each entry to resulting array
         result.push(timeSlotArray[i]); 
       }
-      return JSON.stringify(result);
+      return result;
     }   
   
   handleChange = newSchedule => {
@@ -40,6 +41,7 @@ class Profile extends React.Component {
         console.log(this.state.schedule);
     });
     console.log("hi there was a change");
+    console.log("state.schedule type is: " + typeof(this.state.schedule));
     let newAvails = this.state.schedule.toString().split(",");
     console.log("newAvails is type of: " + typeof(newAvails));
     console.log("Meteor.user()._id is: " + Meteor.user()._id);
@@ -49,10 +51,19 @@ class Profile extends React.Component {
   }
    // If the subscription(s) have been received, render the page, otherwise show a loading icon.
    render() {
+    console.log("--In render?--");
     return (this.props.ready) ? this.renderPage() : <Loader active>Getting data</Loader>;
   }
 
   renderPage() {
+    console.log("--In renderPage--");
+    console.log("this.props.availabilities length: " + this.props.availabilities.length);
+    if (this.props.availabilities.length > 0) {
+      console.log("has an item");
+      console.log("Stringified version is: " + JSON.stringify(this.props.availabilities));
+      this.state.schedule = this.objectReformat(this.props.availabilities);
+      console.log("this.state.schedule after objectReformat" + this.state.schedule);
+    }
     return (
       <div className='wrapping'>
          <Header as='h1' className="title">{this.props.currentUser}</Header>
@@ -73,7 +84,7 @@ class Profile extends React.Component {
                 </Grid.Column>
                 <Grid.Column className="box-color" width={3}>
                     <Header as='h2'>Groups</Header>
-                    {this.objectReformat(this.props.availabilities)}
+                    
                     <Header as='h2'>Contacted</Header>
                 </Grid.Column>
             </Grid.Row>
@@ -110,12 +121,14 @@ Profile.propTypes = {
 };
 
  const ProfileContainer = withTracker(() => {
+   console.log("--In withtracker--");
   // Get access to Stuff documents.
   const subscription = Meteor.subscribe(Availabilities.userPublicationName);
   // Determine if the subscription is ready
   const ready = subscription.ready();
   // Get the Availability documents
   const availabilities = Availabilities.collection.find({}).fetch();
+  console.log("availabilities has: " + availabilities.length);
   return {
     availabilities,
     ready,
