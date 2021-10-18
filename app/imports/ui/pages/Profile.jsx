@@ -82,7 +82,7 @@ class Profile extends React.Component {
                     <Button onClick={() => this.setState({openJoin: true})}>
                       Join Group
                     </Button>
-                    <JoinGroup open={this.state.openJoin} close={() => this.setState({openJoin: false})}/>
+                    <JoinGroup open={this.state.openJoin} close={() => this.setState({openJoin: false})} user={this.props.userId}/>
                     <Header as='h2'>Contacted</Header>
                 </Grid.Column>
             </Grid.Row>
@@ -120,6 +120,7 @@ Profile.propTypes = {
   currentUser: PropTypes.string,
   availabilities: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
+  userId: PropTypes.string,
 };
 
  const ProfileContainer = withTracker(() => {
@@ -135,6 +136,7 @@ Profile.propTypes = {
     availabilities,
     ready,
     currentUser: Meteor.user() ? Meteor.user().username : '',
+    userId: Meteor.user() ? Meteor.userId() : '',
   };
 })(Profile);
 

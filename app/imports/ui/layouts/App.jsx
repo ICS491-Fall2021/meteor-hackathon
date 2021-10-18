@@ -33,7 +33,8 @@ class App extends React.Component {
             <Route path="/signup" component={Signup}/>
             <Route path="/signout" component={Signout}/>
             <ProtectedRoute path="/profile" component={Profile}/>
-            <ProtectedRoute path="/group" component={Group}/>
+            {/* <ProtectedRoute path="/group" component={Group}/> */}
+            <ProtectedRoute path="/group/:_id" component={Group}/>
             <ProtectedRoute path="/availability" component={AddAvailabilities}/>
             <ProtectedRoute path="/list" component={ListStuff}/>
             <ProtectedRoute path="/add" component={AddStuff}/>
@@ -75,6 +76,7 @@ const AdminProtectedRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={(props) => {
+      console.log(props);
       const isLogged = Meteor.userId() !== null;
       const isAdmin = Roles.userIsInRole(Meteor.userId(), 'admin');
       return (isLogged && isAdmin) ?
