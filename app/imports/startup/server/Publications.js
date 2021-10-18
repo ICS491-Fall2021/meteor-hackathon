@@ -1,7 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import { Stuffs } from '../../api/stuff/Stuff';
-import { Groups } from '../../api/group/Group';
+import { Availabilities } from '../../api/availability/Availability';
+
 
 // User-level publication.
 // If logged in, then publish documents owned by this user. Otherwise publish nothing.
@@ -13,11 +14,20 @@ Meteor.publish(Stuffs.userPublicationName, function () {
   return this.ready();
 });
 
+Meteor.publish(Availabilities.userPublicationName, function () {
+  if (this.userId) {
+    // const username = Meteor.users.findOne(this.userId).username;
+    console.log("WaAAAAAAA" + this.userId);
+    return Availabilities.collection.find({ owner: this.userId });
+  }
+  return this.ready();
+});
+
 // Admin-level publication.
 // If logged in and with admin role, then publish all documents from all users. Otherwise publish nothing.
-Meteor.publish(Groups.adminPublicationName, function () {
+Meteor.publish(Stuffs.adminPublicationName, function () {
   if (this.userId && Roles.userIsInRole(this.userId, 'admin')) {
-    return Groups.collection.find();
+    return Stuffs.collection.find();
   }
   return this.ready();
 });
