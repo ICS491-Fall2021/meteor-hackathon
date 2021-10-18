@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { Grid, Loader, Segment, Button, Form, Header, Menu } from 'semantic-ui-react';
+import { Grid, Loader, Segment, Button, Form, Header, Menu, Image } from 'semantic-ui-react';
 import ScheduleSelector from 'react-schedule-selector'
 import PropTypes from 'prop-types';
 import { withRouter, NavLink} from 'react-router-dom';
@@ -98,7 +98,16 @@ class Profile extends React.Component {
  
     return (
       <div className='wrapping'>
-         <Header as='h1' className="title">{this.props.currentUser}</Header>
+        <Grid columns={2} relaxed className="content">
+          <Grid.Row>
+            <Grid.Column className="box">
+              <Image size='tiny' circular src="/images/Logo2transparent.png" centered style={{ float: 'right' }} />
+            </Grid.Column>
+            <Grid.Column className="box">
+              <Header as='h1'  className="title" centered style={{ float: 'left'}}>{this.props.currentUser}</Header>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
         <Grid columns={2} relaxed padded className="content">
             <Grid.Row stretched>
                 <Grid.Column className="box" width={12}>
