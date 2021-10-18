@@ -123,8 +123,9 @@ class Profile extends React.Component {
                 </Segment>
               </AutoForm>
                 </Grid.Column>
-                <Grid.Column className="box-color" width={12}>
-                {interestsList}
+                <Grid.Column className="box-color" width={3}>
+                <Header as='h2'>My Interests</Header>
+                {this.props.interests.map((interest) => <InterestItem key={interest._id} interest={interest} />)}
                 </Grid.Column>
             </Grid.Row>
         </Grid>
@@ -152,7 +153,7 @@ Profile.propTypes = {
 
   const interestsReady = interestsSubscription.ready();
 
-  const interests = Groups.collection.find({}).fetch();
+  const interests = Interests.collection.find({}).fetch();
 
   return {
     availabilities,

@@ -20,7 +20,7 @@ class InterestItem extends React.Component {
 InterestItem.propTypes = {
   interest: PropTypes.shape({
     owner: PropTypes.string,
-    interests: PropTypes.string,
+    interest: PropTypes.string,
     _id: PropTypes.string,
   }).isRequired,
 };
