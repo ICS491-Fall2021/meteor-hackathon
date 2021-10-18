@@ -12,6 +12,7 @@ import { Availabilities } from '../../api/availability/Availability';
 import JoinGroup from '../components/JoinGroup';
 import CreateGroup from '../components/CreateGroup';
 
+
 class Profile extends React.Component {
   constructor(props) {
     console.log("--In constructor--");
@@ -111,6 +112,10 @@ class Profile extends React.Component {
     )
   }
 }
+
+Meteor.subscribe(Memberships.userPublicationName);
+Meteor.subscribe(Groups.userPublicationName);
+
 
 Profile.propTypes = {
   currentUser: PropTypes.string,
