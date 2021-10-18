@@ -36,15 +36,6 @@ class Profile extends React.Component {
       return result;
     }   
   
-  handleChange = newSchedule => {
-    this.setState({ schedule: newSchedule }, function () {
-        console.log(this.state.schedule);
-    });
-    console.log("hi there was a change");
-    let newAvails = this.state.schedule.toString().split(",");
-    let user = Meteor.user()._id;
-    Meteor.call('availabilities.insert', user, newAvails);
-  }
    // If the subscription(s) have been received, render the page, otherwise show a loading icon.
    render() {
     console.log("--In render?--");
