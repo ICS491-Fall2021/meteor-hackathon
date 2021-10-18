@@ -41,11 +41,7 @@ class Profile extends React.Component {
         console.log(this.state.schedule);
     });
     console.log("hi there was a change");
-    console.log("state.schedule type is: " + typeof(this.state.schedule));
     let newAvails = this.state.schedule.toString().split(",");
-    console.log("newAvails is type of: " + typeof(newAvails));
-    console.log("Meteor.user()._id is: " + Meteor.user()._id);
-    console.log("Meteor.user()._id is type of: " + typeof(Meteor.user()._id));
     let user = Meteor.user()._id;
     Meteor.call('availabilities.insert', user, newAvails);
   }
@@ -57,12 +53,8 @@ class Profile extends React.Component {
 
   renderPage() {
     console.log("--In renderPage--");
-    console.log("this.props.availabilities length: " + this.props.availabilities.length);
     if (this.props.availabilities.length > 0) {
-      console.log("has an item");
-      console.log("Stringified version is: " + JSON.stringify(this.props.availabilities));
       this.state.schedule = this.objectReformat(this.props.availabilities);
-      console.log("this.state.schedule after objectReformat" + this.state.schedule);
     }
     return (
       <div className='wrapping'>

@@ -12,11 +12,7 @@ Meteor.methods({
 
         // Delete any prior schedules because we need to overwrite it
         pastAvailabilities = Availabilities.collection.find({ owner: this.userId }).fetch();
-        console.log("type of pastAvailabilities is: " + typeof(pastAvailabilities));
-        console.log("pastAvailabilities is: " + pastAvailabilities);
-        console.log("pastAvailabilities.length is: " + pastAvailabilities.length);
         if (pastAvailabilities.length > 0) {
-            console.log("A past one existed");
             if (pastAvailabilities.length > 2) {
                 pastAvailabilities.forEach(element => {
                     Availabilities.collection.remove(element);
@@ -34,7 +30,6 @@ Meteor.methods({
                 timeSlots: newestAvails,
             })
             console.log("inserted!");
-            console.log("------");
         } catch (error) {
             console.log("something went wrong with the error: " + error);
         }

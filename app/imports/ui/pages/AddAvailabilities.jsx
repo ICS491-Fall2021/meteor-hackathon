@@ -19,9 +19,6 @@ class AddAvailabilities extends React.Component {
     });
     console.log("hi there was a change");
     let newAvails = this.state.schedule.toString().split(",");
-    console.log("newAvails is type of: " + typeof(newAvails));
-    console.log("Meteor.user()._id is: " + Meteor.user()._id);
-    console.log("Meteor.user()._id is type of: " + typeof(Meteor.user()._id));
     let user = Meteor.user()._id;
     Meteor.call('availabilities.insert', user, newAvails);
   }
