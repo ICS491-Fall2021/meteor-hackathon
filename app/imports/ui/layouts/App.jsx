@@ -16,7 +16,6 @@ import Signin from '../pages/Signin';
 import Signup from '../pages/Signup';
 import Signout from '../pages/Signout';
 import Group from '../pages/Group';
-import SingleGroup from '../pages/SingleGroup';
 import Profile from '../pages/Profile';
 import AddAvailabilities from '../pages/AddAvailabilities';
 
@@ -34,8 +33,6 @@ class App extends React.Component {
             <Route path="/signup" component={Signup}/>
             <Route path="/signout" component={Signout}/>
             <ProtectedRoute path="/profile" component={Profile}/>
-            <ProtectedRoute path="/group/_:id" component={SingleGroup}/>
-            <ProtectedRoute path="/group" component={Group}/>
             <ProtectedRoute path="/group/:_id" component={Group}/>
             <ProtectedRoute path="/availability" component={AddAvailabilities}/>
             <ProtectedRoute path="/list" component={ListStuff}/>
