@@ -68,7 +68,7 @@ class Group extends React.Component {
 }
 
 addDays(date, days) {
-  var result = new Date(date);
+  var result = new Date();
   result.setDate(result.getDate() + days);
   return result;
 }
@@ -133,7 +133,9 @@ calculateAvailability(date) {
   console.log("tis the date:" + date);
   console.log(keys);
   for (let i = 0; i < keys.length; i++) {
-    if(keys[i] === date) {
+    let formatKey = moment(keys[i]).format('DD MM, YYYY');
+    let formatDate = moment(date).format('DD MM, YYYY');
+    if(formatDate === formatKey) {
       console.log(Object.values(result)[i]);
       return Object.values(result)[i];
     }
@@ -141,19 +143,27 @@ calculateAvailability(date) {
 }
 
 
+getRemainingDays(date) {
+  let now = new Date();
+  let result = [];
+  const totalDays = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+  const today = now.getDate();
+
+  const remainingDays = totalDays - today;
+  for (let i =0; i < remainingDays + 1; i++) {
+    result.push(this.addDays(today, 7 + i));
+  }
+  
+   return result;
+}
 
 
  renderPage() {
-   var date = Date().toLocaleString();
-
-     //this.formatDate(this.addDays(date, 7)),
+   let date = new Date().toLocaleString;
    let mark = this.getDates();
-    
+     
    // console.log(this.formatDate(this.addDays(date, 6)));
-    const disabledDate = [
-      new Date(2021, 10, 18),
-      new Date(2021, 10, 10),
-    ];
+    const disabledDate = this.getRemainingDays(date);
 
     var newDate = new Date();
     return (
@@ -176,13 +186,15 @@ calculateAvailability(date) {
                     )}
                     defaultValue={new Date(2021, 9, 18)}
                     tileClassName={({ date }) => {
-                        if(mark.find(x=>x===moment(date).format('YYYY-MM-DD') || this.calculateAvailability(date) == 1) ){
-                          console.log("hi");
-                         return 'highlight'
-                        }
-                      }}
-                  
-                    />
+                        if(mark.find(x=>moment(x).format('YYYY-MM-DD')===moment(date).format('YYYY-MM-DD') && this.calculateAvailability(date) == 1) ){
+                         return 'low-avail'
+                        } else if (mark.find(x=>moment(x).format('YYYY-MM-DD')===moment(date).format('YYYY-MM-DD') && this.calculateAvailability(date) > 1 && this.calculateAvailability(date) < 3) ){
+                          return 'med-avail'
+                      } else if (mark.find(x=>x===moment(x).format('YYYY-MM-DD')===moment(date).format('YYYY-MM-DD') && this.calculateAvailability(date) > 3 && this.calculateAvailability(date) < 5) ){
+                        return 'med-avail'
+                    } else {
+                      return 'superlarge-avail'
+                    }}} />
                 </Grid.Column>
                 <Grid.Column className="box-color" width={3}>
                     <Header as='h2'>Members</Header>

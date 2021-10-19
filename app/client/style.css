@@ -27,9 +27,22 @@
     text-align: center;
 }
 
-.highlight {
-    background-color: green !important;
+.low-avail {
+    background-color: #C5E8B7!important;
 }
+
+.med-avail {
+    background-color: #ABE098 !important;
+}
+
+.high-avail {
+    background-color: #83D475 !important;
+}
+
+.superlarge_avail {
+    background-color: #57C84D !important;
+}
+
 .box {
     padding: 25px !important;
 }
