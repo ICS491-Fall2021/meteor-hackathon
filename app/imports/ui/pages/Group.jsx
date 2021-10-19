@@ -18,6 +18,7 @@ class Group extends React.Component {
       super(props);
       this.closeModal.bind(this);
       this.state =  {
+        availabilityList: [],
         user: this.props.currentUser,
         selectedDate: moment(),
         isOpen: false,
@@ -196,7 +197,23 @@ console.log("countts" + JSON.stringify(counts));
 return counts;
 }
 
-// need to return a int of availablity
+displayAvailability(date) {
+ let result = [];
+ let listofAvailabilities = this.getCountsMeteor(this.getField(this.props.groups, 0));
+ 
+ let newList = Object.keys(listofAvailabilities);
+
+ for (let i = 0; i < newList.length; i++) {
+
+  if(moment(date).format('MMM DD, YYYY') === moment(newList[i]).format('MMM DD, YYYY')) {
+    result.push(newList[i]);
+  }
+}
+console.log("MEEMAW" + result);
+
+  return result;
+}
+
 calculateAvailability(date) {
   let result = this.getCountsMeteor(this.getField(this.props.groups, 0));
   let keys = Object.keys(result);
@@ -231,7 +248,7 @@ getRemainingDays(date) {
    let date = new Date().toLocaleString;
    let mark = this.getDates();
 
-   console.log("WTTTT" + this.state.selectedDate);
+   console.log("MEEMAW1" + this.state.selectedDate);
    const disabledDate = this.getRemainingDays(date);
     var newDate = new Date();
     return (
@@ -241,9 +258,9 @@ getRemainingDays(date) {
             <Grid.Row stretched>
                 <Grid.Column className="box" width={12}>
                 <Header as='h2'>Availabilities</Header>
-                    <Calendar         // ^ issu: only updates once when date is selected on
+                    <Calendar        
                     calendarType="ISO 8601"
-                    onClickDay={(value) => {this.setState({isOpen: true}); this.setState({selectedDate: value})}}
+                    onClickDay={(value) => {console.log(this.setState({listAvail: this.displayAvailability(value)})); this.setState({isOpen: true}); this.setState({selectedDate: value})}}
                     maxDate={new Date(newDate.getFullYear(), newDate.getMonth() + 1, 0)}
                     minDate={new Date(newDate.getFullYear(), newDate.getMonth(), 1)}
                     tileDisabled={({date, view}) =>
@@ -263,7 +280,7 @@ getRemainingDays(date) {
                     } else if (mark.find(x=>x===moment(x).format('YYYY-MM-DD')===moment(date).format('YYYY-MM-DD') && this.calculateAvailability(date) > 5)) {
                       return 'superlarge-avail'
                     }}} />
-                    <EventModal displayDate={this.state.selectedDate} members={this.findPossibleAttendees(this.state.selectedDate,this.getField(this.props.groups, 0))} open={this.state.isOpen} closeModal={this.closeModal}/>
+                    <EventModal listAvail={this.displayAvailability(this.state.selectedDate)}displayDate={this.state.selectedDate} members={this.findPossibleAttendees(this.state.selectedDate,this.getField(this.props.groups, 0))} open={this.state.isOpen} closeModal={this.closeModal}/>
                 </Grid.Column>
                 <Grid.Column className="box-color" width={3}>
                     <Header as='h2'>Members</Header>
