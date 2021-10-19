@@ -32,16 +32,17 @@ export class JoinGroup extends React.Component {
     return (
       <AutoForm ref={ref => { fRef = ref; }} schema={bridge} onSubmit={data => this.submit(data, fRef)} >
         <Modal
-            closeIcon
             open={open}
             size={'tiny'}
-            onClick={this.handleClick}
             >
           <Modal.Header>Join a Group</Modal.Header>
           <Modal.Content>
             <TextField name='groupCode'/>
           </Modal.Content>
           <Modal.Actions>
+          <Button  onClick={this.handleClick}>
+          <Icon name='remove' /> Exit
+        </Button>
             <SubmitField value='Join' />
             <Link to={`/group/${this.props.user}`} /> {/* need ta check if still wokrs*/}
           </Modal.Actions>

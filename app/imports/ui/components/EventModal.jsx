@@ -36,7 +36,7 @@ class EventModal extends React.Component {
             onClick={this.handleClick}>
           <Modal.Header>Hangouts for {this.props.displayDate.format('MM-DD-YYYY')}</Modal.Header>
           <h3> Possible Attendees: </h3>
-          {this.props.members[0]}
+          {this.props.members}
           <AutoForm ref={ref => { fRef = ref; }} 
                     schema={bridge} 
                     onSubmit={data => { this.submit(data, fRef);}} 

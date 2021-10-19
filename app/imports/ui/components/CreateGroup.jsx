@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal } from 'semantic-ui-react';
+import { Modal, Button, Icon } from 'semantic-ui-react';
 import { Groups } from '../../api/group/Group';
 import { AutoForm, TextField, SubmitField, ErrorsField } from 'uniforms-semantic';
 import swal from 'sweetalert';
@@ -27,10 +27,8 @@ class CreateGroup extends React.Component {
     const userId = Meteor.user()._id;
     return (
         <Modal
-            closeIcon
             open={this.props.open}
-            size={'tiny'}
-            onClick={this.handleClick}>
+            size={'tiny'}>
           <Modal.Header>Create a Group</Modal.Header>
           <AutoForm ref={ref => { fRef = ref; }} 
                     schema={bridge} 
@@ -45,6 +43,9 @@ class CreateGroup extends React.Component {
               </Modal.Description>
             </Modal.Content>
             <Modal.Actions align='right'>
+            <Button  onClick={this.handleClick}>
+          <Icon name='remove' /> Exit
+        </Button>
               <SubmitField value='Submit'/>
             </Modal.Actions>
             <ErrorsField/>

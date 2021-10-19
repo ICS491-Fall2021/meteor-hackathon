@@ -82,11 +82,12 @@ addDays(date, days) {
   return result;
 }
 
-getField(group, key) {
+getField(group, key) { // group is an array of objects
   let result= "";
-  let groupObject = group[0]; // TESST WITH 2 GROUPS
-  let groupArray = Object.values(groupObject);
-  result = groupArray[key];
+  let groupObject = group[0]; // gets a particular object from array
+  // ^ need to add a third parameter to locate which object we need
+  result = Object.values(groupObject)[key]; // returns all values from objects in an array
+  // and selects the keyth index from the array
   return result;
 }   
 
@@ -225,6 +226,7 @@ getRemainingDays(date) {
    let mark = this.getDates();
    console.log("dino" + this.findallMembers(this.getField(this.props.groups, 1)));
 
+   console.log("WUT" + this.findPossibleAttendees(this.state.selectedDate,this.getField(this.props.groups, 0)));
    const disabledDate = this.getRemainingDays(date);
     var newDate = new Date();
     return (
