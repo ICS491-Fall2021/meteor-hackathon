@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { Grid, Loader, Segment, Button, Form, Header } from 'semantic-ui-react';
+import { Grid, Loader, Segment, Button, Form, Header, SearchResults } from 'semantic-ui-react';
 import Calendar from 'react-calendar';
 import PropTypes from 'prop-types';
 import { withRouter} from 'react-router-dom';
@@ -84,12 +84,10 @@ addDays(date, days) {
 
 getField(group, key) {
   let result= "";
-  let groupObject = group[0];
+  let groupObject = group[0]; // TESST WITH 2 GROUPS
   let groupArray = Object.values(groupObject);
   result = groupArray[key];
   return result;
-
-  // iterate through timeSlots
 }   
 
 onSelect=(e)=>{
@@ -99,6 +97,25 @@ onSelect=(e)=>{
 getDates() {
   return Object.keys(this.getCountsMeteor(this.getField(this.props.groups, 0)));
  }
+
+ findallMembers(theGroupID) {
+  let result = [];
+  let username= [];
+  let members = Memberships.collection.find({ groupID: theGroupID }).fetch();
+  let names = members.map(a => a.userID);
+  console.log("WAWWW" + JSON.stringify(names));
+
+  for (let i = 0; i < names.length; i++) {
+    result.push(Meteor.users.find({ _id: names[i] }).fetch());
+  }
+
+  for (let i = 0; i < result.length; i++) {
+    let groupObject= result[0][i];
+    let groupArray = Object.values(groupObject)[2];
+    username.push(groupArray);
+  }
+  return username.toString().replace(/['"]+/g, '');
+}
 
  findPossibleAttendees(theTimeSlot, theGroupID) {
   console.log("In findPossibleAttendees");
@@ -114,7 +131,7 @@ getDates() {
 
   // Find all members in this group
   let members = Memberships.collection.find({ groupID: theGroupID }).fetch();
-  // console.log("members is: " + members);
+   console.log("members is: " + members);
   console.log("members stringified: " + JSON.stringify(members));
   //console.log("inside membeers: " + members[0].userID);
   
@@ -206,6 +223,7 @@ getRemainingDays(date) {
  renderPage() {
    let date = new Date().toLocaleString;
    let mark = this.getDates();
+   console.log("dino" + this.findallMembers(this.getField(this.props.groups, 1)));
 
    const disabledDate = this.getRemainingDays(date);
     var newDate = new Date();
@@ -243,6 +261,8 @@ getRemainingDays(date) {
                 </Grid.Column>
                 <Grid.Column className="box-color" width={3}>
                     <Header as='h2'>Members</Header>
+                    {JSON.stringify(this.findallMembers(this.getField(this.props.groups, 0)))}
+                    <br /><br /><br />
                     Invite more members with your unique group code: <b>{this.getField(this.props.groups, 0)}</b>
                     <Header as='h2'>Rules</Header>
                 </Grid.Column>
