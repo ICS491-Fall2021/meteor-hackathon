@@ -16,14 +16,10 @@ class Group extends React.Component {
       super(props);
       this.state =  {
         user: this.props.currentUser,
-        dates: [],
         schedule: [new Date('2021-10-21T00:00:00.000Z'), new Date('Sun Oct 17 2021 17:00:00 GMT-1000 (Hawaii-Aleutian Standard Time)'), new Date('October 18, 2021 12:30:00')],
       };
     }
 
-    componentDidMount() {
-      this.getDates();
-    }
    objectReformat(inputArray) {
       // declare resulting array
       let result = [];
@@ -83,57 +79,75 @@ getField(group, key) {
   let groupArray = Object.values(groupObject);
   result = groupArray[key];
   return result;
+
   // iterate through timeSlots
 }   
 
 getDates() {
-  Meteor.call('availabilities.getCounts', this.getField(this.props.groups, 0), function(error, result){
-    if(error){
-        console.log(error);
-    } else {
-        this.setState({ dates: Object.keys(result)});
-        return Object.keys(result);
-    }
- })
+  return Object.keys(this.getCountsMeteor(this.getField(this.props.groups, 0)));
  }
+
+ 
+
+getCountsMeteor(theGroupid) {
+  console.log("in getCounts");
+
+// Find all members of the group using the memberships table
+let members = Memberships.collection.find({ groupID: theGroupid }).fetch();
+console.log(members);
+//members.push({_id: 'aTtKce8kdbxYRQRqb', userID: 'kPtyujGvBW8ftdff3', groupID: 'qLv8PqH4PWdYpuTrL'}) // test member
+// console.log(members[0]);
+// console.log(members[1]);
+
+// Combine all of the members' availabilities into an array
+let allMemberAvails = [];
+for (let index = 0; index < members.length; index++) {
+   let oneMember = Availabilities.collection.findOne({ owner: members[index].userID });
+   if (oneMember !== undefined) {
+       console.log("Has availabilities")
+       console.log("oneMember.timeSlots: " + oneMember.timeSlots);
+       allMemberAvails = allMemberAvails.concat(oneMember.timeSlots);
+   } else {
+       console.log("didn't give availabilities");
+   }
+}
+
+/* console.log(allMemberAvails.length);
+
+// Adding test availabilities to concat in:
+allMemberAvails = allMemberAvails.concat([allMemberAvails[0], allMemberAvails[9]]);
+
+console.log(allMemberAvails.length); // should be 2 more than the one above */
+
+const counts = {};
+allMemberAvails.forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
+console.log("countts" + JSON.stringify(counts));
+
+return counts;
+}
 
 // need to return a int of availablity
 calculateAvailability(date) {
-  Meteor.call('availabilities.getCounts', this.getField(this.props.groups, 0), function(error, result){
-    if(error){
-        console.log(error);
-    } else {
-        console.log(result);
-        let keys = Object.keys(result);
-        console.log(keys);
-        for (let i = 0; i < keys.length; i++) {
-          if(keys[i] === date) {
-            console.log(Object.values(result)[i]);
-            return Object.values(result)[i];
-          }
-        }
+  let result = this.getCountsMeteor(this.getField(this.props.groups, 0));
+  let keys = Object.keys(result);
+  console.log("tis the date:" + date);
+  console.log(keys);
+  for (let i = 0; i < keys.length; i++) {
+    if(keys[i] === date) {
+      console.log(Object.values(result)[i]);
+      return Object.values(result)[i];
     }
- })
+  }
 }
+
+
+
 
  renderPage() {
    var date = Date().toLocaleString();
 
      //this.formatDate(this.addDays(date, 7)),
-
-     Meteor.call('availabilities.getCounts', this.getField(this.props.groups, 0), function(error, result){
-      if(error){
-          console.log(error);
-      } else {
-          console.log(Object.keys(result));
-          let mark = Object.keys(result);
-          console.log("wtf" + mark);
-          this.setState({dates: Object.keys(result)});
-      }
-   })
-
    let mark = this.getDates();
-    console.log(this.state.dates);
     
    // console.log(this.formatDate(this.addDays(date, 6)));
     const disabledDate = [
@@ -162,7 +176,7 @@ calculateAvailability(date) {
                     )}
                     defaultValue={new Date(2021, 9, 18)}
                     tileClassName={({ date }) => {
-                        if(this.state.dates.find(x=>x===moment(date).format('YYYY-MM-DD')) ){
+                        if(mark.find(x=>x===moment(date).format('YYYY-MM-DD') || this.calculateAvailability(date) == 1) ){
                           console.log("hi");
                          return 'highlight'
                         }
