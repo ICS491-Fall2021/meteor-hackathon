@@ -12,6 +12,7 @@
 }
 
 .highlight {
+    opacity: 0;
     background-color: red !important;
 }
 .box {

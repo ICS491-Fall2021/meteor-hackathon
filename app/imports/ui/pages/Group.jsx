@@ -53,15 +53,42 @@ class Group extends React.Component {
     return (this.props.ready && this.props.groupsReady) ? this.renderPage() : <Loader active>Getting data</Loader>;
   }
 
+  formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
+
+addDays(date, days) {
+  var result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+}
+
  renderPage() {
+   var date = Date().toLocaleString();
+
     const mark = [
-        '12-10-2021',
-        '21-10-2021',
-        '23-10-2021'
+      this.formatDate(this.addDays(date, 7)),
+     
     ]
+    console.log(this.formatDate(this.addDays(date, 6)));
+    const disabledDate = [
+      new Date(2021, 10, 18),
+      new Date(2021, 10, 10),
+    ];
 
     console.log("the group id is = " + JSON.stringify(this.props.groups._id));
 
+    var newDate = new Date();
 
     let allAvailabilities = Meteor.call('availabilities.getCounts', this.props.groups._id);
     console.log("availabilities = " + allAvailabilities);
@@ -74,9 +101,18 @@ class Group extends React.Component {
                 <Header as='h2'>Availabilities</Header>
                     <Calendar 
                     calendarType="ISO 8601"
+                    maxDate={new Date(newDate.getFullYear(), newDate.getMonth() + 1, 0)}
+                    minDate={new Date(newDate.getFullYear(), newDate.getMonth(), 1)}
+                    tileDisabled={({date, view}) =>
+                    (view === 'month') && // Block day tiles only
+                    disabledDate.some(disabledDate =>
+                      date.getFullYear() === disabledDate.getFullYear() &&
+                      date.getMonth() === disabledDate.getMonth() &&
+                      date.getDate() === disabledDate.getDate()
+                    )}
                     defaultValue={new Date(2021, 9, 18)}
                     tileClassName={({ date, view }) => {
-                        if(mark.find(x=>x===moment(date).format("DD-MM-YYYY"))){
+                        if(mark.find(x=>x===moment(date).format('YYYY-MM-DD'))){
                          return 'highlight'
                         }
                       }}
