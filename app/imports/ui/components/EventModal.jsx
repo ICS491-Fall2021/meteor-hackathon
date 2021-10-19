@@ -41,6 +41,8 @@ class EventModal extends React.Component {
                     schema={bridge} 
                     onSubmit={data => { this.submit(data, fRef);}} 
                     model={this.props.doc}>
+            <h3> List of Availability </h3>
+            {this.props.listAvail}
             <Modal.Content>
               <Modal.Description>
                 <div className='create-group-inputs'>
