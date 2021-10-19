@@ -70,6 +70,8 @@ class Profile extends React.Component {
         });
     }
 
+
+
   handleChange = newSchedule => {
     this.setState({ schedule: newSchedule }, function () {
         console.log(this.state.schedule);

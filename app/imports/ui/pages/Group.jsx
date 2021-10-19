@@ -50,7 +50,7 @@ class Group extends React.Component {
   }
    // If the subscription(s) have been received, render the page, otherwise show a loading icon.
    render() {
-    return (this.props.ready) ? this.renderPage() : <Loader active>Getting data</Loader>;
+    return (this.props.ready && this.props.groupsReady) ? this.renderPage() : <Loader active>Getting data</Loader>;
   }
 
  renderPage() {
@@ -59,9 +59,15 @@ class Group extends React.Component {
         '21-10-2021',
         '23-10-2021'
     ]
+
+    console.log("the group id is = " + JSON.stringify(this.props.groups._id));
+
+
+    let allAvailabilities = Meteor.call('availabilities.getCounts', this.props.groups._id);
+    console.log("availabilities = " + allAvailabilities);
     return (
       <div className='wrapping'>
-         <Header as='h1' className="title"> </Header>
+         <Header as='h1' className="title">{this.props.groups.name} </Header>
         <Grid columns={2} relaxed padded className="content">
             <Grid.Row stretched>
                 <Grid.Column className="box" width={12}>
@@ -99,6 +105,8 @@ Group.propTypes = {
   currentUser: PropTypes.string,
   availabilities: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
+  groups: PropTypes.array.isRequired,
+  groupsReady: PropTypes.bool.isRequired,
 };
 
  const GroupContainer = withTracker(() => {
