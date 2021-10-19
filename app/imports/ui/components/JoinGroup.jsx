@@ -32,9 +32,8 @@ class JoinGroup extends React.Component {
             <TextField name='groupCode'/>
           </Modal.Content>
           <Modal.Actions>
-            <SubmitField value='Join'>
+            <SubmitField value='Join'/>
               <Link to={`/group/${this.props.user}`} />
-            </SubmitField>
           </Modal.Actions>
         </Modal>
         {console.log(Groups.collection.find().fetch())}

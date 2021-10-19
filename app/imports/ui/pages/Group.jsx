@@ -188,11 +188,11 @@ getRemainingDays(date) {
                     tileClassName={({ date }) => {
                         if(mark.find(x=>moment(x).format('YYYY-MM-DD')===moment(date).format('YYYY-MM-DD') && this.calculateAvailability(date) == 1) ){
                          return 'low-avail'
-                        } else if (mark.find(x=>moment(x).format('YYYY-MM-DD')===moment(date).format('YYYY-MM-DD') && this.calculateAvailability(date) > 1 && this.calculateAvailability(date) < 3) ){
+                        } else if (mark.find(x=>moment(x).format('YYYY-MM-DD')===moment(date).format('YYYY-MM-DD') && this.calculateAvailability(date) > 1 && this.calculateAvailability(date) <= 3) ){
                           return 'med-avail'
-                      } else if (mark.find(x=>x===moment(x).format('YYYY-MM-DD')===moment(date).format('YYYY-MM-DD') && this.calculateAvailability(date) > 3 && this.calculateAvailability(date) < 5) ){
+                      } else if (mark.find(x=>x===moment(x).format('YYYY-MM-DD')===moment(date).format('YYYY-MM-DD') && this.calculateAvailability(date) > 4 && this.calculateAvailability(date) <= 5) ){
                         return 'med-avail'
-                    } else {
+                    } else if (mark.find(x=>x===moment(x).format('YYYY-MM-DD')===moment(date).format('YYYY-MM-DD') && this.calculateAvailability(date) > 5)) {
                       return 'superlarge-avail'
                     }}} />
                 </Grid.Column>
