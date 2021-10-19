@@ -119,7 +119,7 @@ getDates() {
 }
 
  findPossibleAttendees(theTimeSlot, theGroupID) {
-  console.log("In findPossibleAttendees");
+  console.log("In findPossibleAttendees in group.jsx line 122");
   /*
   if (!this.userId) {
       throw new Meteor.Error('Not authorized.');
@@ -129,6 +129,10 @@ getDates() {
   
   // Manually adding another member to this group
   // Memberships.collection.insert({ userID : 'manmade2', groupID : theGroupID})
+
+  console.log("theTimeSlot before converting from moment date: " + theTimeSlot);
+  theTimeSlot = moment(theTimeSlot).toDate();
+  console.log("theTimeSlot after converting from moment date: " + theTimeSlot);
 
   // Find all members in this group
   let members = Memberships.collection.find({ groupID: theGroupID }).fetch();
@@ -140,12 +144,11 @@ getDates() {
   let names = [];
   // For each member in this group, find the ones who have an availability of the given time slot
   for (let index = 0; index < members.length; index++) {
+      console.log("Looking for members");
       let memberInfo = Availabilities.collection.findOne({ owner : members[index].userID});
-      if (memberInfo !== undefined) {
-          theTimeSlot = memberInfo.timeSlots[0];
-      }
+      console.log("a 'proper' time: " + memberInfo.timeSlots[0]);
       if (memberInfo !== undefined && memberInfo.timeSlots.includes(theTimeSlot)) {
-          console.log("member has an availability and matches theTimeSlot");
+          console.log("member has an availability and matches for theTimeSlot of: " + JSON.stringify(theTimeSlot));
           ids = ids.concat(memberInfo.owner);
           names = names.concat(memberInfo.ownername);
       }
@@ -157,7 +160,7 @@ getDates() {
 }
 
 getCountsMeteor(theGroupid) {
-  console.log("in getCounts");
+  console.log("in getCounts from code in group.jsx line 160");
 
 // Find all members of the group using the memberships table
 let members = Memberships.collection.find({ groupID: theGroupid }).fetch();
@@ -172,7 +175,7 @@ for (let index = 0; index < members.length; index++) {
    let oneMember = Availabilities.collection.findOne({ owner: members[index].userID });
    if (oneMember !== undefined) {
        console.log("Has availabilities")
-       console.log("oneMember.timeSlots: " + oneMember.timeSlots);
+       // console.log("oneMember.timeSlots: " + oneMember.timeSlots);
        allMemberAvails = allMemberAvails.concat(oneMember.timeSlots);
    } else {
        console.log("didn't give availabilities");
