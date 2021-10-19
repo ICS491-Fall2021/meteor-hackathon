@@ -226,7 +226,6 @@ getRemainingDays(date) {
    let mark = this.getDates();
    console.log("dino" + this.findallMembers(this.getField(this.props.groups, 1)));
 
-   console.log("WUT" + this.findPossibleAttendees(this.state.selectedDate,this.getField(this.props.groups, 0)));
    const disabledDate = this.getRemainingDays(date);
     var newDate = new Date();
     return (
@@ -237,19 +236,19 @@ getRemainingDays(date) {
                 <Grid.Column className="box" width={12}>
                 <Header as='h2'>Availabilities</Header>
                  <EventModal displayDate={this.state.selectedDate} members={this.findPossibleAttendees(this.state.selectedDate,this.getField(this.props.groups, 0))} open={this.state.isOpen} closeModal={this.closeModal}/>
-                    <Calendar 
+                    <Calendar         // ^ issu: only updates once when date is selected on
                     calendarType="ISO 8601"
                     onClickDay={() => this.setState({isOpen: true})}
                     maxDate={new Date(newDate.getFullYear(), newDate.getMonth() + 1, 0)}
                     minDate={new Date(newDate.getFullYear(), newDate.getMonth(), 1)}
                     tileDisabled={({date, view}) =>
-                    (view === 'month') && // Block day tiles only
+                    (view === 'month') && 
                     disabledDate.some(disabledDate =>
                       date.getFullYear() === disabledDate.getFullYear() &&
                       date.getMonth() === disabledDate.getMonth() &&
                       date.getDate() === disabledDate.getDate()
                     )}
-                    onSelect={this.onSelect}
+                    onSelect={this.onSelect} // selects date clicked on
                     tileClassName={({ date }) => {
                         if(mark.find(x=>moment(x).format('YYYY-MM-DD')===moment(date).format('YYYY-MM-DD') && this.calculateAvailability(date) == 1) ){
                          return 'low-avail'

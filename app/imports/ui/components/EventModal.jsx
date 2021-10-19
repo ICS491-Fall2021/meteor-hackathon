@@ -27,7 +27,6 @@ class EventModal extends React.Component {
   render() {
     let fRef = null;
     const userId = Meteor.user()._id;
-    console.log("HUHH" + this.props.members[0]);
     return (
         <Modal
             closeIcon
