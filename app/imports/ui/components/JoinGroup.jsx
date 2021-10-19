@@ -3,49 +3,54 @@ import { Modal, Icon, Button } from 'semantic-ui-react';
 import { AutoForm, TextField, SubmitField, ErrorsField } from 'uniforms-semantic';
 import swal from 'sweetalert';
 import { Meteor } from 'meteor/meteor';
+import SimpleSchema from 'simpl-schema';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 import { Link } from 'react-router-dom';
 import { Memberships } from '../../api/membership/Membership';
 
-const bridge = new SimpleSchema2Bridge(Memberships.schema);
 
+// Create a schema to specify the structure of the data to appear in the form.
+const formSchema = new SimpleSchema({
+  groupID: {
+    type: String,
+  },
+});
+
+const bridge = new SimpleSchema2Bridge(formSchema);
 
 export class JoinGroup extends React.Component {
-
-  handleClick = () => {
-    this.props.closeModal();
-  }
-  
-
   /** Renders a modal for joining a group in the Profile page. See pages/Profile.jsx. */
   render() {
     let fRef = null;
     let open = this.props.open;
     return (
-      <AutoForm 
-        ref={ref => { fRef = ref; }} 
-        schema={bridge} 
-        onSubmit={console.log}
-        model={this.props.doc}>
+        this.props.groupID ?
+          /* WIP - this does not redirect them yet, this.props.groupID is undefined, have to replace with value of the TextField on submit. */
+          <Link to={`/group/${this.props.groupID}`} />
+        :
         <Modal
             closeIcon
             open={open}
             size={'tiny'}
-            onClose={this.props.closeModal}
-            >
+            onClose={this.props.closeModal}>
           <Modal.Header>Join a Group</Modal.Header>
+          <AutoForm 
+            ref={ref => { fRef = ref; }} 
+            schema={bridge} 
+            onSubmit={data => { this.submit(data, fRef);}}
+            model={this.props.doc}>
           <Modal.Content>
             <Modal.Description>
-              <TextField name='groupID' className='join-group-inputs'/>
+              <TextField name='groupID'/>
             </Modal.Description>
           </Modal.Content>
           <Modal.Actions>
-            <SubmitField value='Submit' />
-            <Link to={`/group/${this.props.groupID}`} /> {/* need ta check if still wokrs*/}
+            <SubmitField value='Join' />
+            <Link to={`/group/${this.props.groupID}`} />
           </Modal.Actions>
+           <ErrorsField />
+          </AutoForm>
         </Modal>
-        <ErrorsField />
-      </AutoForm>
     );
   }
 
@@ -54,7 +59,7 @@ export class JoinGroup extends React.Component {
     const { groupID } = data;
     const userID = Meteor.user()._id;
 
-    Memberships.collection.insert({ userID, groupID, owner },
+    Memberships.collection.insert({ userID, groupID },
       (error) => {
         if (error) {
           swal('Error', error.message, 'error');
@@ -63,7 +68,6 @@ export class JoinGroup extends React.Component {
           formRef.reset();
         }
       });
-    console.log("success!");
   }
 }
 
