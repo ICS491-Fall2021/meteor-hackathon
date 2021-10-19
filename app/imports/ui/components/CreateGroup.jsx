@@ -10,14 +10,8 @@ const bridge = new SimpleSchema2Bridge(Groups.schema);
 
 /** Renders a modal for creating a group in the Profile page. See pages/Profile.jsx. */
 class CreateGroup extends React.Component {
-
-  handleClick = () => {
-    this.props.closeModal();
-  }
-  
   render() {
     let fRef = null;
-    const userId = Meteor.user()._id;
     return (
         <Modal
             open={this.props.open}
