@@ -9,7 +9,12 @@ class MembershipsItem extends React.Component {
   render() {
     let groupName = Groups.collection.find({ _id : this.props.membership.groupID}).fetch();
     return (
-    <List.Item><Link to={`/group/${this.props.membership.groupID}`}>{groupName[0].name}</Link></List.Item>
+    <List.Item>
+      <Link to={`/group/${this.props.membership.groupID}`}>
+        {/* Check that groupName is not undefined */}
+        {groupName.length ? groupName[0].name : ''}
+      </Link>
+    </List.Item>
     );
   }
 }
