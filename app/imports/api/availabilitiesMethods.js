@@ -5,10 +5,11 @@ import { Groups } from './group/Group';
 
 
 Meteor.methods({
-    'availabilities.insert'(owner, newestAvails) {
+    'availabilities.insert'(owner, theUsername, newestAvails) {
         check(newestAvails, Array);
+        check(theUsername, String);
         check(owner, String);
-
+        console.log("theUsername: " + theUsername);
         if (!this.userId) {
             throw new Meteor.Error('Not authorized.');
         }
@@ -23,13 +24,10 @@ Meteor.methods({
             }
             Availabilities.collection.remove(pastAvailabilities[0]);
         }
-
-        console.log(newestAvails[0]);
-        console.log(owner);
-
         try {
             Availabilities.collection.insert({
                 owner: this.userId,
+                ownername: theUsername,
                 timeSlots: newestAvails,
             })
             console.log("inserted!");

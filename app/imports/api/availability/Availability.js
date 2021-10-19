@@ -14,6 +14,7 @@ class AvailabilitiesCollection {
     // Define the structure of each document in the collection.
     this.schema = new SimpleSchema({
       owner: String,
+      ownername: String,
       timeSlots: Array,
       'timeSlots.$': {
         type: Date

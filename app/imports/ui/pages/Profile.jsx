@@ -46,7 +46,7 @@ class Profile extends React.Component {
       // access "timeSlots" of this.props.availabilities
       let timeSlotObject = inputArray[0];
       // find length of timeSlots array
-      let timeSlotArray = timeSlotObject[Object.keys(timeSlotObject)[2]];
+      let timeSlotArray = timeSlotObject[Object.keys(timeSlotObject)[3]];
       // iterate through timeSlots
       for (var i = 0; i < timeSlotArray.length; i++) {
         // push each entry to resulting array
@@ -78,11 +78,9 @@ class Profile extends React.Component {
     });
     console.log("hi there was a change");
     let newAvails = this.state.schedule.toString().split(",");
-    console.log("newAvails is type of: " + typeof(newAvails));
-    console.log("Meteor.user()._id is: " + Meteor.user()._id);
-    console.log("Meteor.user()._id is type of: " + typeof(Meteor.user()._id));
     let user = Meteor.user()._id;
-    Meteor.call('availabilities.insert', user, newAvails);
+    let username = Meteor.user().username;
+    // Meteor.call('availabilities.insert', user, username, newAvails);
   }
 
    // If the subscription(s) have been received, render the page, otherwise show a loading icon.
@@ -100,7 +98,12 @@ class Profile extends React.Component {
  
     return (
       <div className='wrapping'>
-        <Grid columns={2} relaxed className="content">
+        {/*https://stackoverflow.com/questions/63818088/add-text-over-image-from-semantic-ui*/}
+          <Grid.Column centered style={{ position: "relative", display: "flex"}}>
+            <Image centered size='medium' src="/images/background.png" z-index="-10"/>
+          </Grid.Column>
+          
+        {/* <Grid columns={2} relaxed className="content">
           <Grid.Row>
             <Grid.Column className="box">
               <Image size='tiny' circular src="/images/Logo2transparent.png" centered style={{ float: 'right' }} />
@@ -109,7 +112,7 @@ class Profile extends React.Component {
               <Header as='h1'  className="title" centered style={{ float: 'left'}}>{this.props.currentUser}</Header>
             </Grid.Column>
           </Grid.Row>
-        </Grid>
+        </Grid> */}
         <Grid columns={2} relaxed padded className="content">
             <Grid.Row stretched>
                 <Grid.Column className="box" width={12}>
@@ -120,7 +123,9 @@ class Profile extends React.Component {
                       dateFormat='ddd'
                       timeFormat='h:mm a'
                       maxTime={22}
-                      hourlyChunks={2}
+                      hourlyChunks={1}
+                      selectedColor={'#78bbe7'}
+                      hoveredColor={'#9ce8f1'}
                       onChange={this.handleChange}
                       selection={this.state.schedule}
                   />
