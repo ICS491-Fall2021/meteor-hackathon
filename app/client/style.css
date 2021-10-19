@@ -28,8 +28,7 @@
 }
 
 .highlight {
-    opacity: 0;
-    background-color: red !important;
+    background-color: green !important;
 }
 .box {
     padding: 25px !important;

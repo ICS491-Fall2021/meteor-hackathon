@@ -16,10 +16,14 @@ class Group extends React.Component {
       super(props);
       this.state =  {
         user: this.props.currentUser,
+        dates: [],
         schedule: [new Date('2021-10-21T00:00:00.000Z'), new Date('Sun Oct 17 2021 17:00:00 GMT-1000 (Hawaii-Aleutian Standard Time)'), new Date('October 18, 2021 12:30:00')],
       };
     }
 
+    componentDidMount() {
+      this.getDates();
+    }
    objectReformat(inputArray) {
       // declare resulting array
       let result = [];
@@ -82,24 +86,62 @@ getField(group, key) {
   // iterate through timeSlots
 }   
 
+getDates() {
+  Meteor.call('availabilities.getCounts', this.getField(this.props.groups, 0), function(error, result){
+    if(error){
+        console.log(error);
+    } else {
+        this.setState({ dates: Object.keys(result)});
+        return Object.keys(result);
+    }
+ })
+ }
+
+// need to return a int of availablity
+calculateAvailability(date) {
+  Meteor.call('availabilities.getCounts', this.getField(this.props.groups, 0), function(error, result){
+    if(error){
+        console.log(error);
+    } else {
+        console.log(result);
+        let keys = Object.keys(result);
+        console.log(keys);
+        for (let i = 0; i < keys.length; i++) {
+          if(keys[i] === date) {
+            console.log(Object.values(result)[i]);
+            return Object.values(result)[i];
+          }
+        }
+    }
+ })
+}
+
  renderPage() {
    var date = Date().toLocaleString();
 
-    const mark = [
-      this.formatDate(this.addDays(date, 7)),
-     
-    ]
-    console.log(this.formatDate(this.addDays(date, 6)));
+     //this.formatDate(this.addDays(date, 7)),
+
+     Meteor.call('availabilities.getCounts', this.getField(this.props.groups, 0), function(error, result){
+      if(error){
+          console.log(error);
+      } else {
+          console.log(Object.keys(result));
+          let mark = Object.keys(result);
+          console.log("wtf" + mark);
+          this.setState({dates: Object.keys(result)});
+      }
+   })
+
+   let mark = this.getDates();
+    console.log(this.state.dates);
+    
+   // console.log(this.formatDate(this.addDays(date, 6)));
     const disabledDate = [
       new Date(2021, 10, 18),
       new Date(2021, 10, 10),
     ];
 
     var newDate = new Date();
-
-    let allAvailabilities = Meteor.call('availabilities.getCounts', this.getField(this.props.groups, 0));
-    console.log("availabilities = " + allAvailabilities);
-
     return (
       <div className='wrapping'>
          <Header as='h1' className="title">{this.getField(this.props.groups, 1)} </Header>
@@ -119,8 +161,9 @@ getField(group, key) {
                       date.getDate() === disabledDate.getDate()
                     )}
                     defaultValue={new Date(2021, 9, 18)}
-                    tileClassName={({ date, view }) => {
-                        if(mark.find(x=>x===moment(date).format('YYYY-MM-DD'))){
+                    tileClassName={({ date }) => {
+                        if(this.state.dates.find(x=>x===moment(date).format('YYYY-MM-DD')) ){
+                          console.log("hi");
                          return 'highlight'
                         }
                       }}

@@ -47,7 +47,7 @@ Meteor.methods({
         }
         // Find all members of the group using the memberships table
         let members = Memberships.collection.find({ groupID: theGroupid }).fetch();
-
+        console.log(members);
         //members.push({_id: 'aTtKce8kdbxYRQRqb', userID: 'kPtyujGvBW8ftdff3', groupID: 'qLv8PqH4PWdYpuTrL'}) // test member
         // console.log(members[0]);
         // console.log(members[1]);
@@ -58,6 +58,7 @@ Meteor.methods({
             let oneMember = Availabilities.collection.findOne({ owner: members[index].userID });
             if (oneMember !== undefined) {
                 console.log("Has availabilities")
+                console.log("oneMember.timeSlots: " + oneMember.timeSlots);
                 allMemberAvails = allMemberAvails.concat(oneMember.timeSlots);
             } else {
                 console.log("didn't give availabilities");
@@ -73,7 +74,7 @@ Meteor.methods({
 
         const counts = {};
         allMemberAvails.forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
-        // console.log(counts)
+        console.log("countts" + JSON.stringify(counts));
 
         return counts;
     },
