@@ -27,6 +27,7 @@ class EventModal extends React.Component {
   render() {
     let fRef = null;
     const userId = Meteor.user()._id;
+    console.log("HUHH" + this.props.members[0]);
     return (
         <Modal
             closeIcon
@@ -34,7 +35,8 @@ class EventModal extends React.Component {
             size={'tiny'}
             onClick={this.handleClick}>
           <Modal.Header>Hangouts for {this.props.displayDate.format('MM-DD-YYYY')}</Modal.Header>
-          <h3> Possible Attendees </h3>
+          <h3> Possible Attendees: </h3>
+          {this.props.members[0]}
           <AutoForm ref={ref => { fRef = ref; }} 
                     schema={bridge} 
                     onSubmit={data => { this.submit(data, fRef);}} 

@@ -134,9 +134,8 @@ getDates() {
   }
   console.log("ids: " + JSON.stringify(ids));
   console.log("names: " + JSON.stringify(names));
-
-  // Returns two arrays
-  return {names, ids};
+  // Returns two arrays (NOTE: I REMOVED IDS BC REACT CANT OBJECT CHILD)
+  return names;
 }
 
 getCountsMeteor(theGroupid) {
@@ -180,13 +179,10 @@ return counts;
 calculateAvailability(date) {
   let result = this.getCountsMeteor(this.getField(this.props.groups, 0));
   let keys = Object.keys(result);
-  console.log("tis the date:" + date);
-  console.log(keys);
   for (let i = 0; i < keys.length; i++) {
     let formatKey = moment(keys[i]).format('DD MM, YYYY');
     let formatDate = moment(date).format('DD MM, YYYY');
     if(formatDate === formatKey) {
-      console.log(Object.values(result)[i]);
       return Object.values(result)[i];
     }
   }
@@ -211,10 +207,6 @@ getRemainingDays(date) {
    let date = new Date().toLocaleString;
    let mark = this.getDates();
 
-   let today = new Date();
-   console.log("hu;;p" + JSON.stringify(this.findPossibleAttendees(today, this.getField(this.props.groups, 1))));
-
-   // console.log(this.formatDate(this.addDays(date, 6)));
    const disabledDate = this.getRemainingDays(date);
     var newDate = new Date();
     return (
@@ -224,7 +216,7 @@ getRemainingDays(date) {
             <Grid.Row stretched>
                 <Grid.Column className="box" width={12}>
                 <Header as='h2'>Availabilities</Header>
-                 <EventModal displayDate={this.state.selectedDate} open={this.state.isOpen} closeModal={this.closeModal}/>
+                 <EventModal displayDate={this.state.selectedDate} members={this.findPossibleAttendees(this.state.selectedDate,this.getField(this.props.groups, 0))} open={this.state.isOpen} closeModal={this.closeModal}/>
                     <Calendar 
                     calendarType="ISO 8601"
                     onClickDay={() => this.setState({isOpen: true})}
@@ -237,7 +229,6 @@ getRemainingDays(date) {
                       date.getMonth() === disabledDate.getMonth() &&
                       date.getDate() === disabledDate.getDate()
                     )}
-                    defaultValue={new Date(2021, 9, 18)}
                     onSelect={this.onSelect}
                     tileClassName={({ date }) => {
                         if(mark.find(x=>moment(x).format('YYYY-MM-DD')===moment(date).format('YYYY-MM-DD') && this.calculateAvailability(date) == 1) ){
@@ -252,6 +243,7 @@ getRemainingDays(date) {
                 </Grid.Column>
                 <Grid.Column className="box-color" width={3}>
                     <Header as='h2'>Members</Header>
+                    Invite more members with your unique group code: <b>{this.getField(this.props.groups, 0)}</b>
                     <Header as='h2'>Rules</Header>
                 </Grid.Column>
             </Grid.Row>
