@@ -33,7 +33,7 @@ class EventModal extends React.Component {
             closeIcon
             open={this.props.open}
             size={'tiny'}
-            onClick={this.handleClick}>
+            onClose={this.props.closeModal}>
           <Modal.Header>Hangouts for {Moment(this.props.displayDate).format('MMM DD, YYYY')}</Modal.Header>
           <h3> Possible Attendees: </h3>
           {this.props.members}

@@ -132,7 +132,7 @@ getDates() {
   // Memberships.collection.insert({ userID : 'manmade2', groupID : theGroupID})
 
   console.log("theTimeSlot before converting from moment date: " + theTimeSlot);
-  theTimeSlot = moment(theTimeSlot).toDate();
+  theTimeSlot = moment(theTimeSlot).toISOString();
   console.log("theTimeSlot after converting from moment date: " + theTimeSlot);
 
   // Find all members in this group
