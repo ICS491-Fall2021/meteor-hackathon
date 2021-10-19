@@ -205,6 +205,9 @@ calculateAvailability(date) {
     }
   }
 }
+openModal() {
+  this.setState({isOpen: true})
+}
 
 getRemainingDays(date) {
   let now = new Date();
@@ -224,8 +227,8 @@ getRemainingDays(date) {
  renderPage() {
    let date = new Date().toLocaleString;
    let mark = this.getDates();
-   console.log("dino" + this.findallMembers(this.getField(this.props.groups, 1)));
 
+   console.log("WTTTT" + this.state.selectedDate);
    const disabledDate = this.getRemainingDays(date);
     var newDate = new Date();
     return (
@@ -235,10 +238,9 @@ getRemainingDays(date) {
             <Grid.Row stretched>
                 <Grid.Column className="box" width={12}>
                 <Header as='h2'>Availabilities</Header>
-                 <EventModal displayDate={this.state.selectedDate} members={this.findPossibleAttendees(this.state.selectedDate,this.getField(this.props.groups, 0))} open={this.state.isOpen} closeModal={this.closeModal}/>
                     <Calendar         // ^ issu: only updates once when date is selected on
                     calendarType="ISO 8601"
-                    onClickDay={() => this.setState({isOpen: true})}
+                    onClickDay={(value) => {this.setState({isOpen: true}); this.setState({selectedDate: value})}}
                     maxDate={new Date(newDate.getFullYear(), newDate.getMonth() + 1, 0)}
                     minDate={new Date(newDate.getFullYear(), newDate.getMonth(), 1)}
                     tileDisabled={({date, view}) =>
@@ -248,7 +250,6 @@ getRemainingDays(date) {
                       date.getMonth() === disabledDate.getMonth() &&
                       date.getDate() === disabledDate.getDate()
                     )}
-                    onSelect={this.onSelect} // selects date clicked on
                     tileClassName={({ date }) => {
                         if(mark.find(x=>moment(x).format('YYYY-MM-DD')===moment(date).format('YYYY-MM-DD') && this.calculateAvailability(date) == 1) ){
                          return 'low-avail'
@@ -259,6 +260,7 @@ getRemainingDays(date) {
                     } else if (mark.find(x=>x===moment(x).format('YYYY-MM-DD')===moment(date).format('YYYY-MM-DD') && this.calculateAvailability(date) > 5)) {
                       return 'superlarge-avail'
                     }}} />
+                    <EventModal displayDate={this.state.selectedDate} members={this.findPossibleAttendees(this.state.selectedDate,this.getField(this.props.groups, 0))} open={this.state.isOpen} closeModal={this.closeModal}/>
                 </Grid.Column>
                 <Grid.Column className="box-color" width={3}>
                     <Header as='h2'>Members</Header>

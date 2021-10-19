@@ -7,6 +7,7 @@ import swal from 'sweetalert';
 import { Meteor } from 'meteor/meteor';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 import { Memberships } from '../../api/membership/Membership';
+import Moment from 'moment';
 
 const bridge = new SimpleSchema2Bridge(Groups.schema);
 
@@ -33,7 +34,7 @@ class EventModal extends React.Component {
             open={this.props.open}
             size={'tiny'}
             onClick={this.handleClick}>
-          <Modal.Header>Hangouts for {this.props.displayDate.format('MM-DD-YYYY')}</Modal.Header>
+          <Modal.Header>Hangouts for {Moment(this.props.displayDate).format('MMM DD, YYYY')}</Modal.Header>
           <h3> Possible Attendees: </h3>
           {this.props.members}
           <AutoForm ref={ref => { fRef = ref; }} 
