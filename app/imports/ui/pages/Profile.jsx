@@ -31,11 +31,17 @@ class Profile extends React.Component {
   constructor(props) {
     console.log("--In constructor--");
       super(props);
+      this.closeModal.bind(this);
       this.state =  {
         user: this.props.currentUser,
         openCreate: false,
         openJoin: false,
       };
+    }
+
+    closeModal = () => {
+      this.setState({ openJoin: false });
+      this.setState({ openCreate: false });
     }
 
    objectReformat(inputArray) {
@@ -138,8 +144,8 @@ class Profile extends React.Component {
                     <Button onClick={() => this.setState({openCreate: true})}>
                       Create Group
                     </Button>
-                    <CreateGroup open={this.state.openCreate}/>
-                    <JoinGroup open={this.state.openJoin}/>
+                    <CreateGroup open={this.state.openCreate} closeModal={this.closeModal}/>
+                    <JoinGroup open={this.state.openJoin} closeModal={this.closeModal}/>
                     <Button onClick={() => this.setState({openJoin: true})}>
                       Join Group
                     </Button>

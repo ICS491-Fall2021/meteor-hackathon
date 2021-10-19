@@ -17,6 +17,10 @@ class CreateGroup extends React.Component {
         groupId: '',
       };
   }
+
+  handleClick = () => {
+    this.props.closeModal();
+  }
   
   render() {
     let fRef = null;
@@ -26,7 +30,7 @@ class CreateGroup extends React.Component {
             closeIcon
             open={this.props.open}
             size={'tiny'}
-            onClose={this.props.close}>
+            onClick={this.handleClick}>
           <Modal.Header>Create a Group</Modal.Header>
           <AutoForm ref={ref => { fRef = ref; }} 
                     schema={bridge} 
