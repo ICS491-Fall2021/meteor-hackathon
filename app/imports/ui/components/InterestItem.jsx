@@ -9,6 +9,10 @@ class InterestItem extends React.Component {
     return (
       <Table.Row>
         <Table.Cell>{this.props.interest.interests}</Table.Cell>
+        <Table.Cell>{'   '}</Table.Cell>
+        <Table.Cell>
+          <Link to={`/edit/${this.props.interest._id}`}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit</Link>
+        </Table.Cell>
       </Table.Row>
     );
   }
