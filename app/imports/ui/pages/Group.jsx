@@ -73,6 +73,15 @@ addDays(date, days) {
   return result;
 }
 
+getField(group, key) {
+  let result= "";
+  let groupObject = group[0];
+  let groupArray = Object.values(groupObject);
+  result = groupArray[key];
+  return result;
+  // iterate through timeSlots
+}   
+
  renderPage() {
    var date = Date().toLocaleString();
 
@@ -86,15 +95,14 @@ addDays(date, days) {
       new Date(2021, 10, 10),
     ];
 
-    console.log("the group id is = " + JSON.stringify(this.props.groups._id));
-
     var newDate = new Date();
 
-    let allAvailabilities = Meteor.call('availabilities.getCounts', this.props.groups._id);
+    let allAvailabilities = Meteor.call('availabilities.getCounts', this.getField(this.props.groups, 0));
     console.log("availabilities = " + allAvailabilities);
+
     return (
       <div className='wrapping'>
-         <Header as='h1' className="title">{this.props.groups.name} </Header>
+         <Header as='h1' className="title">{this.getField(this.props.groups, 1)} </Header>
         <Grid columns={2} relaxed padded className="content">
             <Grid.Row stretched>
                 <Grid.Column className="box" width={12}>
