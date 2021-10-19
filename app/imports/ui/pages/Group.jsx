@@ -114,7 +114,7 @@ getDates() {
     let groupArray = Object.values(groupObject)[2];
     username.push(groupArray);
   }
-  return username.toString().replace(/['"]+/g, '');
+  return username;
 }
 
  findPossibleAttendees(theTimeSlot, theGroupID) {
@@ -261,7 +261,7 @@ getRemainingDays(date) {
                 </Grid.Column>
                 <Grid.Column className="box-color" width={3}>
                     <Header as='h2'>Members</Header>
-                    {JSON.stringify(this.findallMembers(this.getField(this.props.groups, 0)))}
+                    {this.findallMembers(this.getField(this.props.groups, 0)).toString()}
                     <br /><br /><br />
                     Invite more members with your unique group code: <b>{this.getField(this.props.groups, 0)}</b>
                     <Header as='h2'>Rules</Header>
