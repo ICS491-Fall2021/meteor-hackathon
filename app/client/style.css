@@ -1,3 +1,23 @@
+#root h1 {
+    font-family: Abel, Arial, Helvetica, sans-serif;
+}
+
+#root h2 {
+    font-family: Abel, Arial, Helvetica, sans-serif;
+}
+
+#root p {
+    font-family: Abel, Arial, Helvetica, sans-serif;
+}
+
+#root button {
+    font-family: Abel, Arial, Helvetica, sans-serif;
+}
+
+#namelayover {
+    background-color: aquamarine;
+}
+
 .wrapping {
     transform: scale(0.9, 0.9);
     -ms-transform: scale(0.9, 0.9); /* IE 9 */
@@ -6,12 +26,14 @@
     -moz-transform: scale(0.9, 0.9); /* Firefox */
 }
 
-
 .title {
     padding-top: 50px;
     text-align: center;
 }
 
+.highlight {
+    background-color: red !important;
+}
 .box {
     padding: 25px !important;
 }

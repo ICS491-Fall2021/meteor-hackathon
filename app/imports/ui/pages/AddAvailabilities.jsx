@@ -20,7 +20,9 @@ class AddAvailabilities extends React.Component {
     console.log("hi there was a change");
     let newAvails = this.state.schedule.toString().split(",");
     let user = Meteor.user()._id;
-    Meteor.call('availabilities.insert', user, newAvails);
+    let username = Meteor.user().username;
+    console.log("user: " + user + " username: " + username);
+    Meteor.call('availabilities.insert', user, username, newAvails);
   }
   render() {
 
@@ -32,7 +34,7 @@ class AddAvailabilities extends React.Component {
                     dateFormat='ddd'
                     timeFormat='h:mm a'
                     maxTime={22}
-                    hourlyChunks={2}
+                    hourlyChunks={1}
                     onChange={this.handleChange}
                     selection={this.state.schedule}
                 />

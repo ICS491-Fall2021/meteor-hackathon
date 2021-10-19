@@ -1,16 +1,15 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useState } from 'react';
+import React from 'react';
 import { Grid, Loader, Segment, Button, Form, Header } from 'semantic-ui-react';
 import Calendar from 'react-calendar';
 import PropTypes from 'prop-types';
-import myCalendar from '../components/Calendar.jsx';
 import { withRouter} from 'react-router-dom';
-import { Roles } from 'meteor/alanning:roles';
 import { Memberships } from '../../api/membership/Membership';
 import { Groups } from '../../api/group/Group';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Availabilities } from '../../api/availability/Availability';
 import 'react-calendar/dist/Calendar.css';
+import moment from 'moment';
 
 class Group extends React.Component {
   constructor(props) {
@@ -34,7 +33,7 @@ class Group extends React.Component {
         // push each entry to resulting array
         result.push(timeSlotArray[i]); 
       }
-      return JSON.stringify(result);
+      return result;
     }   
   
   handleChange = newSchedule => {
@@ -55,14 +54,28 @@ class Group extends React.Component {
   }
 
  renderPage() {
+    const mark = [
+        '12-10-2021',
+        '21-10-2021',
+        '23-10-2021'
+    ]
     return (
       <div className='wrapping'>
-         <Header as='h1' className="title">{this.props.currentUser}</Header>
+         <Header as='h1' className="title"> </Header>
         <Grid columns={2} relaxed padded className="content">
             <Grid.Row stretched>
                 <Grid.Column className="box" width={12}>
                 <Header as='h2'>Availabilities</Header>
-                    <myCalendar/>
+                    <Calendar 
+                    calendarType="ISO 8601"
+                    defaultValue={new Date(2021, 9, 18)}
+                    tileClassName={({ date, view }) => {
+                        if(mark.find(x=>x===moment(date).format("DD-MM-YYYY"))){
+                         return 'highlight'
+                        }
+                      }}
+                  
+                    />
                 </Grid.Column>
                 <Grid.Column className="box-color" width={3}>
                     <Header as='h2'>Members</Header>
@@ -72,19 +85,6 @@ class Group extends React.Component {
             <Grid.Row stretched>
                 <Grid.Column className="box-color" width={12}>
                   <Header as='h2'>Hangouts</Header>
-                    <Form>
-                      <Form.Group grouped>
-                        <label>Add your Interests</label>
-                        <Form.Field label='This one' control='input' type='checkbox' />
-                        <Form.Field label='That one' control='input' type='checkbox' />
-                      </Form.Group>
-                      <Form.Group widths='equal'>
-                        <Form.Field label='Input your interest' control='input' />
-                      </Form.Group>
-                      <Form.Field control='button'>
-                        Submit
-                      </Form.Field>
-                  </Form>
                 </Grid.Column>
                 <Grid.Column className="box-color" width={12}>
                 </Grid.Column>
@@ -99,22 +99,27 @@ Group.propTypes = {
   currentUser: PropTypes.string,
   availabilities: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
-  documentId: PropTypes.string,
 };
 
- const GroupContainer = withTracker(({ match }) => {
-  // Get the documentID from the URL field. See imports/ui/layouts/App.jsx for the route containing :_id.
-  const documentId = match.params._id;
+ const GroupContainer = withTracker(() => {
   // Get access to Stuff documents.
   const subscription = Meteor.subscribe(Availabilities.userPublicationName);
   // Determine if the subscription is ready
   const ready = subscription.ready();
   // Get the Availability documents
-  const availabilities = Availabilities.collection.find(documentId).fetch();
+  const availabilities = Availabilities.collection.find({}).fetch();
+  
+  const groupsSubscription = Meteor.subscribe(Groups.userPublicationName);
+
+  const groupsReady = groupsSubscription.ready();
+
+  const groups = Groups.collection.find({}).fetch();
+
   return {
-    documentId,
     availabilities,
     ready,
+    groupsReady,
+    groups,
     currentUser: Meteor.user() ? Meteor.user().username : '',
   };
 })(Group);

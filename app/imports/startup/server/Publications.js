@@ -4,7 +4,7 @@ import { Stuffs } from '../../api/stuff/Stuff';
 import { Groups } from '../../api/group/Group';
 import { Memberships } from '../../api/membership/Membership';
 import { Availabilities } from '../../api/availability/Availability';
-
+import { Interests } from '../../api/interests/Interests';
 
 // User-level publication.
 // If logged in, then publish documents owned by this user. Otherwise publish nothing.
@@ -20,6 +20,14 @@ Meteor.publish(Availabilities.userPublicationName, function () {
   if (this.userId) {
     // const username = Meteor.users.findOne(this.userId).username;
     return Availabilities.collection.find({ owner: this.userId });
+  }
+  return this.ready();
+});
+
+Meteor.publish(Interests.userPublicationName, function () {
+  if (this.userId) {
+    const username = Meteor.users.findOne(this.userId).username;
+    return Interests.collection.find({ owner: username });
   }
   return this.ready();
 });
