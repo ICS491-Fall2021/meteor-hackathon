@@ -23,8 +23,10 @@ class CreateGroup extends React.Component {
     const userId = Meteor.user()._id;
     return (
         <Modal
+            closeIcon
             open={this.props.open}
-            size={'tiny'}>
+            size={'tiny'}
+            onClose={this.props.close}>
           <Modal.Header>Create a Group</Modal.Header>
           <AutoForm ref={ref => { fRef = ref; }} 
                     schema={bridge} 
