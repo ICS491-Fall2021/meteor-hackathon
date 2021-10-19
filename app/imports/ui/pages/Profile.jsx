@@ -46,7 +46,7 @@ class Profile extends React.Component {
       // access "timeSlots" of this.props.availabilities
       let timeSlotObject = inputArray[0];
       // find length of timeSlots array
-      let timeSlotArray = timeSlotObject[Object.keys(timeSlotObject)[2]];
+      let timeSlotArray = timeSlotObject[Object.keys(timeSlotObject)[3]];
       // iterate through timeSlots
       for (var i = 0; i < timeSlotArray.length; i++) {
         // push each entry to resulting array
@@ -76,11 +76,9 @@ class Profile extends React.Component {
     });
     console.log("hi there was a change");
     let newAvails = this.state.schedule.toString().split(",");
-    console.log("newAvails is type of: " + typeof(newAvails));
-    console.log("Meteor.user()._id is: " + Meteor.user()._id);
-    console.log("Meteor.user()._id is type of: " + typeof(Meteor.user()._id));
     let user = Meteor.user()._id;
-    Meteor.call('availabilities.insert', user, newAvails);
+    let username = Meteor.user().username;
+    // Meteor.call('availabilities.insert', user, username, newAvails);
   }
 
    // If the subscription(s) have been received, render the page, otherwise show a loading icon.
