@@ -104,9 +104,10 @@ class Profile extends React.Component {
  
     return (
       <div className='wrapping'>
-        {/*https://stackoverflow.com/questions/63818088/add-text-over-image-from-semantic-ui*/}
+        {/*https://stackoverflow.com/questions/63818088/add-text-over-image-from-semantic-ui  If somehow we could play the name over the image*/}
           <Grid.Column centered style={{ position: "relative", display: "flex"}}>
             <Image centered size='medium' src="/images/background.png" z-index="-10"/>
+            <Header as='h1'  className="title" centered style={{ float: 'left'}}>{this.props.currentUser}</Header>
           </Grid.Column>
           
         {/* <Grid columns={2} relaxed className="content">
@@ -136,7 +137,7 @@ class Profile extends React.Component {
                       selection={this.state.schedule}
                   />
                   <Menu.Item as={NavLink} activeClassName="active" exact to="/availability" key='availability'>
-                            <Button>Add a new availability!</Button>
+                            <Button>Redo your availabilities!</Button>
                         </Menu.Item>
                 </Grid.Column>
                 <Grid.Column className="box-color" width={3}>
