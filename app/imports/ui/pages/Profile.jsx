@@ -98,7 +98,12 @@ class Profile extends React.Component {
  
     return (
       <div className='wrapping'>
-        <Grid columns={2} relaxed className="content">
+        {/*https://stackoverflow.com/questions/63818088/add-text-over-image-from-semantic-ui*/}
+          <Grid.Column centered style={{ position: "relative", display: "flex"}}>
+            <Image centered size='medium' src="/images/background.png" z-index="-10"/>
+          </Grid.Column>
+          
+        {/* <Grid columns={2} relaxed className="content">
           <Grid.Row>
             <Grid.Column className="box">
               <Image size='tiny' circular src="/images/Logo2transparent.png" centered style={{ float: 'right' }} />
@@ -107,7 +112,7 @@ class Profile extends React.Component {
               <Header as='h1'  className="title" centered style={{ float: 'left'}}>{this.props.currentUser}</Header>
             </Grid.Column>
           </Grid.Row>
-        </Grid>
+        </Grid> */}
         <Grid columns={2} relaxed padded className="content">
             <Grid.Row stretched>
                 <Grid.Column className="box" width={12}>
@@ -118,7 +123,9 @@ class Profile extends React.Component {
                       dateFormat='ddd'
                       timeFormat='h:mm a'
                       maxTime={22}
-                      hourlyChunks={2}
+                      hourlyChunks={1}
+                      selectedColor={'#78bbe7'}
+                      hoveredColor={'#9ce8f1'}
                       onChange={this.handleChange}
                       selection={this.state.schedule}
                   />

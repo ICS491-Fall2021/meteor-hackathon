@@ -32,7 +32,7 @@ class AddAvailabilities extends React.Component {
                     dateFormat='ddd'
                     timeFormat='h:mm a'
                     maxTime={22}
-                    hourlyChunks={2}
+                    hourlyChunks={1}
                     onChange={this.handleChange}
                     selection={this.state.schedule}
                 />
