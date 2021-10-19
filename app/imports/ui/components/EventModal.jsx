@@ -1,7 +1,8 @@
 import React from 'react';
 import { Modal } from 'semantic-ui-react';
 import { Groups } from '../../api/group/Group';
-import { AutoForm, TextField, SubmitField, ErrorsField } from 'uniforms-semantic';
+import { Hangout } from '../../api/hangout/Hangout';
+import { AutoForm, TextField, LongTextField, SubmitField, ErrorsField } from 'uniforms-semantic';
 import swal from 'sweetalert';
 import { Meteor } from 'meteor/meteor';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
@@ -10,7 +11,7 @@ import { Memberships } from '../../api/membership/Membership';
 const bridge = new SimpleSchema2Bridge(Groups.schema);
 
 /** Renders a modal for creating a group in the Profile page. See pages/Profile.jsx. */
-class CreateGroup extends React.Component {
+class EventModal extends React.Component {
   constructor(props) {
       super(props);
       this.state =  {
@@ -22,6 +23,7 @@ class CreateGroup extends React.Component {
     this.props.closeModal();
   }
   
+  
   render() {
     let fRef = null;
     const userId = Meteor.user()._id;
@@ -31,7 +33,8 @@ class CreateGroup extends React.Component {
             open={this.props.open}
             size={'tiny'}
             onClick={this.handleClick}>
-          <Modal.Header>Create a Group</Modal.Header>
+          <Modal.Header>Hangouts for {this.props.displayDate.format('MM-DD-YYYY')}</Modal.Header>
+          <h3> Possible Attendees </h3>
           <AutoForm ref={ref => { fRef = ref; }} 
                     schema={bridge} 
                     onSubmit={data => { this.submit(data, fRef);}} 
@@ -40,7 +43,7 @@ class CreateGroup extends React.Component {
               <Modal.Description>
                 <div className='create-group-inputs'>
                   <TextField name='name'/>
-                  <TextField name='description'/>
+                  <LongTextField name='description'/>
                 </div>
               </Modal.Description>
             </Modal.Content>
@@ -56,20 +59,18 @@ class CreateGroup extends React.Component {
 
   // On submit, insert the data.
   submit(data, formRef) {
-    const { name, description, _id } = data;
-    const owner = Meteor.user().username;
+    const { name, description, dateTime, groupID, _id } = data;
     const userId = Meteor.user()._id;
-    let groupId = Groups.collection.insert({ name, _id, description, owner },
+    let groupId = Hangout.collection.insert({ name, description, dateTime, groupID, _id },
       (error, _id) => {
         if (error) {
           swal('Error', error.message, 'error');
         } else {
-          swal('Success', 'Group created successfully', 'success');
+          swal('Success', 'Hangout created successfully', 'success');
           formRef.reset();
         }
       });
-    Meteor.call('memberships.insert', userId, groupId);
   }
 }
 
-export default CreateGroup;
+export default EventModal;

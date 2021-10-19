@@ -5,6 +5,7 @@ import { Groups } from '../../api/group/Group';
 import { Memberships } from '../../api/membership/Membership';
 import { Availabilities } from '../../api/availability/Availability';
 import { Interests } from '../../api/interests/Interests';
+import { Hangouts } from '../../api/hangout/Hangout';
 
 // User-level publication.
 // If logged in, then publish documents owned by this user. Otherwise publish nothing.
@@ -15,6 +16,17 @@ Meteor.publish(Stuffs.userPublicationName, function () {
   }
   return this.ready();
 });
+
+Meteor.publish(Hangouts.userPublicationName, function () {
+  if (this.groupID) {
+    return Hangouts.collection.find();
+    // return Groups.collection.find({
+    //    "_id": { "$in": [Memberships.collection.find({ owner: this.userId })[1]]} 
+    //   });
+  }
+  return this.ready();
+});
+
 
 Meteor.publish(Availabilities.userPublicationName, function () {
   if (this.userId) {
@@ -49,7 +61,6 @@ Meteor.publish(Groups.userPublicationName, function () {
   }
   return this.ready();
 });
-
 
 // Admin-level publication.
 // If logged in and with admin role, then publish all documents from all users. Otherwise publish nothing.

@@ -10,14 +10,23 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { Availabilities } from '../../api/availability/Availability';
 import 'react-calendar/dist/Calendar.css';
 import moment from 'moment';
+import EventModal from '../components/EventModal';
+
 
 class Group extends React.Component {
   constructor(props) {
       super(props);
+      this.closeModal.bind(this);
       this.state =  {
         user: this.props.currentUser,
+        selectedDate: moment(),
+        isOpen: false,
         schedule: [new Date('2021-10-21T00:00:00.000Z'), new Date('Sun Oct 17 2021 17:00:00 GMT-1000 (Hawaii-Aleutian Standard Time)'), new Date('October 18, 2021 12:30:00')],
       };
+    }
+
+    closeModal = () => {
+      this.setState({ isOpen: false });
     }
 
    objectReformat(inputArray) {
@@ -83,11 +92,52 @@ getField(group, key) {
   // iterate through timeSlots
 }   
 
+onSelect=(e)=>{
+  this.setState({selectedDate:e})
+ }
+
 getDates() {
   return Object.keys(this.getCountsMeteor(this.getField(this.props.groups, 0)));
  }
 
- 
+ findPossibleAttendees(theTimeSlot, theGroupID) {
+  console.log("In findPossibleAttendees");
+  /*
+  if (!this.userId) {
+      throw new Meteor.Error('Not authorized.');
+  }
+*/
+  let testing = false;
+  
+  // Manually adding another member to this group
+  // Memberships.collection.insert({ userID : 'manmade2', groupID : theGroupID})
+
+  // Find all members in this group
+  let members = Memberships.collection.find({ groupID: theGroupID }).fetch();
+  // console.log("members is: " + members);
+  console.log("members stringified: " + JSON.stringify(members));
+  //console.log("inside membeers: " + members[0].userID);
+  
+  let ids = [];
+  let names = [];
+  // For each member in this group, find the ones who have an availability of the given time slot
+  for (let index = 0; index < members.length; index++) {
+      let memberInfo = Availabilities.collection.findOne({ owner : members[index].userID});
+      if (memberInfo !== undefined) {
+          theTimeSlot = memberInfo.timeSlots[0];
+      }
+      if (memberInfo !== undefined && memberInfo.timeSlots.includes(theTimeSlot)) {
+          console.log("member has an availability and matches theTimeSlot");
+          ids = ids.concat(memberInfo.owner);
+          names = names.concat(memberInfo.ownername);
+      }
+  }
+  console.log("ids: " + JSON.stringify(ids));
+  console.log("names: " + JSON.stringify(names));
+
+  // Returns two arrays
+  return {names, ids};
+}
 
 getCountsMeteor(theGroupid) {
   console.log("in getCounts");
@@ -142,7 +192,6 @@ calculateAvailability(date) {
   }
 }
 
-
 getRemainingDays(date) {
   let now = new Date();
   let result = [];
@@ -161,10 +210,12 @@ getRemainingDays(date) {
  renderPage() {
    let date = new Date().toLocaleString;
    let mark = this.getDates();
-     
-   // console.log(this.formatDate(this.addDays(date, 6)));
-    const disabledDate = this.getRemainingDays(date);
 
+   let today = new Date();
+   console.log("hu;;p" + JSON.stringify(this.findPossibleAttendees(today, this.getField(this.props.groups, 1))));
+
+   // console.log(this.formatDate(this.addDays(date, 6)));
+   const disabledDate = this.getRemainingDays(date);
     var newDate = new Date();
     return (
       <div className='wrapping'>
@@ -173,8 +224,10 @@ getRemainingDays(date) {
             <Grid.Row stretched>
                 <Grid.Column className="box" width={12}>
                 <Header as='h2'>Availabilities</Header>
+                 <EventModal displayDate={this.state.selectedDate} open={this.state.isOpen} closeModal={this.closeModal}/>
                     <Calendar 
                     calendarType="ISO 8601"
+                    onClickDay={() => this.setState({isOpen: true})}
                     maxDate={new Date(newDate.getFullYear(), newDate.getMonth() + 1, 0)}
                     minDate={new Date(newDate.getFullYear(), newDate.getMonth(), 1)}
                     tileDisabled={({date, view}) =>
@@ -185,6 +238,7 @@ getRemainingDays(date) {
                       date.getDate() === disabledDate.getDate()
                     )}
                     defaultValue={new Date(2021, 9, 18)}
+                    onSelect={this.onSelect}
                     tileClassName={({ date }) => {
                         if(mark.find(x=>moment(x).format('YYYY-MM-DD')===moment(date).format('YYYY-MM-DD') && this.calculateAvailability(date) == 1) ){
                          return 'low-avail'

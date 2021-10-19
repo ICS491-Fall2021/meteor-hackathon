@@ -13,6 +13,8 @@ class HangoutsCollection {
     this.collection = new Mongo.Collection(this.name);
     // Define the structure of each document in the collection.
     this.schema = new SimpleSchema({
+      name: String,
+      description: String,
       dateTime: Date,
       groupID: Number,
     }, { tracker: Tracker });
