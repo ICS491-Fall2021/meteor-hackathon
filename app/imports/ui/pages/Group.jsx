@@ -189,10 +189,7 @@ getCountsMeteor(theGroupid) {
 
   // Find all members of the group using the memberships table
   const members = Memberships.collection.find({ groupID: theGroupid }).fetch();
-  console.log(members);
-  // members.push({_id: 'aTtKce8kdbxYRQRqb', userID: 'kPtyujGvBW8ftdff3', groupID: 'qLv8PqH4PWdYpuTrL'}) // test member
-  // console.log(members[0]);
-  // console.log(members[1]);
+  // console.log(members);
 
   // Combine all of the members' availabilities into an array
   let allMemberAvails = [];
@@ -216,7 +213,7 @@ console.log(allMemberAvails.length); // should be 2 more than the one above */
 
   const counts = {};
   allMemberAvails.forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
-  console.log(`countts${JSON.stringify(counts)}`);
+  // console.log(`countts${JSON.stringify(counts)}`);
 
   return counts;
 }
