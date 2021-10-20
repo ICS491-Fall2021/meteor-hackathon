@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import { Stuffs } from '../../api/stuff/Stuff';
 import { Groups } from '../../api/group/Group';
+import { Attendees } from '../../api/attendee/Attendee';
 import { Memberships } from '../../api/membership/Membership';
 import { Availabilities } from '../../api/availability/Availability';
 import { Interests } from '../../api/interests/Interests';
@@ -18,7 +19,7 @@ Meteor.publish(Stuffs.userPublicationName, function () {
 });
 
 Meteor.publish(Hangouts.userPublicationName, function () {
-  if (this.groupID) {
+  if (this.userId) {
     return Hangouts.collection.find();
     // return Groups.collection.find({
     //    "_id": { "$in": [Memberships.collection.find({ owner: this.userId })[1]]} 
@@ -27,6 +28,15 @@ Meteor.publish(Hangouts.userPublicationName, function () {
   return this.ready();
 });
 
+Meteor.publish(Attendees.userPublicationName, function () {
+  if (this.userId) {
+    return Attendees.collection.find();
+    // return Groups.collection.find({
+    //    "_id": { "$in": [Memberships.collection.find({ owner: this.userId })[1]]}
+    //   });
+  }
+  return this.ready();
+});
 
 Meteor.publish(Availabilities.userPublicationName, function () {
   if (this.userId) {
