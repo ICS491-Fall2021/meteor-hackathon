@@ -117,7 +117,7 @@ class Profile extends React.Component {
     console.log("function testing");
     findHangoutsParticipatedIn(this.userid);
     findAttendees("7DyQQDDWFJeeWc7z3");
-    findContactedPeople(this.userid);
+    findContactedPeople(Meteor.userid);
     return (
       <div className='wrapping'> 
         {/*https://stackoverflow.com/questions/63818088/add-text-over-image-from-semantic-ui  If somehow we could play the name over the image*/}
@@ -175,6 +175,7 @@ class Profile extends React.Component {
                       {this.props.memberships.map((membership) => <MembershipsItem key={membership._id} membership={membership} />)}
                     </List>
                     <Header as='h2'>Contacted</Header>
+                      {JSON.stringify(findContactedPeople(Meteor.userId), null, "\t")}
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row stretched>
@@ -356,6 +357,7 @@ function findContactedPeople(theUserID) {
     contactedIds = contactedIds.concat(findAttendees(withinTwoWeeks[index]));
   }
   // contactedIds = _.uniq(contactedIds);
+  contactedIds = uniqBy(contactedIds, JSON.stringify);
   console.log("contactedIds: " + JSON.stringify(contactedIds));
   let contacts = Availabilities.collection.find({ "owner" : {"$in" : contactedIds} }).fetch();
   console.log("contacts: " + JSON.stringify(contacts));
@@ -365,7 +367,7 @@ function findContactedPeople(theUserID) {
     names.push(contacts[index].ownername);
   } 
   console.log("names: " + JSON.stringify(names));
-
+  return names;
   // let contacted = Attendees.collection.find({"hangoutID" : { "$in" : withinTwoWeeks}}).fetch();
   // // Consolidate duplicates and remove self
   // let contactedids = [];
@@ -385,7 +387,6 @@ function findContactedPeople(theUserID) {
   // }
   // console.log("names: " + JSON.stringify(names));
   // return names;
-  return ["harry", "Bob"];
 }
 
 function getPartsOfDate (aTimeSlot) {
@@ -433,4 +434,12 @@ switch (aNumber) {
     console.log("Isn't a month");
     return "UNKNOWN MONTH";
 }
+}
+
+function uniqBy(a, key) {
+  var seen = {};
+  return a.filter(function(item) {
+      var k = key(item);
+      return seen.hasOwnProperty(k) ? false : (seen[k] = true);
+  })
 }
