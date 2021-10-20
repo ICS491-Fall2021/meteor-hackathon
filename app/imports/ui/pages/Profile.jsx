@@ -201,8 +201,12 @@ Profile.propTypes = {
   // Determine if the subscription is ready
   const ready = subscription.ready();
   // Get the Availability documents
-  const availabilities = Availabilities.collection.find({}).fetch();
-  
+  // console.log("Meteor.user(): " + JSON.stringify(Meteor.user()));
+  const userID = Meteor.userId()
+  const availabilities = Availabilities.collection.find({ owner : userID }).fetch();
+  console.log("availabilities: " + JSON.stringify(availabilities));
+  // console.log("availabilities[0].timeSlot: " + availabilities[0].timeSlot);
+
   const interestsSubscription = Meteor.subscribe(Interests.userPublicationName);
 
   const interestsReady = interestsSubscription.ready();
