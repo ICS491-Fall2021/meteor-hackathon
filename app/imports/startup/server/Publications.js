@@ -22,18 +22,21 @@ Meteor.publish(Stuffs.userPublicationName, function () {
 Meteor.publish(Hangouts.userPublicationName, function () {
   console.log("\npublish Hangouts");
   if (this.userId) {
-    // find all hangout ids this user partook in
-    console.log("this.userId: " + this.userId);
-    let hangouts = Attendees.collection.find({ userID : this.userID }).fetch();
-    console.log("hangouts: " + JSON.stringify(hangouts));
-    let result = [];
-    hangouts.forEach(aHangout => {
-      if (aHangout.userID === this.userId) {
-        result.push(aHangout.hangoutID);
-      }
-    });
-    console.log("result: " + JSON.stringify(result));
-    return Hangouts.collection.find({ "_id": { "$in": result } });
+    if (Attendees.collection.find({ userID : this.userID }).fetch() != 0) {
+      // find all hangout ids this user partook in
+      console.log("this.userId: " + this.userId);
+      let hangouts = Attendees.collection.find({ userID : this.userID }).fetch();
+      console.log("hangouts: " + JSON.stringify(hangouts));
+      let result = [];
+      hangouts.forEach(aHangout => {
+        if (aHangout.userID === this.userId) {
+          result.push(aHangout.hangoutID);
+        }
+      });
+      console.log("result: " + JSON.stringify(result));
+      return Hangouts.collection.find({ "_id": { "$in": result } });
+    }
+    return Hangouts.collection.find();
   }
   return this.ready();
 });
