@@ -101,22 +101,27 @@ getDates() {
 }
 
 findallMembers(theGroupID) {
-  const result = [];
-  const username = [];
+  // const result = [];
+  // const username = [];
   const members = Memberships.collection.find({ groupID: theGroupID }).fetch();
   const names = members.map(a => a.userID);
-  console.log(`WAWWW${JSON.stringify(names)}`);
+  // console.log(`WAWWW${JSON.stringify(names)}`);
 
-  for (let i = 0; i < names.length; i++) {
-    result.push(Meteor.users.find({ _id: names[i] }).fetch());
-  }
+  // for (let i = 0; i < names.length; i++) {
+  //   result.push(Meteor.users.find({ _id: names[i] }).fetch());
+  // }
 
-  for (let i = 0; i < result.length; i++) {
-    const groupObject = result[0][i];
-    const groupArray = Object.values(groupObject)[2];
-    username.push(groupArray);
-  }
-  return username;
+  // for (let i = 0; i < result.length; i++) {
+  //   const groupObject = result[0][i];
+  //   const groupArray = Object.values(groupObject)[2];
+  //   username.push(groupArray);
+  // }
+  // return username;
+
+  // Can't access other people's availabilities... maybe add another field into memberships collection to have a name
+
+  
+  return names;
 }
 
 // mode defaults to false in which case the function returns user names, if set to
@@ -150,16 +155,12 @@ findPossibleAttendees(theTimeSlot, theGroupID, mode = false) {
   // For each member in this group, find the ones who have an availability of the given time slot
   for (let index = 0; index < members.length; index++) {
     console.log('Looking for members');
-    const memberInfo = Availabilities.collection.findOne({ owner: members[index].userID });
-    console.log(`a 'proper' time: ${memberInfo.timeSlots[0]}`);
-    console.log(`a 'proper' time's type: ${typeof (memberInfo.timeSlots[0])}`);
+    console.log(members[index].userID);
+    let memberInfo = Availabilities.collection.findOne({ owner : members[index].userID }); //PROBLEM: Can't access availabilites of other people. need to change availabilites subpub
+    console.log(JSON.stringify(memberInfo));
+    console.log("One member so memberInfo: " + JSON.stringify(memberInfo));
     theTimeSlot = new Date(theTimeSlot);
-    console.log(`the theTimeSlot: ${theTimeSlot}`);
-    console.log(`The timeslots: ${JSON.stringify(memberInfo.timeSlots)}, ${theTimeSlot}`);
-    console.log(`the type of theTimeSlot: ${typeof (theTimeSlot)}`);
-    console.log(`timeslots member info is: ${typeof (memberInfo.timeSlots)}`);
-    console.log(`this is: ${typeof (this)}`);
-
+    console.log("member username: " + memberInfo.ownername);
     if (memberInfo !== undefined && !!memberInfo.timeSlots.find(item => item.getTime() == theTimeSlot.getTime())) {
       console.log(`member has an availability and matches for theTimeSlot of: ${JSON.stringify(theTimeSlot)}`);
       ids = ids.concat(memberInfo.owner);
@@ -173,6 +174,7 @@ findPossibleAttendees(theTimeSlot, theGroupID, mode = false) {
     return ids;
   }
   return names;
+  return ["cat", "dog"];
 }
 
   isInArray(array, value) {

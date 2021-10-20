@@ -2,11 +2,12 @@ import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import { Stuffs } from '../../api/stuff/Stuff';
 import { Groups } from '../../api/group/Group';
-import { Attendees } from '../../api/attendee/Attendee';
 import { Memberships } from '../../api/membership/Membership';
 import { Availabilities } from '../../api/availability/Availability';
 import { Interests } from '../../api/interests/Interests';
 import { Hangouts } from '../../api/hangout/Hangout';
+import { Attendees } from '../../api/attendee/Attendee';
+
 
 // User-level publication.
 // If logged in, then publish documents owned by this user. Otherwise publish nothing.
@@ -19,18 +20,36 @@ Meteor.publish(Stuffs.userPublicationName, function () {
 });
 
 Meteor.publish(Hangouts.userPublicationName, function () {
+  console.log("\npublish Hangouts");
   if (this.userId) {
-    return Hangouts.collection.find();
-    // return Groups.collection.find({
-    //    "_id": { "$in": [Memberships.collection.find({ owner: this.userId })[1]]} 
-    //   });
+    // find all hangout ids this user partook in
+    console.log("this.userId: " + this.userId);
+    let hangouts = Attendees.collection.find({ userID : this.userID }).fetch();
+    console.log("hangouts: " + JSON.stringify(hangouts));
+    let result = [];
+    hangouts.forEach(aHangout => {
+      if (aHangout.userID === this.userId) {
+        result.push(aHangout.hangoutID);
+      }
+    });
+    console.log("result: " + JSON.stringify(result));
+    return Hangouts.collection.find({ "_id": { "$in": result } });
   }
   return this.ready();
 });
 
 Meteor.publish(Attendees.userPublicationName, function () {
   if (this.userId) {
-    return Attendees.collection.find();
+    let hangouts = Attendees.collection.find({ userID : this.userID }).fetch();
+    console.log("hangouts: " + JSON.stringify(hangouts));
+
+    let result = [];
+    hangouts.forEach(aHangout => {
+      if (aHangout.userID === this.userId) {
+        result.push(aHangout.hangoutID);
+      }
+    });
+    return Attendees.collection.find({ "hangoutID": { "$in": result } });
     // return Groups.collection.find({
     //    "_id": { "$in": [Memberships.collection.find({ owner: this.userId })[1]]}
     //   });
@@ -40,8 +59,27 @@ Meteor.publish(Attendees.userPublicationName, function () {
 
 Meteor.publish(Availabilities.userPublicationName, function () {
   if (this.userId) {
-    // const username = Meteor.users.findOne(this.userId).username;
-    return Availabilities.collection.find({ owner: this.userId });
+    console.log("\npublish availabiltiies");
+      // array of membership objects this user is in
+      let groupsIn = Memberships.collection.find({ userID : this.userId }).fetch();
+      let allGroupIDs = []
+      // For each group this user is in, get the groupID
+      groupsIn.forEach(group => {
+        allGroupIDs = allGroupIDs.concat(group.groupID);
+      });
+
+      // Get all of the users that this user is in the same group in for ALL of the user's groups
+      let groupmates = Memberships.collection.find({ "groupID": { "$in": allGroupIDs } }).fetch();
+
+      let result = [];
+      groupmates.forEach(member => {
+        if (!result.includes(member.userID)){
+          result.push(member.userID);
+        }
+      });
+      // get rid of duplicates
+      // groupmates = _.uniq(groupmates);
+    return Availabilities.collection.find({ "owner": { "$in": result } });
   }
   return this.ready();
 });
@@ -55,19 +93,32 @@ Meteor.publish(Interests.userPublicationName, function () {
 });
 
 Meteor.publish(Memberships.userPublicationName, function () {
-  if (this.userId) {
-    // const username = Meteor.users.findOne(this.userId).username;
-    return Memberships.collection.find({ userID: this.userId });
-  }
-  return this.ready();
-});
+    if (this.userId) {      
+      console.log("\npublish memberships");
+      // array of membership objects this user is in
+      let groupsIn = Memberships.collection.find({ userID : this.userId }).fetch();
+      let allGroupIDs = []
+      // For each group this user is in, get the groupID
+      groupsIn.forEach(group => {
+        allGroupIDs = allGroupIDs.concat(group.groupID);
+      });
+        return Memberships.collection.find({ "groupID": { "$in": allGroupIDs } });
+    }
+    return this.ready();
+  });
 
 Meteor.publish(Groups.userPublicationName, function () {
   if (this.userId) {
-    return Groups.collection.find();
-    // return Groups.collection.find({
-    //    "_id": { "$in": [Memberships.collection.find({ owner: this.userId })[1]]} 
-    //   });
+    console.log("\npublish Groups");
+    // array of membership objects this user is in
+    let groupsIn = Memberships.collection.find({ userID : this.userId }).fetch();
+    let allGroupIDs = []
+    // For each group this user is in, get the groupID
+    groupsIn.forEach(group => {
+      if (group.userID === this.userId)
+      allGroupIDs = allGroupIDs.concat(group.groupID);
+    });
+      return Groups.collection.find({ "_id": { "$in": allGroupIDs } });
   }
   return this.ready();
 });
