@@ -54,6 +54,7 @@ class CreateGroup extends React.Component {
           swal('Error', error.message, 'error');
         } else {
           swal('Success', 'Group created successfully', 'success');
+          this.props.closeModal();
           formRef.reset();
         }
       });
