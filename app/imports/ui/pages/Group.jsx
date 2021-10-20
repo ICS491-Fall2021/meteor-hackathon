@@ -168,7 +168,7 @@ getRemainingDays(date) {
     var newDate = new Date();
     return (
       <div className='wrapping'>
-         <Header as='h1' className="title">{this.getField(this.props.groups, 1)} </Header>
+        <Header as='h1' className="title">{this.getField(this.props.groups, 1)} </Header>
         <Grid columns={2} relaxed padded className="content">
             <Grid.Row stretched>
                 <Grid.Column className="box" width={12}>
