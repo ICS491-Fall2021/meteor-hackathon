@@ -20,6 +20,7 @@ class Group extends React.Component {
     super(props);
     this.closeModal.bind(this);
     this.state = {
+      location: null,
       availabilityList: [],
       user: this.props.currentUser,
       selectedDate: moment(),
@@ -104,26 +105,27 @@ getDates() {
 }
 
 findallMembers(theGroupID) {
-  // const result = [];
-  // const username = [];
-  const members = Memberships.collection.find({ groupID: theGroupID }).fetch();
+ let result = [];
+ let username = [];
+  const members = Memberships.collection.find({ groupID: this.props.theGroupPageID }).fetch();
   const names = members.map(a => a.userID);
   // console.log(`WAWWW${JSON.stringify(names)}`);
+  result = Availabilities.collection.find({'owner':{'$in':names}}).fetch();
+  for (let i = 0; i < result.length; i++) {
+     username.push(result[i].ownername);
+  }
 
-  // for (let i = 0; i < names.length; i++) {
-  //   result.push(Meteor.users.find({ _id: names[i] }).fetch());
-  // }
-
-  // for (let i = 0; i < result.length; i++) {
-  //   const groupObject = result[0][i];
-  //   const groupArray = Object.values(groupObject)[2];
-  //   username.push(groupArray);
-  // }
-  // return username;
+  /*
+  for (let i = 0; i < result.length; i++) {
+    const groupObject = result[0][i];
+    const groupArray = Object.values(groupObject)[2];
+     username.push(groupArray);
+   }
+   */
+  return username.toString();
 
   // Can't access other people's availabilities... maybe add another field into memberships collection to have a name
 
-  return names;
 }
 
 // mode defaults to false in which case the function returns user names, if set to
@@ -247,6 +249,12 @@ calculateAvailability(date) {
   }
 }
 
+updateLocation = (data) => {
+  window.location.reload(false);
+  console.log("DAWDWA" + JSON.stringify(data));
+  this.setState({ location: data })
+}
+
 openModal() {
   this.setState({ isOpen: true });
 }
@@ -304,7 +312,7 @@ renderPage() {
                   return 'superlarge-avail';
                 }
               }} />
-            <EventModal listAvail={this.displayAvailability(this.state.selectedDate)}displayDate={this.state.selectedDate} open={this.state.isOpen} closeModal={this.closeModal} findPossibleAttendees={this.findPossibleAttendees} groupID={this.getField(this.props.groups, 0, this.props.theGroupPageID)}/>
+            <EventModal updateLocation={this.updateLocation} listAvail={this.displayAvailability(this.state.selectedDate)}displayDate={this.state.selectedDate} open={this.state.isOpen} closeModal={this.closeModal} findPossibleAttendees={this.findPossibleAttendees} groupID={this.getField(this.props.groups, 0, this.props.theGroupPageID)}/>
           </Grid.Column>
           <Grid.Column className="box-color" width={3}>
             <Button as={Link} to='/profile' floated='right' icon color='blue' labelPosition='right'>
@@ -312,7 +320,7 @@ renderPage() {
               <Icon name='right arrow' />
             </Button>
             <Header as='h2'>Members</Header>
-            {this.findallMembers(this.getField(this.props.groups, 0, this.props.theGroupPageID)).toString()}
+            {this.findallMembers(this.getField(this.props.groups, 0, this.props.theGroupPageID))}
             <br /><br /><br />
                     Invite more members with your unique group code: <b>{this.getField(this.props.groups, 0, this.props.theGroupPageID)}</b>
             <Header as='h2'>Rules</Header>
@@ -386,7 +394,7 @@ const GroupContainer = withTracker((match) => {
 
   const hangoutsReady = hangoutsSubscription.ready();
 
-  const hangouts = Hangouts.collection.find({}).fetch();
+  const hangouts = Hangouts.collection.find({ groupID: theGroupPageID }).fetch();
 
   const attendeesSubscription = Meteor.subscribe(Attendees.userPublicationName);
   // attendees for testing, probably not needed

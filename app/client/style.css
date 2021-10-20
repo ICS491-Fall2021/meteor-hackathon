@@ -92,3 +92,17 @@
 .create-group-inputs {
     margin: 10px 10px !important;
 }
+
+.join-modal {
+    margin: 10px 10px !important;
+}
+
+.button-align {
+    float: right !important;
+    margin-right: 10px !important;
+    margin-bottom: 10px !important;
+}
+
+.group-spacing {
+    margin: 10px 0 !important;
+}

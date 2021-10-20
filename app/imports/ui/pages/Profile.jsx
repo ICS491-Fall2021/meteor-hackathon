@@ -3,7 +3,7 @@ import React from 'react';
 import { Grid, Loader, Segment, Button, Form, Icon, Header, Menu, Image, List } from 'semantic-ui-react';
 import ScheduleSelector from 'react-schedule-selector'
 import PropTypes from 'prop-types';
-import { withRouter, NavLink} from 'react-router-dom';
+import { withRouter, NavLink, Link } from 'react-router-dom';
 import { AutoForm, ErrorsField, TextField, SubmitField } from 'uniforms-semantic';
 import { Roles } from 'meteor/alanning:roles';
 import { Memberships } from '../../api/membership/Membership';
@@ -37,6 +37,7 @@ class Profile extends React.Component {
       super(props);
       this.closeModal.bind(this);
       this.state =  {
+        location: '',
         user: this.props.currentUser,
         openCreate: false,
         openJoin: false,
@@ -44,8 +45,16 @@ class Profile extends React.Component {
     }
 
     closeModal = () => {
-      this.setState({ openJoin: false });
-      this.setState({ openCreate: false });
+      this.setState({ 
+        openJoin: false, 
+        openCreate: false
+      });
+    }
+
+    updateLocation = (data) => {
+      window.location.reload(false);
+      console.log("DAWDWA" + JSON.stringify(data));
+      this.setState({ location: data })
     }
 
    objectReformat(inputArray) {
@@ -153,13 +162,13 @@ class Profile extends React.Component {
       <Icon color='white' name='close icon' />
        </Button>
                     <Header as='h2'>Groups</Header>
-                    <Button onClick={() => this.setState({openCreate: true})}>
+                    <Button className="group-spacing" onClick={() => this.setState({openCreate: true})}>
                       Create Group
                     </Button>
-                    <CreateGroup open={this.state.openCreate} closeModal={this.closeModal}/>
-                    <JoinGroup open={this.state.openJoin} closeModal={this.closeModal}/>
+                    <CreateGroup updateLocation={this.updateLocation} open={this.state.openCreate} closeModal={this.closeModal}/>
+                    <JoinGroup updateLocation={this.updateLocation} open={this.state.openJoin} closeModal={this.closeModal}/>
                     <Button onClick={() => this.setState({openJoin: true})}>
-                      Join Group
+                          Join Group
                     </Button>
                     <Header as='h2'>Groups Joined</Header>
                     <List>
@@ -217,7 +226,7 @@ Profile.propTypes = {
   // Get the Availability documents
   // console.log("Meteor.user(): " + JSON.stringify(Meteor.user()));
   const userID = Meteor.userId()
-  const availabilities = Availabilities.collection.find({ owner : userID }).fetch();
+  const availabilities = Availabilities.collection.find({ owner: userID }).fetch();
   console.log("availabilities: " + JSON.stringify(availabilities));
   // console.log("availabilities[0].timeSlot: " + availabilities[0].timeSlot);
 
@@ -231,7 +240,7 @@ Profile.propTypes = {
 
   const membershipsReady = membershipSubscription.ready();
 
-  const memberships = Memberships.collection.find({}).fetch();
+  const memberships = Memberships.collection.find({ userID: userID }).fetch();
 
   const attendeeSubscription = Meteor.subscribe(Attendees.userPublicationName);
 

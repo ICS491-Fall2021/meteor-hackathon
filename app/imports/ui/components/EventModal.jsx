@@ -31,6 +31,10 @@ class EventModal extends React.Component {
     this.props.closeModal();
   }
 
+  updateLocation = (data) => {
+    this.props.updateLocation(data)
+}
+
   render() {
     const formSchema = new SimpleSchema({
       name: String,
@@ -62,7 +66,7 @@ class EventModal extends React.Component {
         <Modal.Header>Hangouts for {Moment(this.props.displayDate).format('MMM DD, YYYY')}</Modal.Header>
         <AutoForm ref={ref => { fRef = ref; }}
           schema={bridge}
-          onSubmit={data => { this.submit(data, fRef); }}
+          onSubmit={data => { this.submit(data, fRef); this.updateLocation(data)}}
           model={this.props.doc}>
           <Modal.Content>
             <Modal.Description>
@@ -92,7 +96,7 @@ class EventModal extends React.Component {
     const groupID = this.props.groupID;
     const dateTime = time;
     const attendees = this.props.findPossibleAttendees(dateTime, groupID, true);
-    if (!warningAppeared && attendees.length > 5){
+    if (!warningAppeared && attendees.length > 10){
       swal('Too many people!', 'Your hangout will potentially break CDC guidelines if everyone available shows up, if you still want to propose it, press submit again.', 'error');
       warningAppeared = true;
     } else {

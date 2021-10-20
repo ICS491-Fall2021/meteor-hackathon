@@ -19,15 +19,23 @@ const formSchema = new SimpleSchema({
 const bridge = new SimpleSchema2Bridge(formSchema);
 
 export class JoinGroup extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state =  {
+      joined: false,
+      groupID: '',
+    };
+  }
+  updateLocation = (data) => {
+    this.props.updateLocation(data)
+}
+
   /** Renders a modal for joining a group in the Profile page. See pages/Profile.jsx. */
   render() {
     let fRef = null;
     let open = this.props.open;
     return (
-        this.props.groupID ?
-          /* WIP - this does not redirect them yet, this.props.groupID is undefined, have to replace with value of the TextField on submit. */
-          <Link to={`/group/${this.props.groupID}`} />
-        :
         <Modal
             open={open}
             size={'tiny'}
@@ -36,18 +44,19 @@ export class JoinGroup extends React.Component {
           <AutoForm 
             ref={ref => { fRef = ref; }} 
             schema={bridge} 
-            onSubmit={data => { this.submit(data, fRef);}}
+            onSubmit={data => { this.submit(data, fRef);this.updateLocation(data)}}
             model={this.props.doc}>
-          <Modal.Content>
-            <Modal.Description>
-              <TextField name='groupID'/>
-            </Modal.Description>
-          </Modal.Content>
-          <Modal.Actions>
-            <SubmitField value='Join' />
-            <Link to={`/group/${this.props.groupID}`} />
-          </Modal.Actions>
-           <ErrorsField />
+            <TextField name='groupID' className={'join-modal'}/>
+            {
+            this.state.joined 
+            ?
+              <Button className={'button-align'}>
+                <Link to={`/group/${this.state.groupID}`}>Go to your group!</Link>
+              </Button>
+            :
+              <SubmitField value='Join' className={'button-align'}/>
+            }
+            <ErrorsField />
           </AutoForm>
         </Modal>
     );
@@ -58,15 +67,26 @@ export class JoinGroup extends React.Component {
     const { groupID } = data;
     const userID = Meteor.user()._id;
 
-    Memberships.collection.insert({ userID, groupID },
-      (error) => {
-        if (error) {
-          swal('Error', error.message, 'error');
-        } else {
-          swal('Success', 'Record created successfully', 'success');
-          formRef.reset();
-        }
-      });
+    const exists = Memberships.collection.find({ userID, groupID }, {limit: 1}).count({});
+    if (!exists) {
+      Memberships.collection.insert({ userID, groupID },
+        (error) => {
+          if (error) {
+            swal('Error', error.message, 'error');
+          } else {
+            swal('Success', 'Group joined successfully', 'success')
+            .then((value) => {
+              this.setState({
+                groupID,
+                joined: true,
+              });
+            });
+            formRef.reset();
+          }
+        });
+    } else {
+      swal('Error', 'Group already joined!', 'error');
+    }
   }
 }
 
