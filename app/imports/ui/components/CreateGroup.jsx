@@ -10,6 +10,9 @@ const bridge = new SimpleSchema2Bridge(Groups.schema);
 
 /** Renders a modal for creating a group in the Profile page. See pages/Profile.jsx. */
 class CreateGroup extends React.Component {
+  updateLocation = (data) => {
+    this.props.updateLocation(data)
+}
   render() {
     let fRef = null;
     return (
@@ -20,7 +23,7 @@ class CreateGroup extends React.Component {
           <Modal.Header>Create a Group</Modal.Header>
           <AutoForm ref={ref => { fRef = ref; }} 
                     schema={bridge} 
-                    onSubmit={data => { this.submit(data, fRef);}} 
+                    onSubmit={data => { this.submit(data, fRef); this.updateLocation(data)}} 
                     model={this.props.doc}>
             <Modal.Content>
               <Modal.Description>
@@ -31,9 +34,6 @@ class CreateGroup extends React.Component {
               </Modal.Description>
             </Modal.Content>
             <Modal.Actions align='right'>
-            <Button  onClick={this.handleClick}>
-          <Icon name='remove' /> Exit
-        </Button>
               <SubmitField value='Submit'/>
             </Modal.Actions>
             <ErrorsField/>

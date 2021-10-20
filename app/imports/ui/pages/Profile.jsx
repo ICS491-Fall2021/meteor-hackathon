@@ -33,6 +33,7 @@ class Profile extends React.Component {
       super(props);
       this.closeModal.bind(this);
       this.state =  {
+        location: '',
         user: this.props.currentUser,
         openCreate: false,
         openJoin: false,
@@ -44,6 +45,12 @@ class Profile extends React.Component {
         openJoin: false, 
         openCreate: false
       });
+    }
+
+    updateLocation = (data) => {
+      window.location.reload(false);
+      console.log("DAWDWA" + JSON.stringify(data));
+      this.setState({ location: data })
     }
 
    objectReformat(inputArray) {
@@ -151,8 +158,8 @@ class Profile extends React.Component {
                     <Button className="group-spacing" onClick={() => this.setState({openCreate: true})}>
                       Create Group
                     </Button>
-                    <CreateGroup open={this.state.openCreate} closeModal={this.closeModal}/>
-                    <JoinGroup open={this.state.openJoin} closeModal={this.closeModal}/>
+                    <CreateGroup updateLocation={this.updateLocation} open={this.state.openCreate} closeModal={this.closeModal}/>
+                    <JoinGroup updateLocation={this.updateLocation} open={this.state.openJoin} closeModal={this.closeModal}/>
                     <Button onClick={() => this.setState({openJoin: true})}>
                       Join Group
                     </Button>
@@ -209,7 +216,7 @@ Profile.propTypes = {
   // Get the Availability documents
   // console.log("Meteor.user(): " + JSON.stringify(Meteor.user()));
   const userID = Meteor.userId()
-  const availabilities = Availabilities.collection.find({ owner : userID }).fetch();
+  const availabilities = Availabilities.collection.find({ owner: userID }).fetch();
   console.log("availabilities: " + JSON.stringify(availabilities));
   // console.log("availabilities[0].timeSlot: " + availabilities[0].timeSlot);
 
@@ -223,7 +230,7 @@ Profile.propTypes = {
 
   const membershipsReady = membershipSubscription.ready();
 
-  const memberships = Memberships.collection.find({}).fetch();
+  const memberships = Memberships.collection.find({ userID: userID }).fetch();
   console.log("availabilities has: " + availabilities.length);
   return {
     availabilities,

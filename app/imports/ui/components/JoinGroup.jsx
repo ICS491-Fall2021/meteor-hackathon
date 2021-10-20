@@ -19,6 +19,7 @@ const formSchema = new SimpleSchema({
 const bridge = new SimpleSchema2Bridge(formSchema);
 
 export class JoinGroup extends React.Component {
+
   constructor(props) {
     super(props);
     this.state =  {
@@ -26,6 +27,9 @@ export class JoinGroup extends React.Component {
       groupID: '',
     };
   }
+  updateLocation = (data) => {
+    this.props.updateLocation(data)
+}
 
   /** Renders a modal for joining a group in the Profile page. See pages/Profile.jsx. */
   render() {
@@ -40,7 +44,7 @@ export class JoinGroup extends React.Component {
           <AutoForm 
             ref={ref => { fRef = ref; }} 
             schema={bridge} 
-            onSubmit={data => { this.submit(data, fRef);}}
+            onSubmit={data => { this.submit(data, fRef);this.updateLocation(data)}}
             model={this.props.doc}>
             <TextField name='groupID' className={'join-modal'}/>
             {
