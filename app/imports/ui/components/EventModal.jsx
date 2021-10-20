@@ -16,6 +16,8 @@ import { Groups } from '../../api/group/Group';
 import { Availabilities } from '../../api/availability/Availability';
 import { Stuffs } from '../../api/stuff/Stuff';
 
+let warningAppeared = false;
+
 /** Renders a modal for creating a group in the Profile page. See pages/Profile.jsx. */
 class EventModal extends React.Component {
   constructor(props) {
@@ -40,10 +42,14 @@ class EventModal extends React.Component {
 
     function createFormOptions(dates, groupID, findPossibleAttendees) {
       console.log('in CREATE FORM OPTIONS');
-      return dates.map(date => ({
-        label: `${Moment(date).format('h:mm:ss a')} with ${findPossibleAttendees(date, groupID)}`,
-        value: date,
-      }));
+      return dates.map(date => {
+        const attendees = findPossibleAttendees(date, groupID);
+ //       if (attendees.length() > )
+        return {
+          label: `${Moment(date).format('h:mm:ss a')} with ${attendees}`,
+          value: date,
+        }
+      });
     }
 
     let fRef = null;
@@ -86,20 +92,24 @@ class EventModal extends React.Component {
     const userId = Meteor.user()._id;
     const groupID = this.props.groupID;
     const dateTime = time;
-    const hangoutID = Hangouts.collection.insert({ name, description, dateTime, groupID },
-      (error, _id) => {
-        if (error) {
-          swal('Error', error.message, 'error');
-        } else {
-          swal('Success', 'Hangout created successfully', 'success');
-          formRef.reset();
-        }
-      });
-    console.log('the salami lid');
     const attendees = this.props.findPossibleAttendees(dateTime, groupID, true);
-    console.log(`THE ATTENDEES ARE: ${attendees}`);
-    attendees.forEach(userID => Attendees.collection.insert({ hangoutID, userID }));
-    console.log('did I miss it?');
+    if (!warningAppeared && attendees.length > 5){
+      swal('Too many people!', 'Your hangout will potentially break CDC guidelines if everyone available shows up, if you still want to propose it, press submit again.', 'error');
+      warningAppeared = true;
+    } else {
+      const hangoutID = Hangouts.collection.insert({ name, description, dateTime, groupID },
+        (error, _id) => {
+          if (error) {
+            swal('Error', error.message, 'error');
+          } else {
+            swal('Success', 'Hangout created successfully', 'success');
+            formRef.reset();
+            warningAppeared = false;
+          }
+        });
+      console.log(`THE ATTENDEES ARE: ${attendees}`);
+      attendees.forEach(userID => Attendees.collection.insert({ hangoutID, userID }));
+    }
   }
 }
 

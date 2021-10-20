@@ -1,7 +1,8 @@
 {
   "defaultAccounts": [
     { "username": "Amanda Min", "email": "admin@foo.com", "password": "changeme", "role": "admin" },
-    { "username": "John Foo", "email": "john@foo.com", "password": "changeme" }
+    { "username": "John Foo", "email": "john@foo.com", "password": "changeme" },
+    { "username": "Harry Potter", "email": "potterhead@foo.com", "password": "changeme" }
   ],
 
   "defaultData": [
