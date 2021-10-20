@@ -60,26 +60,31 @@ Meteor.publish(Attendees.userPublicationName, function () {
 Meteor.publish(Availabilities.userPublicationName, function () {
   if (this.userId) {
     console.log("\npublish availabiltiies");
-      // array of membership objects this user is in
-      let groupsIn = Memberships.collection.find({ userID : this.userId }).fetch();
-      let allGroupIDs = []
-      // For each group this user is in, get the groupID
-      groupsIn.forEach(group => {
-        allGroupIDs = allGroupIDs.concat(group.groupID);
-      });
+    if (Memberships.collection.find({ userID : this.userId }).fetch().length != 0) {
+        // array of membership objects this user is in
+        let groupsIn = Memberships.collection.find({ userID : this.userId }).fetch();
+        let allGroupIDs = []
+        // For each group this user is in, get the groupID
+        groupsIn.forEach(group => {
+          allGroupIDs = allGroupIDs.concat(group.groupID);
+        });
 
-      // Get all of the users that this user is in the same group in for ALL of the user's groups
-      let groupmates = Memberships.collection.find({ "groupID": { "$in": allGroupIDs } }).fetch();
+        // Get all of the users that this user is in the same group in for ALL of the user's groups
+        let groupmates = Memberships.collection.find({ "groupID": { "$in": allGroupIDs } }).fetch();
 
-      let result = [];
-      groupmates.forEach(member => {
-        if (!result.includes(member.userID)){
-          result.push(member.userID);
-        }
-      });
-      // get rid of duplicates
-      // groupmates = _.uniq(groupmates);
-    return Availabilities.collection.find({ "owner": { "$in": result } });
+        let result = [];
+        groupmates.forEach(member => {
+          if (!result.includes(member.userID)){
+            result.push(member.userID);
+          }
+        });
+        // get rid of duplicates
+        // groupmates = _.uniq(groupmates);
+        return Availabilities.collection.find({ "owner": { "$in": result } });
+    } else {
+      return Availabilities.collection.find({ owner : this.userId });
+    }
+      
   }
   return this.ready();
 });
