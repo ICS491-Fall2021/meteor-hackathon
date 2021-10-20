@@ -390,7 +390,7 @@ const GroupContainer = withTracker((match) => {
 
   const hangoutsReady = hangoutsSubscription.ready();
 
-  const hangouts = Hangouts.collection.find({}).fetch();
+  const hangouts = Hangouts.collection.find({ groupID: theGroupPageID }).fetch();
 
   const attendeesSubscription = Meteor.subscribe(Attendees.userPublicationName);
   // attendees for testing, probably not needed
