@@ -31,9 +31,6 @@ class CreateGroup extends React.Component {
               </Modal.Description>
             </Modal.Content>
             <Modal.Actions align='right'>
-            <Button  onClick={this.handleClick}>
-          <Icon name='remove' /> Exit
-        </Button>
               <SubmitField value='Submit'/>
             </Modal.Actions>
             <ErrorsField/>

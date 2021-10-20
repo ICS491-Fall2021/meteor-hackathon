@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { Grid, Segment, Button, Form, Header } from 'semantic-ui-react';
+import { Link } from "react-router-dom";
+
+import { Grid, Button, Icon, Segment, Form, Header } from 'semantic-ui-react';
 import ScheduleSelector from 'react-schedule-selector';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Availabilities } from '../../api/availability/Availability';
@@ -24,6 +26,7 @@ class AddAvailabilities extends React.Component {
   render() {
 
     return (
+      <div>
       <ScheduleSelector
                     selection={this.state.schedule}
                     numDays={7}
@@ -35,6 +38,11 @@ class AddAvailabilities extends React.Component {
                     onChange={this.handleChange}
                     selection={this.state.schedule}
                 />
+                <Button as={Link} to='/profile' floated='right' icon color='blue' labelPosition='right'>
+                Back to Profile
+                <Icon name='right arrow' />
+                 </Button>
+       </div>
 
     )
   }

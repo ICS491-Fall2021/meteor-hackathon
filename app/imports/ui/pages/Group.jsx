@@ -105,7 +105,7 @@ getDates() {
 findallMembers(theGroupID) {
   // const result = [];
   // const username = [];
-  const members = Memberships.collection.find({ groupID: theGroupID }).fetch();
+  const members = Memberships.collection.find({ groupID: this.props.theGroupPageID }).fetch();
   const names = members.map(a => a.userID);
   // console.log(`WAWWW${JSON.stringify(names)}`);
 
