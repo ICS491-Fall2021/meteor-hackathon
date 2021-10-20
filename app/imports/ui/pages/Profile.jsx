@@ -175,7 +175,7 @@ class Profile extends React.Component {
                       {this.props.memberships.map((membership) => <MembershipsItem key={membership._id} membership={membership} />)}
                     </List>
                     <Header as='h2'>Contacted</Header>
-                      {JSON.stringify(findContactedPeople(Meteor.userId), null, "\t")}
+                      {findContactedPeople(Meteor.userId).map(name => `${name}, `)}
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row stretched>
