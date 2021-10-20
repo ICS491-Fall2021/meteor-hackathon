@@ -105,9 +105,9 @@ class Profile extends React.Component {
     return (
       <div className='wrapping'>
         {/*https://stackoverflow.com/questions/63818088/add-text-over-image-from-semantic-ui  If somehow we could play the name over the image*/}
-          <Grid.Column centered style={{ position: "relative", display: "flex"}}>
-            <Image centered size='medium' src="/images/background.png" z-index="-10"/>
-            <Header as='h1'  className="title" centered style={{ float: 'left'}}>{this.props.currentUser}</Header>
+          <Grid.Column className="profile-wrapper" centered style={{ position: "relative", display: "flex"}}>
+            <Image className='watermark' centered size='medium' src="/images/background.png"/>
+            <Header as='h1'  className="title" centered>{this.props.currentUser}</Header>
           </Grid.Column>
           
         {/* <Grid columns={2} relaxed className="content">

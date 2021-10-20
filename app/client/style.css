@@ -41,11 +41,24 @@
     -webkit-transform: scale(0.9, 0.9); /* Safari and Chrome */
     -o-transform: scale(0.9, 0.9); /* Opera */
     -moz-transform: scale(0.9, 0.9); /* Firefox */
+    position: relative;
+}
+
+.profile-wrapper {
+    position: relative;
+}
+.watermark, .title {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .title {
-    padding-top: 50px;
+    z-index: 10;
     text-align: center;
+    top: 15px;
 }
 
 .low-avail {
