@@ -20,18 +20,36 @@ Meteor.publish(Stuffs.userPublicationName, function () {
 });
 
 Meteor.publish(Hangouts.userPublicationName, function () {
-  if (this.groupID) {
-    return Hangouts.collection.find();
-    // return Groups.collection.find({
-    //    "_id": { "$in": [Memberships.collection.find({ owner: this.userId })[1]]} 
-    //   });
+  console.log("\npublish Hangouts");
+  if (this.userId) {
+    // find all hangout ids this user partook in
+    console.log("this.userId: " + this.userId);
+    let hangouts = Attendees.collection.find({ userID : this.userID }).fetch();
+    console.log("hangouts: " + JSON.stringify(hangouts));
+    let result = [];
+    hangouts.forEach(aHangout => {
+      if (aHangout.userID === this.userId) {
+        result.push(aHangout.hangoutID);
+      }
+    });
+    console.log("result: " + JSON.stringify(result));
+    return Hangouts.collection.find({ "_id": { "$in": result } });
   }
   return this.ready();
 });
 
 Meteor.publish(Attendees.userPublicationName, function () {
   if (this.userId) {
-    return Attendees.collection.find();
+    let hangouts = Attendees.collection.find({ userID : this.userID }).fetch();
+    console.log("hangouts: " + JSON.stringify(hangouts));
+
+    let result = [];
+    hangouts.forEach(aHangout => {
+      if (aHangout.userID === this.userId) {
+        result.push(aHangout.hangoutID);
+      }
+    });
+    return Attendees.collection.find({ "hangoutID": { "$in": result } });
     // return Groups.collection.find({
     //    "_id": { "$in": [Memberships.collection.find({ owner: this.userId })[1]]}
     //   });
