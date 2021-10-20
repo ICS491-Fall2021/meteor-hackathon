@@ -31,6 +31,10 @@ class EventModal extends React.Component {
     this.props.closeModal();
   }
 
+  updateLocation = (data) => {
+    this.props.updateLocation(data)
+}
+
   render() {
     const formSchema = new SimpleSchema({
       name: String,
@@ -62,7 +66,7 @@ class EventModal extends React.Component {
         <Modal.Header>Hangouts for {Moment(this.props.displayDate).format('MMM DD, YYYY')}</Modal.Header>
         <AutoForm ref={ref => { fRef = ref; }}
           schema={bridge}
-          onSubmit={data => { this.submit(data, fRef); }}
+          onSubmit={data => { this.submit(data, fRef); this.updateLocation(data)}}
           model={this.props.doc}>
           <Modal.Content>
             <Modal.Description>

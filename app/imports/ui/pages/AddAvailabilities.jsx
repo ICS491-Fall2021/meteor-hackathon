@@ -24,7 +24,6 @@ class AddAvailabilities extends React.Component {
     Meteor.call('availabilities.insert', user, username, this.state.schedule);
   }
   render() {
-
     return (
       <div>
       <ScheduleSelector

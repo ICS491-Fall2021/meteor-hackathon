@@ -33,6 +33,7 @@ class Profile extends React.Component {
       super(props);
       this.closeModal.bind(this);
       this.state =  {
+        location: '',
         user: this.props.currentUser,
         openCreate: false,
         openJoin: false,
@@ -42,6 +43,13 @@ class Profile extends React.Component {
     closeModal = () => {
       this.setState({ openJoin: false });
       this.setState({ openCreate: false });
+      
+    }
+
+    updateLocation = (data) => {
+      window.location.reload(false);
+      console.log("DAWDWA" + JSON.stringify(data));
+      this.setState({ location: data })
     }
 
    objectReformat(inputArray) {
@@ -149,8 +157,8 @@ class Profile extends React.Component {
                     <Button onClick={() => this.setState({openCreate: true})}>
                       Create Group
                     </Button>
-                    <CreateGroup open={this.state.openCreate} closeModal={this.closeModal}/>
-                    <JoinGroup open={this.state.openJoin} closeModal={this.closeModal}/>
+                    <CreateGroup updateLocation={this.updateLocation} open={this.state.openCreate} closeModal={this.closeModal}/>
+                    <JoinGroup updateLocation={this.updateLocation} open={this.state.openJoin} closeModal={this.closeModal}/>
                     <Button onClick={() => this.setState({openJoin: true})}>
                       Join Group
                     </Button>

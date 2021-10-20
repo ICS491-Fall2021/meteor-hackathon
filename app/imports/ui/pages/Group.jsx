@@ -20,6 +20,7 @@ class Group extends React.Component {
     super(props);
     this.closeModal.bind(this);
     this.state = {
+      location: null,
       availabilityList: [],
       user: this.props.currentUser,
       selectedDate: moment(),
@@ -249,6 +250,12 @@ calculateAvailability(date) {
   }
 }
 
+updateLocation = (data) => {
+  window.location.reload(false);
+  console.log("DAWDWA" + JSON.stringify(data));
+  this.setState({ location: data })
+}
+
 openModal() {
   this.setState({ isOpen: true });
 }
@@ -306,7 +313,7 @@ renderPage() {
                   return 'superlarge-avail';
                 }
               }} />
-            <EventModal listAvail={this.displayAvailability(this.state.selectedDate)}displayDate={this.state.selectedDate} open={this.state.isOpen} closeModal={this.closeModal} findPossibleAttendees={this.findPossibleAttendees} groupID={this.getField(this.props.groups, 0, this.props.theGroupPageID)}/>
+            <EventModal updateLocation={this.updateLocation} listAvail={this.displayAvailability(this.state.selectedDate)}displayDate={this.state.selectedDate} open={this.state.isOpen} closeModal={this.closeModal} findPossibleAttendees={this.findPossibleAttendees} groupID={this.getField(this.props.groups, 0, this.props.theGroupPageID)}/>
           </Grid.Column>
           <Grid.Column className="box-color" width={3}>
             <Button as={Link} to='/profile' floated='right' icon color='blue' labelPosition='right'>
