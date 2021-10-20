@@ -3,7 +3,7 @@
 For details, please see http://ics-software-engineering.github.io/meteor-application-template-react/
 
 # Meteor Hackathon
-
+[Our Deployed Application](https://proxamie.meteorapp.com/#/)
 ## Team
 We're team DAAJ, composed of:
 * [Mujtaba Quadri](https://github.com/mujtaba-a-quadri)
