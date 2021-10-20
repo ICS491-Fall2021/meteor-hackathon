@@ -1,8 +1,9 @@
 import React from 'react';
-import { Grid, Loader, Header, Segment } from 'semantic-ui-react';
+import { Button, Icon, Grid, Loader, Header, Segment } from 'semantic-ui-react';
 import swal from 'sweetalert';
 import { AutoForm, ErrorsField, HiddenField, LongTextField, TextField, SelectField, SubmitField } from 'uniforms-semantic';
 import { Meteor } from 'meteor/meteor';
+import { Link } from "react-router-dom";
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
@@ -42,6 +43,10 @@ class EditInterests extends React.Component {
                   <ErrorsField />
                 </Segment>
             </AutoForm>
+            <Button as={Link} to='/profile' floated='right' icon color='blue' labelPosition='right'>
+      Back to Profile
+      <Icon name='right arrow' />
+       </Button>
           </Grid.Column>
         </Grid>
       </div>

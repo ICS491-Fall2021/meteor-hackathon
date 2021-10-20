@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { Grid, Loader, Segment, Button, Form, Header, Menu, Image, List } from 'semantic-ui-react';
+import { Grid, Loader, Segment, Button, Form, Icon, Header, Menu, Image, List } from 'semantic-ui-react';
 import ScheduleSelector from 'react-schedule-selector'
 import PropTypes from 'prop-types';
 import { withRouter, NavLink} from 'react-router-dom';
@@ -103,13 +103,13 @@ class Profile extends React.Component {
     }
  
     return (
-      <div className='wrapping'>
+      <div className='wrapping'> 
         {/*https://stackoverflow.com/questions/63818088/add-text-over-image-from-semantic-ui  If somehow we could play the name over the image*/}
           <Grid.Column className="profile-wrapper" centered style={{ position: "relative", display: "flex"}}>
             <Image className='watermark' centered size='medium' src="/images/background.png"/>
             <Header as='h1'  className="title" centered>{this.props.currentUser}</Header>
           </Grid.Column>
-          
+  
         {/* <Grid columns={2} relaxed className="content">
           <Grid.Row>
             <Grid.Column className="box">
@@ -141,6 +141,10 @@ class Profile extends React.Component {
                         </Menu.Item>
                 </Grid.Column>
                 <Grid.Column className="box-color" width={3}>
+                <Button className='signout' floated='right' as={NavLink} exact to="/signout" icon color='blue' labelPosition='right'>
+      Logout
+      <Icon color='white' name='close icon' />
+       </Button>
                     <Header as='h2'>Groups</Header>
                     <Button onClick={() => this.setState({openCreate: true})}>
                       Create Group

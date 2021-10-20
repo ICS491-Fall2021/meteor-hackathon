@@ -1,9 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { Grid, Loader, Segment, Button, Form, Header, SearchResults } from 'semantic-ui-react';
+import { Grid, Loader, Icon, Image, Segment, Button, Form, Header, SearchResults } from 'semantic-ui-react';
 import Calendar from 'react-calendar';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { withTracker } from 'meteor/react-meteor-data';
 import moment from 'moment';
 import { Memberships } from '../../api/membership/Membership';
@@ -273,8 +273,13 @@ renderPage() {
   const disabledDate = this.getRemainingDays(date);
   const newDate = new Date();
   return (
-    <div className='wrapping'>
-      <Header as='h1' className="title">{this.getField(this.props.groups, 1)} </Header>
+          <div className='wrapping'>
+                      <Grid.Column className="profile-wrapper" centered style={{ position: "relative", display: "flex"}}>
+
+            <Image className='watermark' centered size='medium' src="/images/background.png"/>
+
+      <Header as='h1' className="title" centere>{this.getField(this.props.groups, 1)} </Header>
+</Grid.Column>
       <Grid columns={2} relaxed padded className="content">
         <Grid.Row stretched>
           <Grid.Column className="box" width={12}>
@@ -301,7 +306,11 @@ renderPage() {
               }} />
             <EventModal listAvail={this.displayAvailability(this.state.selectedDate)}displayDate={this.state.selectedDate} open={this.state.isOpen} closeModal={this.closeModal} findPossibleAttendees={this.findPossibleAttendees} groupID={this.getField(this.props.groups, 0)}/>
           </Grid.Column>
-          <Grid.Column className="box-color" width={3}>
+          <Grid.Column className="box-color" width={3}>          
+          <Button as={Link} to='/profile' floated='right' icon color='blue' labelPosition='right'>
+      Back to Profile
+      <Icon name='right arrow' />
+      </Button>
             <Header as='h2'>Members</Header>
             {this.findallMembers(this.getField(this.props.groups, 0)).toString()}
             <br /><br /><br />
