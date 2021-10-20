@@ -1,3 +1,20 @@
+.landing-page {
+    background: url("https://st4.depositphotos.com/4413287/i/600/depositphotos_392078746-stock-photo-bright-abstract-watercolor-splash-background.jpg") no-repeat center center fixed;
+    height: 100vh;
+    background-size: cover;
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+  
+    /* Preserve aspet ratio */
+    min-width: 100%;
+    min-height: 100%;
+}
+
+.wrapper {
+    height: 100%;
+}
+
 #root h1 {
     font-family: Abel, Arial, Helvetica, sans-serif;
 }
@@ -24,11 +41,28 @@
     -webkit-transform: scale(0.9, 0.9); /* Safari and Chrome */
     -o-transform: scale(0.9, 0.9); /* Opera */
     -moz-transform: scale(0.9, 0.9); /* Firefox */
+    position: relative;
+}
+
+.profile-wrapper {
+    position: relative;
+}
+.watermark, .title {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.signout {
+    padding: 15px 0 0 0 !important;
 }
 
 .title {
-    padding-top: 50px;
+    z-index: 10;
     text-align: center;
+    top: 15px;
 }
 
 .low-avail {

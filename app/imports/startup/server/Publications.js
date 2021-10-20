@@ -70,7 +70,6 @@ Meteor.publish(Availabilities.userPublicationName, function () {
 
       // Get all of the users that this user is in the same group in for ALL of the user's groups
       let groupmates = Memberships.collection.find({ "groupID": { "$in": allGroupIDs } }).fetch();
-      console.log(JSON.stringify(groupmates));
 
       let result = [];
       groupmates.forEach(member => {
@@ -80,7 +79,6 @@ Meteor.publish(Availabilities.userPublicationName, function () {
       });
       // get rid of duplicates
       // groupmates = _.uniq(groupmates);
-      console.log(result);
     return Availabilities.collection.find({ "owner": { "$in": result } });
   }
   return this.ready();
@@ -111,10 +109,16 @@ Meteor.publish(Memberships.userPublicationName, function () {
 
 Meteor.publish(Groups.userPublicationName, function () {
   if (this.userId) {
-    return Groups.collection.find();
-    // return Groups.collection.find({
-    //    "_id": { "$in": [Memberships.collection.find({ owner: this.userId })[1]]} 
-    //   });
+    console.log("\npublish Groups");
+    // array of membership objects this user is in
+    let groupsIn = Memberships.collection.find({ userID : this.userId }).fetch();
+    let allGroupIDs = []
+    // For each group this user is in, get the groupID
+    groupsIn.forEach(group => {
+      if (group.userID === this.userId)
+      allGroupIDs = allGroupIDs.concat(group.groupID);
+    });
+      return Groups.collection.find({ "_id": { "$in": allGroupIDs } });
   }
   return this.ready();
 });
