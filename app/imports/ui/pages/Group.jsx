@@ -122,7 +122,7 @@ findallMembers(theGroupID) {
      username.push(groupArray);
    }
    */
-  return username;
+  return username.toString();
 
   // Can't access other people's availabilities... maybe add another field into memberships collection to have a name
 
@@ -323,7 +323,7 @@ renderPage() {
               <Icon name='right arrow' />
             </Button>
             <Header as='h2'>Members</Header>
-            {this.findallMembers(this.getField(this.props.groups, 0, this.props.theGroupPageID)).toString()}
+            {this.findallMembers(this.getField(this.props.groups, 0, this.props.theGroupPageID))}
             <br /><br /><br />
                     Invite more members with your unique group code: <b>{this.getField(this.props.groups, 0, this.props.theGroupPageID)}</b>
             <Header as='h2'>Rules</Header>
