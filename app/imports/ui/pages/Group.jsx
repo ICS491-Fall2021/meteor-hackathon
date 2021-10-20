@@ -282,10 +282,10 @@ renderPage() {
         <Image className='watermark' centered size='medium' src="/images/background.png"/>
 
       <Header as='h1' className="title" centered>{this.getField(this.props.groups, 1, this.props.theGroupPageID)} </Header>
-</Grid.Column>
-      <Grid columns={2} relaxed padded className="content">
+      </Grid.Column>
+      <Grid columns={'equal'} relaxed padded className="content">
         <Grid.Row stretched>
-          <Grid.Column className="box" width={12}>
+          <Grid.Column className="box-color">
             <Header as='h2'>Availabilities</Header>
             <Calendar
               calendarType="ISO 8601"
@@ -309,22 +309,39 @@ renderPage() {
               }} />
             <EventModal listAvail={this.displayAvailability(this.state.selectedDate)}displayDate={this.state.selectedDate} open={this.state.isOpen} closeModal={this.closeModal} findPossibleAttendees={this.findPossibleAttendees} groupID={this.getField(this.props.groups, 0, this.props.theGroupPageID)}/>
           </Grid.Column>
-          <Grid.Column className="box-color" width={3}>
-            <Button as={Link} to='/profile' floated='right' icon color='blue' labelPosition='right'>
-      Back to Profile
-              <Icon name='right arrow' />
-            </Button>
+          <Grid.Column className="box-color">
             <Header as='h2'>Members</Header>
-            {this.findallMembers(this.getField(this.props.groups, 0, this.props.theGroupPageID)).toString()}
-            <br /><br /><br />
-                    Invite more members with your unique group code: <b>{this.getField(this.props.groups, 0, this.props.theGroupPageID)}</b>
+            <Grid.Column>
+              <Segment>
+                {this.findallMembers(this.getField(this.props.groups, 0, this.props.theGroupPageID)).toString()}
+                <br /><br /><br />
+                Invite more members with your unique group code: <b>{this.getField(this.props.groups, 0, this.props.theGroupPageID)}</b>
+              </Segment>
+            </Grid.Column>
+          </Grid.Column>
+          <Grid.Column className="box-color">
             <Header as='h2'>Rules</Header>
+            <Grid.Column>
+              <Segment.Group>
+                <Segment>
+                  Gatherings statewide are currently limited to:
+                  <br />
+                  - No more than 10 people for indoor gatherings
+                  <br />
+                  - No more than 25 people for outdoor gatherings
+                  <br />
+                  Violations of these rules can result in fines, and the rules can change over time. Make sure you check what’s required in your county before you make plans.
+                </Segment>
+                <Segment secondary>
+                  Source: https://hawaiicovid19.com/safe-gatherings/
+                </Segment>
+              </Segment.Group>
+            </Grid.Column>
           </Grid.Column>
         </Grid.Row>
         <Grid.Row stretched>
-          <Grid.Column className="box-color" width={12}>
+          <Grid.Column className="box-color" width={10}>
             <Header as='h2'>Scheduled Hangouts</Header>
-            <Container>
               {/* {this.props.hangouts.length === 0 && */}
               {/* <Header as='h5'>It seems there are no hangouts for this group! You can create one by clicking on one of the green dates above!</Header> */}
               {/* } */}
@@ -342,10 +359,9 @@ renderPage() {
                   {this.props.hangouts.map((hangout) => <HangoutItem key={hangout._id} hangout={hangout} />)}
                 </Table.Body>
               </Table>
-            </Container>
 
           </Grid.Column>
-          <Grid.Column className="box-color" width={12}>
+          <Grid.Column className="box-color" width={10}>
           </Grid.Column>
         </Grid.Row>
       </Grid>

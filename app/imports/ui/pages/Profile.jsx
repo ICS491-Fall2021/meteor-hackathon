@@ -154,7 +154,7 @@ class Profile extends React.Component {
                     <CreateGroup open={this.state.openCreate} closeModal={this.closeModal}/>
                     <JoinGroup open={this.state.openJoin} closeModal={this.closeModal}/>
                     <Button onClick={() => this.setState({openJoin: true})}>
-                          Join Group
+                      Join Group
                     </Button>
                     <Header as='h2'>Groups Joined</Header>
                     <List>
