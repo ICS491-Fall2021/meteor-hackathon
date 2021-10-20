@@ -96,7 +96,7 @@ class EventModal extends React.Component {
     const groupID = this.props.groupID;
     const dateTime = time;
     const attendees = this.props.findPossibleAttendees(dateTime, groupID, true);
-    if (!warningAppeared && attendees.length > 5){
+    if (!warningAppeared && attendees.length > 10){
       swal('Too many people!', 'Your hangout will potentially break CDC guidelines if everyone available shows up, if you still want to propose it, press submit again.', 'error');
       warningAppeared = true;
     } else {

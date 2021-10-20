@@ -215,7 +215,7 @@ Profile.propTypes = {
   // Get the Availability documents
   // console.log("Meteor.user(): " + JSON.stringify(Meteor.user()));
   const userID = Meteor.userId()
-  const availabilities = Availabilities.collection.find({ owner : userID }).fetch();
+  const availabilities = Availabilities.collection.find({ owner: userID }).fetch();
   console.log("availabilities: " + JSON.stringify(availabilities));
   // console.log("availabilities[0].timeSlot: " + availabilities[0].timeSlot);
 
@@ -229,7 +229,7 @@ Profile.propTypes = {
 
   const membershipsReady = membershipSubscription.ready();
 
-  const memberships = Memberships.collection.find({}).fetch();
+  const memberships = Memberships.collection.find({ userID: userID }).fetch();
   console.log("availabilities has: " + availabilities.length);
   return {
     availabilities,
