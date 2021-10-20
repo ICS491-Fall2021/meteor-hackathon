@@ -158,13 +158,8 @@ findPossibleAttendees(theTimeSlot, theGroupID, mode = false) {
   let names = [];
   // For each member in this group, find the ones who have an availability of the given time slot
   for (let index = 0; index < members.length; index++) {
-    console.log('Looking for members');
-    console.log(members[index].userID);
-    const memberInfo = Availabilities.collection.findOne({ owner: members[index].userID }); // PROBLEM: Can't access availabilites of other people. need to change availabilites subpub
-    console.log(JSON.stringify(memberInfo));
-    console.log(`One member so memberInfo: ${JSON.stringify(memberInfo)}`);
+    const memberInfo = Availabilities.collection.findOne({ owner: members[index].userID });
     theTimeSlot = new Date(theTimeSlot);
-    console.log(`member username: ${memberInfo.ownername}`);
     if (memberInfo !== undefined && !!memberInfo.timeSlots.find(item => item.getTime() == theTimeSlot.getTime())) {
       console.log(`member has an availability and matches for theTimeSlot of: ${JSON.stringify(theTimeSlot)}`);
       ids = ids.concat(memberInfo.owner);
