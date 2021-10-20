@@ -320,25 +320,6 @@ renderPage() {
             <br /><br /><br />
             Invite more members with your unique group code: <b>{this.getField(this.props.groups, 0, this.props.theGroupPageID)}</b>
           </Grid.Column>
-          <Grid.Column className="box-color">
-            <Header as='h2'>Rules</Header>
-            <Grid.Column>
-              <Segment.Group>
-                <Segment>
-                  Gatherings statewide are currently limited to:
-                  <br />
-                  - No more than 10 people for indoor gatherings
-                  <br />
-                  - No more than 25 people for outdoor gatherings
-                  <br />
-                  Violations of these rules can result in fines, and the rules can change over time. Make sure you check what’s required in your county before you make plans.
-                </Segment>
-                <Segment secondary>
-                  Source: https://hawaiicovid19.com/safe-gatherings/
-                </Segment>
-              </Segment.Group>
-            </Grid.Column>
-          </Grid.Column>
         </Grid.Row>
         <Grid.Row stretched>
         </Grid.Row>
@@ -366,7 +347,24 @@ renderPage() {
             </Container>
 
           </Grid.Column>
-          <Grid.Column className="box-color" width={12}>
+          <Grid.Column className="box-color">
+            <Header as='h2'>Rules</Header>
+            <Grid.Column>
+              <Segment.Group>
+                <Segment>
+                  Gatherings statewide are currently limited to:
+                  <br />
+                  - No more than 10 people for indoor gatherings
+                  <br />
+                  - No more than 25 people for outdoor gatherings
+                  <br />
+                  Violations of these rules can result in fines, and the rules can change over time. Make sure you check what’s required in your county before you make plans.
+                </Segment>
+                <Segment secondary>
+                  Source: https://hawaiicovid19.com/safe-gatherings/
+                </Segment>
+              </Segment.Group>
+            </Grid.Column>
           </Grid.Column>
         </Grid.Row>
         <Grid.Row className="box-color">
