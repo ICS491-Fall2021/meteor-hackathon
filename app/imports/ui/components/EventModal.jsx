@@ -44,7 +44,6 @@ class EventModal extends React.Component {
       console.log('in CREATE FORM OPTIONS');
       return dates.map(date => {
         const attendees = findPossibleAttendees(date, groupID);
- //       if (attendees.length() > )
         return {
           label: `${Moment(date).format('h:mm:ss a')} with ${attendees}`,
           value: date,

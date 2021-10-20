@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { Grid, Loader, Icon, Image, Segment, Button, Form, Header, SearchResults } from 'semantic-ui-react';
+import { Grid, Loader, Icon, Image, Segment, Button, Form, Header, SearchResults, Container, Table } from 'semantic-ui-react';
 import Calendar from 'react-calendar';
 import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router-dom';
@@ -13,6 +13,7 @@ import { Attendees } from '../../api/attendee/Attendee';
 import { Availabilities } from '../../api/availability/Availability';
 import 'react-calendar/dist/Calendar.css';
 import EventModal from '../components/EventModal';
+import HangoutItem from '../components/HangoutItem';
 
 class Group extends React.Component {
   constructor(props) {
@@ -120,7 +121,6 @@ findallMembers(theGroupID) {
 
   // Can't access other people's availabilities... maybe add another field into memberships collection to have a name
 
-  
   return names;
 }
 
@@ -156,11 +156,11 @@ findPossibleAttendees(theTimeSlot, theGroupID, mode = false) {
   for (let index = 0; index < members.length; index++) {
     console.log('Looking for members');
     console.log(members[index].userID);
-    let memberInfo = Availabilities.collection.findOne({ owner : members[index].userID }); //PROBLEM: Can't access availabilites of other people. need to change availabilites subpub
+    const memberInfo = Availabilities.collection.findOne({ owner: members[index].userID }); // PROBLEM: Can't access availabilites of other people. need to change availabilites subpub
     console.log(JSON.stringify(memberInfo));
-    console.log("One member so memberInfo: " + JSON.stringify(memberInfo));
+    console.log(`One member so memberInfo: ${JSON.stringify(memberInfo)}`);
     theTimeSlot = new Date(theTimeSlot);
-    console.log("member username: " + memberInfo.ownername);
+    console.log(`member username: ${memberInfo.ownername}`);
     if (memberInfo !== undefined && !!memberInfo.timeSlots.find(item => item.getTime() == theTimeSlot.getTime())) {
       console.log(`member has an availability and matches for theTimeSlot of: ${JSON.stringify(theTimeSlot)}`);
       ids = ids.concat(memberInfo.owner);
@@ -174,14 +174,13 @@ findPossibleAttendees(theTimeSlot, theGroupID, mode = false) {
     return ids;
   }
   return names;
-  return ["cat", "dog"];
+  return ['cat', 'dog'];
 }
 
-  isInArray(array, value) {
-    console.log('jashdgfjkhk');
-    return !!array.find(item => item.getTime() == value.getTime());
-  }
-
+isInArray(array, value) {
+  console.log('jashdgfjkhk');
+  return !!array.find(item => item.getTime() == value.getTime());
+}
 
 getCountsMeteor(theGroupid) {
   console.log('in getCounts from code in group.jsx line 160');
@@ -275,13 +274,13 @@ renderPage() {
   const disabledDate = this.getRemainingDays(date);
   const newDate = new Date();
   return (
-          <div className='wrapping'>
-                      <Grid.Column className="profile-wrapper" centered style={{ position: "relative", display: "flex"}}>
+    <div className='wrapping'>
+      <Grid.Column className="profile-wrapper" centered style={{ position: 'relative', display: 'flex' }}>
 
-            <Image className='watermark' centered size='medium' src="/images/background.png"/>
+        <Image className='watermark' centered size='medium' src="/images/background.png"/>
 
-      <Header as='h1' className="title" centere>{this.getField(this.props.groups, 1)} </Header>
-</Grid.Column>
+        <Header as='h1' className="title" centere>{this.getField(this.props.groups, 1)} </Header>
+      </Grid.Column>
       <Grid columns={2} relaxed padded className="content">
         <Grid.Row stretched>
           <Grid.Column className="box" width={12}>
@@ -308,11 +307,11 @@ renderPage() {
               }} />
             <EventModal listAvail={this.displayAvailability(this.state.selectedDate)}displayDate={this.state.selectedDate} open={this.state.isOpen} closeModal={this.closeModal} findPossibleAttendees={this.findPossibleAttendees} groupID={this.getField(this.props.groups, 0)}/>
           </Grid.Column>
-          <Grid.Column className="box-color" width={3}>          
-          <Button as={Link} to='/profile' floated='right' icon color='blue' labelPosition='right'>
+          <Grid.Column className="box-color" width={3}>
+            <Button as={Link} to='/profile' floated='right' icon color='blue' labelPosition='right'>
       Back to Profile
-      <Icon name='right arrow' />
-      </Button>
+              <Icon name='right arrow' />
+            </Button>
             <Header as='h2'>Members</Header>
             {this.findallMembers(this.getField(this.props.groups, 0)).toString()}
             <br /><br /><br />
@@ -322,7 +321,27 @@ renderPage() {
         </Grid.Row>
         <Grid.Row stretched>
           <Grid.Column className="box-color" width={12}>
-            <Header as='h2'>Hangouts</Header>
+            <Header as='h2'>Scheduled Hangouts</Header>
+            <Container>
+              {/* {this.props.hangouts.length === 0 && */}
+              {/* <Header as='h5'>It seems there are no hangouts for this group! You can create one by clicking on one of the green dates above!</Header> */}
+              {/* } */}
+              {/* {this.props.hangouts.length !== 0 && */}
+              <Table celled>
+                <Table.Header>
+                  <Table.Row>
+                    <Table.HeaderCell>Date</Table.HeaderCell>
+                    <Table.HeaderCell>Time</Table.HeaderCell>
+                    <Table.HeaderCell>Name</Table.HeaderCell>
+                    <Table.HeaderCell>Description</Table.HeaderCell>
+                  </Table.Row>
+                </Table.Header>
+                <Table.Body>
+                  {this.props.hangouts.map((hangout) => <HangoutItem key={hangout._id} hangout={hangout} />)}
+                </Table.Body>
+              </Table>
+            </Container>
+
           </Grid.Column>
           <Grid.Column className="box-color" width={12}>
           </Grid.Column>
