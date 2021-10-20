@@ -17,12 +17,9 @@ class AddAvailabilities extends React.Component {
     this.setState({ schedule: newSchedule }, function () {
         console.log(this.state.schedule);
     });
-    console.log("hi there was a change");
-    let newAvails = this.state.schedule.toString().split(",");
     let user = Meteor.user()._id;
     let username = Meteor.user().username;
-    console.log("user: " + user + " username: " + username);
-    Meteor.call('availabilities.insert', user, username, newAvails);
+    Meteor.call('availabilities.insert', user, username, this.state.schedule);
   }
   render() {
 
