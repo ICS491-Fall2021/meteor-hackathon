@@ -281,7 +281,7 @@ renderPage() {
 
         <Image className='watermark' centered size='medium' src="/images/background.png"/>
 
-      <Header as='h1' className="title" centere>{this.getField(this.props.groups, 1, this.props.theGroupPageID)} </Header>
+      <Header as='h1' className="title" centered>{this.getField(this.props.groups, 1, this.props.theGroupPageID)} </Header>
 </Grid.Column>
       <Grid columns={2} relaxed padded className="content">
         <Grid.Row stretched>
