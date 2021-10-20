@@ -104,21 +104,23 @@ getDates() {
 }
 
 findallMembers(theGroupID) {
- const result = [];
- const username = [];
+ let result = [];
+ let username = [];
   const members = Memberships.collection.find({ groupID: this.props.theGroupPageID }).fetch();
   const names = members.map(a => a.userID);
   // console.log(`WAWWW${JSON.stringify(names)}`);
-
-  for (let i = 0; i < names.length; i++) {
-     result.push(Meteor.users.find({ _id: names[i] }).fetch());
+  result = Availabilities.collection.find({'owner':{'$in':names}}).fetch();
+  for (let i = 0; i < result.length; i++) {
+     username.push(result[i].ownername);
   }
 
+  /*
   for (let i = 0; i < result.length; i++) {
     const groupObject = result[0][i];
     const groupArray = Object.values(groupObject)[2];
      username.push(groupArray);
    }
+   */
   return username;
 
   // Can't access other people's availabilities... maybe add another field into memberships collection to have a name
