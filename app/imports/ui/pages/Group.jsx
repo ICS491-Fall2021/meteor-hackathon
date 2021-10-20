@@ -83,9 +83,11 @@ class Group extends React.Component {
     return result;
   }
 
-  getField(group, key) { // group is an array of objects
+  getField(group, key, theGroupID) { // group is an array of objects
     let result = '';
-    const groupObject = group[0]; // gets a particular object from array
+    let groupKey = 0;
+    groupKey = group.findIndex(item => item._id === theGroupID);
+    let groupObject = group[groupKey];
     // ^ need to add a third parameter to locate which object we need
     result = Object.values(groupObject)[key]; // returns all values from objects in an array
     // and selects the keyth index from the array
@@ -97,7 +99,7 @@ onSelect=(e) => {
 }
 
 getDates() {
-  return Object.keys(this.getCountsMeteor(this.getField(this.props.groups, 0)));
+  return Object.keys(this.getCountsMeteor(this.getField(this.props.groups, 0, this.props.theGroupPageID)));
 }
 
 findallMembers(theGroupID) {
@@ -222,7 +224,7 @@ console.log(allMemberAvails.length); // should be 2 more than the one above */
 
 displayAvailability(date) {
   const result = [];
-  const listofAvailabilities = this.getCountsMeteor(this.getField(this.props.groups, 0));
+  const listofAvailabilities = this.getCountsMeteor(this.getField(this.props.groups, 0, this.props.theGroupPageID));
 
   const newList = Object.keys(listofAvailabilities);
 
@@ -238,7 +240,7 @@ displayAvailability(date) {
 }
 
 calculateAvailability(date) {
-  const result = this.getCountsMeteor(this.getField(this.props.groups, 0));
+  const result = this.getCountsMeteor(this.getField(this.props.groups, 0, this.props.theGroupPageID));
   const keys = Object.keys(result);
   for (let i = 0; i < keys.length; i++) {
     const formatKey = moment(keys[i]).format('DD MM, YYYY');
@@ -280,7 +282,7 @@ renderPage() {
 
             <Image className='watermark' centered size='medium' src="/images/background.png"/>
 
-      <Header as='h1' className="title" centere>{this.getField(this.props.groups, 1)} </Header>
+      <Header as='h1' className="title" centere>{this.getField(this.props.groups, 1, this.props.theGroupPageID)} </Header>
 </Grid.Column>
       <Grid columns={2} relaxed padded className="content">
         <Grid.Row stretched>
@@ -306,7 +308,7 @@ renderPage() {
                   return 'superlarge-avail';
                 }
               }} />
-            <EventModal listAvail={this.displayAvailability(this.state.selectedDate)}displayDate={this.state.selectedDate} open={this.state.isOpen} closeModal={this.closeModal} findPossibleAttendees={this.findPossibleAttendees} groupID={this.getField(this.props.groups, 0)}/>
+            <EventModal listAvail={this.displayAvailability(this.state.selectedDate)}displayDate={this.state.selectedDate} open={this.state.isOpen} closeModal={this.closeModal} findPossibleAttendees={this.findPossibleAttendees} groupID={this.getField(this.props.groups, 0, this.props.theGroupPageID)}/>
           </Grid.Column>
           <Grid.Column className="box-color" width={3}>          
           <Button as={Link} to='/profile' floated='right' icon color='blue' labelPosition='right'>
@@ -314,9 +316,9 @@ renderPage() {
       <Icon name='right arrow' />
       </Button>
             <Header as='h2'>Members</Header>
-            {this.findallMembers(this.getField(this.props.groups, 0)).toString()}
+            {this.findallMembers(this.getField(this.props.groups, 0, this.props.theGroupPageID)).toString()}
             <br /><br /><br />
-                    Invite more members with your unique group code: <b>{this.getField(this.props.groups, 0)}</b>
+                    Invite more members with your unique group code: <b>{this.getField(this.props.groups, 0, this.props.theGroupPageID)}</b>
             <Header as='h2'>Rules</Header>
           </Grid.Column>
         </Grid.Row>
@@ -343,9 +345,14 @@ Group.propTypes = {
   hangouts: PropTypes.array.isRequired,
   attendeesReady: PropTypes.bool.isRequired,
   attendees: PropTypes.array.isRequired,
+  theGroupPageID: PropTypes.string.isRequired,
 };
 
-const GroupContainer = withTracker(() => {
+const GroupContainer = withTracker((match) => {
+
+  let url = window.location.toString().split("/");
+  let theGroupPageID = url[url.length - 1];
+
   // Get access to Stuff documents.
   const subscription = Meteor.subscribe(Availabilities.userPublicationName);
   // Determine if the subscription is ready
@@ -372,6 +379,7 @@ const GroupContainer = withTracker(() => {
   const attendees = Attendees.collection.find({}).fetch();
 
   return {
+    theGroupPageID,
     availabilities,
     ready,
     groupsReady,
