@@ -16,7 +16,7 @@ class HangoutsCollection {
       name: String,
       description: String,
       dateTime: Date,
-      groupID: Number,
+      groupID: String,
     }, { tracker: Tracker });
     // Attach the schema to the collection, so all attempts to insert a document are checked against schema.
     this.collection.attachSchema(this.schema);
