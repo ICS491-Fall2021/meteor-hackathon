@@ -1,3 +1,20 @@
+.landing-page {
+    background: url("https://st4.depositphotos.com/4413287/i/600/depositphotos_392078746-stock-photo-bright-abstract-watercolor-splash-background.jpg") no-repeat center center fixed;
+    height: 100vh;
+    background-size: cover;
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+  
+    /* Preserve aspet ratio */
+    min-width: 100%;
+    min-height: 100%;
+}
+
+.wrapper {
+    height: 100%;
+}
+
 #root h1 {
     font-family: Abel, Arial, Helvetica, sans-serif;
 }
