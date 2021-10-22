@@ -35,7 +35,7 @@ Introductory project for ICS 491 to help us warm up our tech stack in preparatio
 This page serves as the main landing for the website.
 From here, the user can either sign in or register. At the moment, the "sign-in" and "register" buttons are not responsive yet, but the "login" button in the top right is functional.
 
-<img src="./images/ProxamieLanding.png"/>
+<img src="./images/LandingPage.png"/>
 
 ## Sign-In / Register
 
