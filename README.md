@@ -1,6 +1,6 @@
 ![ci-badge](https://github.com/ics-software-engineering/meteor-application-template-react/workflows/ci-meteor-application-template-react/badge.svg)
 
-For details, please see http://ics-software-engineering.github.io/meteor-application-template-react/
+For details about the template, please see http://ics-software-engineering.github.io/meteor-application-template-react/
 
 # Meteor Hackathon
 [Our Deployed Application](https://proxamie.meteorapp.com/#/)
@@ -10,17 +10,14 @@ For details, please see http://ics-software-engineering.github.io/meteor-applica
 
 * [Overview](#overview)
 * [Team Members](#team-members)
-* [Landing](#landing)
-* [Sign-in/Register](#sign-in--register)
+* [Landing Page](#landing)
+* [Sign-in/Register Page](#sign-in--register)
 * [Profile Page](#profile-page)
-* [Add Availability](#add-availability)
-* [Add Interest](#add-interests)
-* [Edit Interest](#edit-interests)
-* [Create Group](#create-group)
-* [Join Group](#join-group)
+* [Add Availability Page](#add-availability)
+* [Create Group Modal](#create-group)
+* [Join Group Modal](#join-group)
 * [Group Page](#group-page)
-* [Create Hangout](#create-hangout)
-* [Reecently Contacted](#recently-contacted)
+* [Create Hangout Modal](#create-hangout)
 
 ## Overview
 
@@ -48,40 +45,22 @@ If they do not have an account, they will have the ability to register for one.
 <img src="https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg"/>
 
 ## Profile Page
-A dashboard of sorts, the profile page provides the user convenient ways to add their status and list previous statuses. More personalization may be implemented in the future (e.g. name, date, number of times the user has checked in).
+Once users sign in, they are placed onto the profile page. From here, a user can see a calendar which indicates their last recorded availability. Below the calendar is a button that redirects users to a page to redo their availability. On the bottom, there is an interest form which helps the user keep track of what hangout ideas they could be interested in for the future. These records are displayed in the bottom right under “My Interests”. We initially wanted to use these interests for planning hangouts, but ran out of time to implement it. If we could have, we would have promoted COVID-safer activities such as being outdoors or remote activitie such as gaming. On the right, there are two buttons; one to open a modal for creating a group and one for joining a group. Below the buttons is a list of groups this user has joined. When a user clicks on the group name, they will be redirected to a page dedicated to that group. Finally, underneath the “Contacted” header is a list of people this user has been in contact with in the past 2 weeks through hangouts created in Proxamie.
 
 <img src="https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg"/>
 
 ## Add Availability
-
-With this COVID Tracker application, the user has the option to add their COVID Status for the day using the form. The user only needs to indicate if their status is "clear" or "not clear" and then the application will automatically record the date and time on submission of the form.
-
-<img src="https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg"/>
-
-## Add Interests
-
-Here, the user can input information about their vaccination record, including patient number, vaccine type and manufacturer lot number, date administered, & healthcare professional or clinic site per dose. 
+On the add availabilities page, users can use the handy calendar (the package we used for this is called react-schedule-selector) that allows dragging to indicate their availability for the upcoming 7 days. As soon as they use the calendar, their availability is stored into the database.
 
 <img src="https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg"/>
-
-## Edit Interests
-
-With this COVID Tracker application, the user has the option to list their previous COVID Statuses. Additionally, the user can edit all inputted statuses, but we may limit this functionality in the future to only the current day. 
-
-<img src="https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg"/>
-
-Additionally, the user has the ability to add an image of their vaccine card. They will be prompted with the following window when they click "choose a file":
-
-<img src="https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg"/>
-
-The user has the option to upload images from their computer, a URL, their Google Drive, and much more - how convenient!!
 
 ## Create Group
+<img src="https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg"/>
 
 ## Join Group
+<img src="https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg"/>
 
 ## Group Page
+<img src="https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg"/>
 
 ## Create Hangout
-
-## Recently Contacted
