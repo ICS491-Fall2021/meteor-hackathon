@@ -33,14 +33,14 @@ This application seeks to help people to easily schedule hangouts with their fri
 ## Landing
 
 This page serves as the main landing for the website.
-From here, the user can either sign in or register. At the moment, the "sign-in" and "register" buttons are not responsive yet, but the "login" button in the top right is functional.
+From here, the user can press the log-in button to either sign in or register. 
 
 <img src="./images/LandingPage.png"/>
 
 ## Sign-In / Register
 
 To unlock full functionality of the app, the user must sign-in to the page with their credentials.
-If they do not have an account, they will have the ability to register for one, this form includes a username field, which is used on the profile and group pages. The email is not displayed, but used for logging in.
+If they do not have an account, they will have the ability to register for one, this form includes a username field, which is used on the profile and group pages. The email is not displayed, but is used for logging in.
 
 <div style="display: flex">
   <img style="width: 49%; float: left" src="./images/LoginPage.png"/>
@@ -59,22 +59,22 @@ On the add availabilities page, users can use the handy calendar (the package we
 
 ## Create Group
 Groups are an essential component of our application (for more information, visit the [Group Page](#group-page) section). 
-Users will use the **Create Group** modal to start a group in which other users can join, from the Join Group modal, discussed in more detail under [this section](#join-group). Once the user clicks submit, a unique group ID will be generated for the group, so members can view details (such as availabilities) on its own unique page.
+Users will use the **Create Group** modal to start a group that other users can join from the Join Group modal which is discussed in more detail under [this section](#join-group). Once the user clicks submit, a unique group ID will be generated for the group, so members can view details (such as availabilities) on a per pergroup basis.
 
 <img src="./images/CreateGroup.png"/>
 
 ## Join Group
-Users have the ability to join an existing group, by using the group code. They simply have to enter it in the dialog, and voilà, they will be taken to the respective group page!
+Users have the ability to join an existing group by using the group code indicated at the top of the Group Page. They simply have to enter it into the modal that appears when Join Group is clicked, and voilà, they will be taken to the respective group page!
 
 <img src="./images/JoinGroup.png"/>
 
 ## Group Page
-The Group Page consists of the availabilities calendar (a cumulative calendar of all member's schedules), member display, a COVID rules reminder, and the schedule hangouts list. The calendar changes to a deepershade of green based on the number of available people on that particular day. 
+The Group Page consists of the availabilities calendar (a cumulative calendar of all member's schedules), member display, a COVID rules reminder, and the schedule hangouts list. The calendar changes to a deeper shade of green based on the number of available people on that particular day. 
 
 <img src="./images/grouppage.jpg"/>
 
 ## Create Hangout
-After clicking on a date on the group page, you can create a hangout that will be visible on the group page. You select the time of the hangout (selected from a dropdown of people's available times), and input a name and description for the hangout. If a hangout is proposed for a time when many people (more than 10) are available, a warning will appear. 
+After clicking on a date on the group page, you can create a hangout that will be visible on the group page. You select the time of the hangout (selected from a dropdown of people's available times), and input a name and description for the hangout. If a hangout is proposed for a time when many people (more than 10) are available, a warning will appear. Otherwise, the scheduled hangout will be noted in the bottom left of the Group Page, and then contacted list per user (on the Profile Page) is updated.
 
  <img src="./images/CreateHangout.png"/>
 
