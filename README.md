@@ -42,8 +42,10 @@ From here, the user can either sign in or register. At the moment, the "sign-in"
 To unlock full functionality of the app, the user must sign-in to the page with their credentials.
 If they do not have an account, they will have the ability to register for one, this form includes a username field, which is used on the profile and group pages. The email is not displayed, but used for logging in.
 
-<img style="width: 40%; float: left" src="https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg"/>
-<img style="width: 40%" src="https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg"/>
+<div style="display: flex">
+  <img style="width: 40%; float: left" src="https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg"/>
+  <img style="width: 40%" src="https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg"/>
+</div>
 
 ## Profile Page
 Once users sign in, they are placed onto the profile page. From here, a user can see a calendar which indicates their last recorded availability. Below the calendar is a button that redirects users to a page to redo their availability. On the bottom, there is an interest form which helps the user keep track of what hangout ideas they could be interested in for the future. These records are displayed in the bottom right under “My Interests”. We initially wanted to use these interests for planning hangouts, but ran out of time to implement it. If we could have, we would have promoted COVID-safer activities such as being outdoors or remote activitie such as gaming. On the right, there are two buttons: one to open a modal for creating a group and one for joining a group. Below the buttons is a list of groups this user has joined. When a user clicks on the group name, they will be redirected to a page dedicated to that group. Finally, underneath the “Contacted” header is a list of people this user has been in contact with in the past 2 weeks through hangouts created in Proxamie.
