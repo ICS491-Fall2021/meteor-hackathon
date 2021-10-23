@@ -70,8 +70,8 @@ On the add availabilities page, users can use the handy calendar (the package we
 After clicking on a date on the group page, you can create a hangout that will be visible on the group page. You select the time of the hangout (selected from a dropdown of people's available times), and input a name and description for the hangout. If a hangout is proposed for a time when many people (more than 10) are available, a warning will appear. 
 
 <div style="display: flex">
-  <img style="width: 33%; float: left" src="./images/CreateHangout.png"/>
-  <img style="width: 33%; float: left" src="./images/CreateHangoutOptions.png"/>
-  <img style="width: 33%" src="./images/CreateHangoutWarning.png"/>
+  <img style="width: 49%; float: left" src="./images/CreateHangout.png"/>
+  <img style="width: 49%;" src="./images/CreateHangoutOptions.png"/>
 </div>
+  <img style="width: 50% text-align: center" src="./images/CreateHangoutWarning.png"/>
 
