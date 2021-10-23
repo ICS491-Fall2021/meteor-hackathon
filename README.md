@@ -60,11 +60,13 @@ On the add availabilities page, users can use the handy calendar (the package we
 ## Create Group
 Groups are an essential component of our application (for more information, visit the [Group Page](#group-page) section). 
 Users will use the **Create Group** modal to start a group in which other users can join, from the Join Group modal, discussed in more detail under [this section](#join-group). Once the user clicks submit, a unique group ID will be generated for the group, so members can view details (such as availabilities) on its own unique page.
-<img src="https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg"/>
+
+<img src="./images/CreateGroup.png"/>
 
 ## Join Group
 Users have the ability to join an existing group, by using the group code. They simply have to enter it in the dialog, and voilà, they will be taken to the respective group page!
-<img src="https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg"/>
+
+<img src="./images/JoinGroup.png"/>
 
 ## Group Page
 The Group Page consists of the availabilities calendar (a cumulative calendar of all member's schedules), member display, a COVID rules reminder, and the schedule hangouts list. The calendar changes to a deepershade of green based on the number of available people on that particular day. 
