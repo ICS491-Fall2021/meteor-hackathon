@@ -67,8 +67,6 @@ Users have the ability to join an existing group, by using the group code. They 
 <img src="https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg"/>
 
 ## Group Page
-
-## Group Page
 The Group Page consists of the availabilities calendar (a cumulative calendar of all member's schedules), member display, a COVID rules reminder, and the schedule hangouts list. The calendar changes to a deepershade of green based on the number of available people on that particular day. 
 
 <img src="./images/grouppage.jpg"/>
