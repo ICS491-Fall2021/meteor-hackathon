@@ -58,8 +58,8 @@ On the add availabilities page, users can use the handy calendar (the package we
 <img src="./images/AddAvailabilitiesPage.png"/>
 
 ## Create Group
-Groups are an essential component of our application (for more information, visit the #group-page section). 
-Users will use the **Create Group** modal to start a group in which other users can join, from the Join Group modal, discussed in more detail under #join-group. Once the user clicks submit, a unique group ID will be generated for the group, so members of the group can view details (such as availabilities) on its own unique page.
+Groups are an essential component of our application (for more information, visit the [Group Page](#group-page) section). 
+Users will use the **Create Group** modal to start a group in which other users can join, from the Join Group modal, discussed in more detail under [this section](#join-group). Once the user clicks submit, a unique group ID will be generated for the group, so members can view details (such as availabilities) on its own unique page.
 <img src="https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg"/>
 
 ## Join Group
