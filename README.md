@@ -43,8 +43,8 @@ To unlock full functionality of the app, the user must sign-in to the page with 
 If they do not have an account, they will have the ability to register for one, this form includes a username field, which is used on the profile and group pages. The email is not displayed, but used for logging in.
 
 <div style="display: flex">
-  <img style="width: 40%; float: left" src="https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg"/>
-  <img style="width: 40%" src="https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg"/>
+  <img style="width: 50%; float: left" src="https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg"/>
+  <img style="width: 50%" src="https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg"/>
 </div>
 
 ## Profile Page
