@@ -43,8 +43,8 @@ To unlock full functionality of the app, the user must sign-in to the page with 
 If they do not have an account, they will have the ability to register for one, this form includes a username field, which is used on the profile and group pages. The email is not displayed, but used for logging in.
 
 <div style="display: flex">
-  <img style="width: 49%; float: left" src="https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg"/>
-  <img style="width: 49%" src="https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg"/>
+  <img style="width: 49%; float: left" src="LoginPage.png"/>
+  <img style="width: 49%" src="RegisterPage.png"/>
 </div>
 
 ## Profile Page
@@ -67,3 +67,11 @@ On the add availabilities page, users can use the handy calendar (the package we
 <img src="https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg"/>
 
 ## Create Hangout
+After clicking on a date on the group page, you can create a hangout that will be visible on the group page. You select the time of the hangout (selected from a dropdown of people's available times), and input a name and description for the hangout. If a hangout is proposed for a time when many people (more than 10) are available, a warning will appear. 
+
+<div style="display: flex">
+  <img style="width: 33.33%; float: left" src="CreateHangout.png"/>
+  <img style="width: 33.33%" src="CreateHangoutOptions.png"/>
+  <img style="width: 33.33%" src="CreateHangoutWarning.png"/>
+</div>
+
