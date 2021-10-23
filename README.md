@@ -67,7 +67,11 @@ Users have the ability to join an existing group, by using the group code. They 
 <img src="https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg"/>
 
 ## Group Page
-<img src="https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg"/>
+
+## Group Page
+The Group Page consists of the availabilities calendar (a cumulative calendar of all member's schedules), member display, a COVID rules reminder, and the schedule hangouts list. The calendar changes to a deepershade of green based on the number of available people on that particular day. 
+
+<img src="./images/grouppage.jpg"/>
 
 ## Create Hangout
 After clicking on a date on the group page, you can create a hangout that will be visible on the group page. You select the time of the hangout (selected from a dropdown of people's available times), and input a name and description for the hangout. If a hangout is proposed for a time when many people (more than 10) are available, a warning will appear. 
